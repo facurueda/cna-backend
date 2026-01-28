@@ -4,13 +4,13 @@ services:
     container_name: vyro_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: vyro_db_dev
-      POSTGRES_PASSWORD: 0ltaxcbGdef01lSgBgLP
-      POSTGRES_DB: vyro_db_dev
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - vyro_pg:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U vyro -d vyro"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -18,32 +18,30 @@ services:
       - vyro_net
 
   api:
-    # lo ideal: tu imagen desde ECR, por ahora dejo build local
     build:
       context: .
       dockerfile: Dockerfile
     container_name: vyro_api
     restart: unless-stopped
     environment:
-      NODE_ENV: production
-      PORT: 3000
-      DATABASE_URL: postgresql://vyro:vyro@postgres:5432/vyro?schema=public
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+      DATABASE_URL: ${DATABASE_URL}
 
       # Cognito (luego los llenamos)
-      COGNITO_USER_POOL_ID: ""
-      COGNITO_CLIENT_ID: ""
-      COGNITO_REGION: "us-east-1"
+      COGNITO_USER_POOL_ID: ${COGNITO_USER_POOL_ID}
+      COGNITO_CLIENT_ID: ${COGNITO_CLIENT_ID}
+      COGNITO_REGION: ${COGNITO_REGION}
 
       # S3 (luego los llenamos)
-      AWS_REGION: "us-east-1"
-      S3_CLIPS_BUCKET: "vyro-clips-dev"
-      S3_BACKUPS_BUCKET: "vyro-backups-dev"
+      AWS_REGION: ${AWS_REGION}
+      S3_CLIPS_BUCKET: ${S3_CLIPS_BUCKET}
+      S3_BACKUPS_BUCKET: ${S3_BACKUPS_BUCKET}
     depends_on:
       postgres:
         condition: service_healthy
     networks:
       - vyro_net
-    # NO expongas 3000 al mundo; lo sirve nginx
     expose:
       - "3000"
 
@@ -58,7 +56,6 @@ services:
       - "443:443"
     volumes:
       - ./infra/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      # certs (letsencrypt) lo agregamos cuando pongas dominio
       - ./infra/nginx/certs:/etc/nginx/certs:ro
     networks:
       - vyro_net
