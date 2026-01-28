@@ -1,0 +1,70 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: vyro_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vyro_db_dev
+      POSTGRES_PASSWORD: 0ltaxcbGdef01lSgBgLP
+      POSTGRES_DB: vyro_db_dev
+    volumes:
+      - vyro_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vyro -d vyro"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vyro_net
+
+  api:
+    # lo ideal: tu imagen desde ECR, por ahora dejo build local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vyro_api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://vyro:vyro@postgres:5432/vyro?schema=public
+
+      # Cognito (luego los llenamos)
+      COGNITO_USER_POOL_ID: ""
+      COGNITO_CLIENT_ID: ""
+      COGNITO_REGION: "us-east-1"
+
+      # S3 (luego los llenamos)
+      AWS_REGION: "us-east-1"
+      S3_CLIPS_BUCKET: "vyro-clips-dev"
+      S3_BACKUPS_BUCKET: "vyro-backups-dev"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - vyro_net
+    # NO expongas 3000 al mundo; lo sirve nginx
+    expose:
+      - "3000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: vyro_nginx
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./infra/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # certs (letsencrypt) lo agregamos cuando pongas dominio
+      - ./infra/nginx/certs:/etc/nginx/certs:ro
+    networks:
+      - vyro_net
+
+volumes:
+  vyro_pg:
+
+networks:
+  vyro_net:
