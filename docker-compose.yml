@@ -23,6 +23,8 @@ services:
       dockerfile: Dockerfile
     container_name: vyro_api
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       NODE_ENV: ${NODE_ENV}
       PORT: ${PORT}
