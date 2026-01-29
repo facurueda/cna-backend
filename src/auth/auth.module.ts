@@ -1,37 +1,14 @@
 import { Module } from "@nestjs/common";
-import { JwtModule } from "@nestjs/jwt";
 import { PassportModule } from "@nestjs/passport";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import type { SignOptions } from "jsonwebtoken";
 
 import { AuthController } from "./auth.controller";
+import { CognitoJwtStrategy } from "./cognito-jwt.strategy";
+import { CognitoAuthGuard } from "./guards/cognito-auth.guard";
 import { AuthService } from "./auth.service";
-import { JwtStrategy } from "./jwt.strategy";
-import { PrismaModule } from "../prisma/prisma.module";
 
 @Module({
-  imports: [
-    PrismaModule,
-    PassportModule,
-    ConfigModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        const secret = config.get<string>("JWT_SECRET");
-        if (!secret) throw new Error("Missing JWT_SECRET");
-
-        return {
-          secret,
-          signOptions: {
-            expiresIn: (config.get<string>("JWT_EXPIRES_IN") ?? "7d") as SignOptions["expiresIn"],
-          },
-        };
-      },
-    }),
-  ],
+  imports: [PassportModule.register({ defaultStrategy: "cognito" })],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
-  exports: [AuthService],
+  providers: [CognitoJwtStrategy, CognitoAuthGuard, AuthService],
 })
 export class AuthModule {}

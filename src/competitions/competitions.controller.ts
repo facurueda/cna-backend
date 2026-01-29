@@ -12,20 +12,18 @@ import { CompetitionsService } from './competitions.service';
 import { CreateCompetitionDto } from './dto/create-competition.dto';
 import { UpdateCompetitionDto } from './dto/update-competition.dto';
 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CognitoAuthGuard } from '../auth/guards/cognito-auth.guard';
 import { RolesGuard } from '../auth/roles/roles.guard';
 import { Roles } from '../auth/roles/roles.decorator';
 import { Role } from '@prisma/client';
 import { AuthUser } from 'src/auth/decorators/auth-user.decorator';
 
-type JwtUser = { id: string; role: string };
-
 @Controller('competitions')
-@UseGuards(JwtAuthGuard)
+@UseGuards(CognitoAuthGuard)
 export class CompetitionsController {
   constructor(private readonly service: CompetitionsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(CognitoAuthGuard)
   @Get('my')
   myCompetitions(@AuthUser() user: { id: string; role: Role }) {
     return this.service.findMyCompetitions(user);

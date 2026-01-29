@@ -1,11 +1,14 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { CognitoAuthGuard } from './guards/cognito-auth.guard';
 import { Roles } from './roles/roles.decorator';
 import { RolesGuard } from './roles/roles.guard';
 import { AuthUser } from './decorators/auth-user.decorator';
+import { Role } from '@prisma/client';
+import { AuthService } from './auth.service';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+import { ConfirmDto } from './dto/confirm.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -16,21 +19,32 @@ export class AuthController {
     return this.auth.register(dto);
   }
 
+  @Post('confirm')
+  confirm(@Body() dto: ConfirmDto) {
+    return this.auth.confirm(dto);
+  }
+
   @Post('login')
   login(@Body() dto: LoginDto) {
-    console.log('ACA')
     return this.auth.login(dto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(CognitoAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @Post('role')
+  setRole(@Body() dto: UpdateRoleDto) {
+    return this.auth.setUserRole(dto);
+  }
+
+  @UseGuards(CognitoAuthGuard)
   @Get('me')
   me(@AuthUser() user) {
     return user;
   }
 
   // Ejemplo de endpoint solo admin (para probar)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @UseGuards(CognitoAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Get('admin-only')
   adminOnly() {
     return { ok: true };

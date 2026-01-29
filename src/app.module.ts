@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from './prisma/prisma.module';
 import { CompetitionsModule } from './competitions/competitions.module';
 import { MatchesModule } from './matches/matches.module';
 import { ClipsModule } from './clips/clips.module';
@@ -16,6 +17,7 @@ ConfigModule.forRoot({
 @Module({
   imports: [
     AuthModule,
+    PrismaModule,
     HealthModule,
     CompetitionsModule,
     MatchesModule,

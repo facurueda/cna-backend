@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ClipsService } from './clips.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CognitoAuthGuard } from '../auth/guards/cognito-auth.guard';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { UpdateClipDto } from './dto/update-clip.dto';
 import { Roles } from '../auth/roles/roles.decorator';
@@ -19,17 +19,17 @@ import { AuthUser } from 'src/auth/decorators/auth-user.decorator';
 import { Role } from '@prisma/client';
 import { CreateClipBatchDto } from './dto/create-clip-batch.dto';
 
-type JwtUser = { id: string; role: string };
+type AuthUserPayload = { id: string; role: Role };
 
 @Controller('clips')
-@UseGuards(JwtAuthGuard)
+@UseGuards(CognitoAuthGuard)
 export class ClipsController {
   constructor(private readonly clipsService: ClipsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(CognitoAuthGuard)
   @Get('my')
   myClips(
-    @AuthUser() user: JwtUser,
+    @AuthUser() user: AuthUserPayload,
     @Query('scope') scope?: 'created' | 'as_referee' | 'all',
   ) {
     return this.clipsService.findMyClips(user.id, scope ?? 'created');
