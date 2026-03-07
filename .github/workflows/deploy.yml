@@ -1,0 +1,35 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            
+            if [ "${{ github.ref_name }}" = "main" ]; then
+              cd /var/www/acab/backend-prod
+              git pull origin main
+              yarn install
+              yarn build
+              pm2 restart acab-backend-prod
+            else
+              cd /var/www/acab/backend-staging
+              git pull origin develop
+              yarn install
+              yarn build
+              pm2 restart acab-backend-staging
+            fi
