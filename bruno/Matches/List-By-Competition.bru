@@ -1,0 +1,14 @@
+meta {
+  name: List By Competition
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/matches?competitionId={{competitionId}}
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

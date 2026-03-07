@@ -1,0 +1,24 @@
+meta {
+  name: Update (Admin)
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/competitions/{{competitionId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "name": "SCA Adulto Masculino",
+  "seasonLabel": "Clausura 2026"
+}

@@ -15,19 +15,10 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles || requiredRoles.length === 0) return true;
 
     const req = context.switchToHttp().getRequest();
-    const user = req.user as
-      | { role?: string; groups?: string[]; [key: string]: unknown }
-      | undefined;
+    const user = req.user as { role?: string } | undefined;
 
     const roles = new Set<string>();
     if (user?.role) roles.add(String(user.role).toUpperCase());
-    if (Array.isArray(user?.groups)) {
-      user?.groups.forEach((group) => roles.add(String(group).toUpperCase()));
-    }
-    const cognitoGroups = user?.["cognito:groups"];
-    if (Array.isArray(cognitoGroups)) {
-      cognitoGroups.forEach((group) => roles.add(String(group).toUpperCase()));
-    }
 
     if (roles.size === 0) return false;
 

@@ -1,0 +1,14 @@
+meta {
+  name: Finish
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/exams/{{examId}}/finish
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

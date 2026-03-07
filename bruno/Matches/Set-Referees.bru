@@ -1,0 +1,23 @@
+meta {
+  name: Set Referees (Admin)
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/matches/{{matchId}}/referees
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "refereeIds": ["{{refereeId1}}", "{{refereeId2}}"]
+}

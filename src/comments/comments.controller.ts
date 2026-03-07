@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query, UseGuards } from "@nestjs/common";
-import { CognitoAuthGuard } from "../auth/guards/cognito-auth.guard";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { CommentsService } from "./comments.service";
 import { CreateCommentDto } from "./dto/create-comment.dto";
 import { RolesGuard } from "../auth/roles/roles.guard";
@@ -8,7 +8,7 @@ import { Roles } from "../auth/roles/roles.decorator";
 import { Role } from "@prisma/client";
 
 @Controller("comments")
-@UseGuards(CognitoAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 

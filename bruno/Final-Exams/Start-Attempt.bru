@@ -1,0 +1,14 @@
+meta {
+  name: Start Attempt
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/final-exams/{{finalExamCatalogId}}/start
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

@@ -1,0 +1,14 @@
+meta {
+  name: List All (Admin)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/clips
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

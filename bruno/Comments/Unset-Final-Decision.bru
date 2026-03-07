@@ -1,0 +1,14 @@
+meta {
+  name: Unset Final Decision (Admin)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/comments/{{commentId}}/unset-final-decision
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}

@@ -1,0 +1,14 @@
+meta {
+  name: Admin Only
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/auth/admin-only
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}

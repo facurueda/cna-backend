@@ -1,0 +1,24 @@
+meta {
+  name: Create (Admin)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/competitions
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "name": "SCA Adulto Masculino",
+  "seasonLabel": "Apertura 2026"
+}

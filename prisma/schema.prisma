@@ -22,31 +22,53 @@ enum ClipStatus {
   CLOSED
 }
 
+enum ExamStatus {
+  PENDING
+  FINISHED
+}
+
+enum ExamType {
+  FINAL
+  PRACTICE
+}
+
+enum FinalExamCatalogStatus {
+  DRAFT
+  PUBLISHED
+}
+
 model User {
-  id        String @id @default(uuid())
-  firstName String
-  lastName  String
-  email     String @unique
-  password  String
-  role      Role   @default(GENERAL)
+  id               String  @id @default(uuid())
+  firstName        String
+  lastName         String
+  email            String  @unique
+  password         String
+  refreshTokenHash String?
+  role             Role    @default(GENERAL)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  matchesAsReferee MatchReferee[]
-  clipsAsReferee   ClipReferee[]
-  clipsCreated     Clip[]         @relation("ClipCreator")
-  comments         Comment[]
+  matchesAsReferee         MatchReferee[]
+  clipsAsReferee           ClipReferee[]
+  clipsCreated             Clip[]               @relation("ClipCreator")
+  comments                 Comment[]
+  competitionsAsReferee    CompetitionReferee[]
+  exams                    Exam[]
+  stats                    UserStats?
+  finalExamCatalogsCreated FinalExamCatalog[]   @relation("FinalExamCatalogCreator")
 }
 
 model Competition {
   id          String   @id @default(cuid())
   name        String
-  seasonLabel String?  // ej: "Apertura 2026" (opcional)
+  seasonLabel String? // ej: "Apertura 2026" (opcional)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  matches     Match[]  // lo vamos a crear en el próximo paso
+  matches           Match[] // lo vamos a crear en el próximo paso
+  referees          CompetitionReferee[]
+  finalExamCatalogs FinalExamCatalogCompetition[]
 }
 
 model Match {
@@ -54,8 +76,8 @@ model Match {
   competitionId String
   teamA         String
   teamB         String
-  category      String
-  date          DateTime
+  category      String?
+  date          DateTime?
   status        MatchStatus @default(OPEN)
 
   createdAt DateTime @default(now())
@@ -79,12 +101,25 @@ model MatchReferee {
   @@index([userId])
 }
 
+model CompetitionReferee {
+  competitionId String
+  userId        String
+
+  competition Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([competitionId, userId])
+  @@index([userId])
+}
+
 model Clip {
-  id       String     @id @default(uuid())
-  matchId  String
-  title    String
-  videoUrl String
-  status   ClipStatus @default(OPEN)
+  id           String     @id @default(uuid())
+  matchId      String
+  title        String
+  videoUrl     String
+  thumbnailUrl String?
+  duration     Int?
+  status       ClipStatus @default(OPEN)
 
   createdById String
   createdAt   DateTime @default(now())
@@ -93,13 +128,32 @@ model Clip {
   match     Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
   createdBy User  @relation("ClipCreator", fields: [createdById], references: [id])
 
-  referees ClipReferee[]
-  comments Comment[]
+  referees   ClipReferee[]
+  comments   Comment[]
+  categories ClipCategoryOnClip[]
 
   finalDecisionCommentId String? @unique
 
   @@index([matchId])
   @@index([createdAt])
+}
+
+model ClipCategory {
+  id   String @id @default(cuid())
+  name String @unique
+
+  clips ClipCategoryOnClip[]
+}
+
+model ClipCategoryOnClip {
+  clipId     String
+  categoryId String
+
+  clip     Clip         @relation(fields: [clipId], references: [id], onDelete: Cascade)
+  category ClipCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([clipId, categoryId])
+  @@index([categoryId])
 }
 
 model ClipReferee {
@@ -128,4 +182,193 @@ model Comment {
 
   @@index([clipId])
   @@index([createdAt])
+}
+
+model Exam {
+  id                   String     @id @default(uuid()) @db.Uuid
+  userId               String
+  finalExamCatalogId   String?    @db.Uuid
+  attemptNumber        Int?
+  questionCount        Int
+  isTimed              Boolean    @default(false)
+  totalTimeSeconds     Int?
+  status               ExamStatus @default(PENDING)
+  examType             ExamType
+  passThresholdPercent Int        @default(70)
+  correctCount         Int?
+  wrongCount           Int?
+  scorePercent         Float?
+  isPassed             Boolean?
+  finishedAt           DateTime?
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt
+
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  finalExamCatalog FinalExamCatalog? @relation(fields: [finalExamCatalogId], references: [id], onDelete: SetNull)
+  questions        ExamQuestion[]
+
+  @@unique([userId, finalExamCatalogId, attemptNumber])
+  @@index([userId])
+  @@index([finalExamCatalogId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model ExamQuestion {
+  id           String  @id @default(uuid()) @db.Uuid
+  examId       String  @db.Uuid
+  position     Int
+  questionCode String
+  questionText String
+  categoryName String?
+
+  exam        Exam                     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  options     ExamQuestionOption[]
+  correctKeys ExamQuestionCorrectKey[]
+  responses   ExamQuestionResponse[]
+
+  @@unique([examId, position])
+  @@index([examId])
+}
+
+model ExamQuestionOption {
+  id             String @id @default(uuid()) @db.Uuid
+  examQuestionId String @db.Uuid
+  key            String
+  text           String
+
+  examQuestion ExamQuestion @relation(fields: [examQuestionId], references: [id], onDelete: Cascade)
+
+  @@unique([examQuestionId, key])
+  @@index([examQuestionId])
+}
+
+model ExamQuestionCorrectKey {
+  id             String @id @default(uuid()) @db.Uuid
+  examQuestionId String @db.Uuid
+  key            String
+
+  examQuestion ExamQuestion @relation(fields: [examQuestionId], references: [id], onDelete: Cascade)
+
+  @@unique([examQuestionId, key])
+  @@index([examQuestionId])
+}
+
+model ExamQuestionResponse {
+  id             String @id @default(uuid()) @db.Uuid
+  examQuestionId String @db.Uuid
+  key            String
+
+  examQuestion ExamQuestion @relation(fields: [examQuestionId], references: [id], onDelete: Cascade)
+
+  @@unique([examQuestionId, key])
+  @@index([examQuestionId])
+}
+
+model UserStats {
+  userId                String   @id
+  practiceTestsCount    Int      @default(0)
+  practiceAverage       Float    @default(0)
+  finalTestsPassedCount Int      @default(0)
+  finalTestsTotalCount  Int      @default(0)
+  finalAverage          Float    @default(0)
+  clipsCount            Int      @default(0)
+  commentsCount         Int      @default(0)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([practiceAverage])
+  @@index([finalAverage])
+}
+
+model FinalExamCatalog {
+  id                   String                 @id @default(uuid()) @db.Uuid
+  title                String                 @default("Examen")
+  questionCount        Int
+  isTimed              Boolean                @default(false)
+  totalTimeSeconds     Int?
+  maxRetries           Int                    @default(0)
+  shuffleOptions       Boolean                @default(true)
+  passThresholdPercent Int                    @default(70)
+  status               FinalExamCatalogStatus @default(DRAFT)
+  publishedAt          DateTime?
+  createdById          String?
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+
+  createdBy    User?                         @relation("FinalExamCatalogCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  categories   FinalExamCatalogCategory[]
+  competitions FinalExamCatalogCompetition[]
+  exams        Exam[]
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model FinalExamCatalogCategory {
+  finalExamCatalogId String @db.Uuid
+  categoryId         String @db.Uuid
+
+  finalExamCatalog FinalExamCatalog @relation(fields: [finalExamCatalogId], references: [id], onDelete: Cascade)
+  category         Category         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([finalExamCatalogId, categoryId])
+  @@index([categoryId])
+}
+
+model FinalExamCatalogCompetition {
+  finalExamCatalogId String @db.Uuid
+  competitionId      String
+
+  finalExamCatalog FinalExamCatalog @relation(fields: [finalExamCatalogId], references: [id], onDelete: Cascade)
+  competition      Competition      @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+
+  @@id([finalExamCatalogId, competitionId])
+  @@index([competitionId])
+}
+
+model Question {
+  id         String   @id @default(uuid()) @db.Uuid
+  code       String
+  text       String
+  categoryId String?  @db.Uuid
+  order      Int      @map("Order")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  category          Category?                  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  answers           Answer[]
+  correctAnswerKeys QuestionCorrectAnswerKey[]
+}
+
+model Answer {
+  id         String @id @default(uuid()) @db.Uuid
+  questionId String @db.Uuid
+  key        String
+  text       String
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  questions         Question[]
+  finalExamCatalogs FinalExamCatalogCategory[]
+}
+
+model QuestionCorrectAnswerKey {
+  id         String @id @default(uuid()) @db.Uuid
+  questionId String @db.Uuid
+  key        String
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([questionId, key])
+  @@index([questionId])
 }

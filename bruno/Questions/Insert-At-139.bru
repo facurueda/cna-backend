@@ -1,0 +1,29 @@
+meta {
+  name: Insert At 139
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/questions/bulk/insert-139
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "questions": [
+    {
+      "code": "5.13",
+      "text": "Texto de la pregunta 5.13",
+      "categoryName": "Regla 5",
+      "answers": [
+        { "key": "a", "text": "Sí" },
+        { "key": "b", "text": "No" }
+      ]
+    }
+  ]
+}

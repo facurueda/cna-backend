@@ -1,7 +1,22 @@
-import { IsArray, IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID, ArrayUnique } from "class-validator";
+import {
+  ArrayUnique,
+  IsArray,
+  IsDateString,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from "class-validator";
+import { Transform } from "class-transformer";
+
+const trimToUndefined = ({ value }: { value: unknown }) => {
+  if (typeof value !== "string") return value;
+  const trimmed = value.trim();
+  return trimmed.length === 0 ? undefined : trimmed;
+};
 
 export class CreateMatchDto {
-  @IsUUID()
+  @IsString()
   competitionId: string;
 
   @IsString()
@@ -12,12 +27,15 @@ export class CreateMatchDto {
   @IsNotEmpty()
   teamB: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  category: string;
+  @Transform(trimToUndefined)
+  category?: string;
 
+  @IsOptional()
   @IsDateString()
-  date: string; // ISO string
+  @Transform(trimToUndefined)
+  date?: string; // ISO string
 
   // arbitros asignados al partido (userIds)
   @IsOptional()

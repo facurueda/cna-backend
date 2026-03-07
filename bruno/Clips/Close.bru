@@ -1,0 +1,14 @@
+meta {
+  name: Close (Admin)
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/clips/{{clipId}}/close
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}

@@ -1,0 +1,182 @@
+[
+  {
+    "code": "18.1",
+    "text": "¿Qué indican las Reglas de Juego con respecto a la distribución del trabajo entre el cronometrador y el anotador?",
+    "categoryName": "Regla 18",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El control de la entrada y salida de los cambios es controlado solamente por el cronometrador"
+      },
+      {
+        "key": "b",
+        "text": "Generalmente, sólo el cronometrador debería interrumpir el juego cuando esto sea necesario"
+      },
+      {
+        "key": "c",
+        "text": "El anotador debe pitar si observa que un cambio entra en el terreno de juego demasiado pronto"
+      },
+      {
+        "key": "d",
+        "text": "Si no hay un reloj público, el cronometrador mantiene a los equipos informados sobre cuánto tiempo han jugado o cuanto les queda por jugar"
+      },
+      {
+        "key": "e",
+        "text": "La cuenta del número de ataques, cuando un jugador está cumpliendo 3 ataques después de recibir asistencia médica en la pista, es una tarea conjunta para el cronometrador y el anotador"
+      }
+    ]
+  },
+  {
+    "code": "18.2",
+    "text": "BLANCO 5 tiene una clara ocasión de marcar gol. El oficial A del equipo BLANCO insulta al cronometrador. El cronometrador hace sonar la señal acústica justo en el momento en que BLANCO 5 va a lanzar a portería. La acción solo ha sido observada por el cronometrador. ¿Decisión correcta?",
+    "categoryName": "Regla 18",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco a favor del equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Sanción disciplinaria al oficial A del equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco a favor del equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros a favor del equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Informe escrito"
+      }
+    ]
+  },
+  {
+    "code": "18.3",
+    "text": "El oficial responsable del equipo BLANCO insulta al anotador, sin que esta situación sea observada por los árbitros. En la siguiente interrupción, el anotador informa a los árbitros de lo ocurrido. ¿Decisión correcta?",
+    "categoryName": "Regla 18",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación al oficial responsable del equipo BLANCO, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para el oficial responsable del equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Informe escrito"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para el oficial responsable del equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "No es posible aplicar sanciones personales"
+      }
+    ]
+  },
+  {
+    "code": "18.4",
+    "text": "El equipo BLANCO tiene el balón en la línea de golpe franco del equipo NEGRO. El Delegado Técnico interrumpe el juego y explica a los árbitros que el oficial A del equipo NEGRO le ha insultado. ¿Decisión correcta?",
+    "categoryName": "Regla 18",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Advertencia verbal al oficial A del equipo NEGRO; informe escrito"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación al oficial A del equipo NEGRO; informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "El encuentro se reanuda con golpe franco para el equipo BLANCO desde la zona de cambios del equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "El encuentro se reanuda con golpe franco para el equipo BLANCO desde la línea de golpe franco del equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "18.5",
+    "text": "El equipo BLANCO tiene el balón en la línea de golpe franco del equipo NEGRO. El cronometrador interrumpe el juego y explica a los árbitros que el oficial A del equipo BLANCO le ha insultado. ¿Decisión correcta?",
+    "categoryName": "Regla 18",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Informe escrito"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para el oficial A del equipo BLANCO; informe escrito"
+      },
+      {
+        "key": "c",
+        "text": "El partido se reanuda con golpe franco para el equipo NEGRO desde la zona de cambios del equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "El encuentro se reanuda con el lanzamiento para el equipo BLANCO que corresponda a la situación de juego"
+      }
+    ]
+  },
+  {
+    "code": "18.6",
+    "text": "Durante el partido, el oficial A del equipo BLANCO se mueve repetidamente hacia la mesa del cronometrador para dar instrucciones desde ahí. Mientras lo hace, protesta contra las decisiones de los árbitros. Debido al ruido del terreno de juego, los árbitros no se percatan de ello. ¿Decisión correcta?",
+    "categoryName": "Regla 18",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El cronometrador interrumpe el juego inmediatamente e informa a los árbitros del comportamiento del oficial A"
+      },
+      {
+        "key": "b",
+        "text": "El cronometrador espera a la siguiente interrupción del juego e informa a los árbitros del comportamiento del oficial A"
+      },
+      {
+        "key": "c",
+        "text": "Sanción progresiva para el oficial A del equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Ninguna sanción es posible"
+      }
+    ]
+  },
+  {
+    "code": "18.7",
+    "text": "¿Cuándo debería el anotador/cronometrador informar a los árbitros, si ha existido una infracción en la zona de cambios que no ha sido observada por parte de los árbitros?",
+    "categoryName": "Regla 18",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Inmediatamente"
+      },
+      {
+        "key": "b",
+        "text": "En el momento de la siguiente interrupción del juego"
+      }
+    ]
+  },
+  {
+    "code": "18.8",
+    "text": "Si el Delegado Técnico interrumpe el partido por una infracción de uno de los equipos, ¿el partido se reanuda con la posesión del balón para el otro equipo?",
+    "categoryName": "Regla 18",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Sí"
+      },
+      {
+        "key": "b",
+        "text": "No"
+      }
+    ]
+  }
+]

@@ -1,0 +1,822 @@
+[
+  {
+    "code": "7.1",
+    "text": "El balón está en el aire yendo hacia la línea lateral. BLANCO 3 logra jugar el balón con su mano hacia BLANCO 7, antes de que la pelota cruce la línea. Para hacerlo, BLANCO 3 cruza la línea lateral con un pie. BLANCO 7 coge el balón y marca un gol. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Gol"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 3"
+      }
+    ]
+  },
+  {
+    "code": "7.2",
+    "text": "Un pase arriesgado de NEGRO 3 a NEGRO 11. Cuando el balón está en el aire, NEGRO 11 se da cuenta de que no lo podrá recoger, así que lo golpea con su puño en dirección a NEGRO 9 que está parado en la mitad del terreno de juego. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO desde la posición de NEGRO 9"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO desde la posición de NEGRO 11"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para NEGRO 11"
+      }
+    ]
+  },
+  {
+    "code": "7.3",
+    "text": "BLANCO 4 coge el balón cuando está parado. Salta y cae sobre su pie derecho. Después salta sobre su pie izquierdo y lanza. ¿Cuántos pasos ha realizado BLANCO 4?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "1"
+      },
+      {
+        "key": "b",
+        "text": "2"
+      },
+      {
+        "key": "c",
+        "text": "3"
+      },
+      {
+        "key": "d",
+        "text": "4"
+      }
+    ]
+  },
+  {
+    "code": "7.4",
+    "text": "Un jugador salta para recoger el balón. Cae al suelo con ambos pies simultáneamente. Luego levanta su pie derecho para dar un paso hacia un lado y arrastra su pie izquierdo hasta el otro. ¿Cuántos pasos ha realizado?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "1"
+      },
+      {
+        "key": "b",
+        "text": "3"
+      },
+      {
+        "key": "c",
+        "text": "0"
+      },
+      {
+        "key": "d",
+        "text": "2"
+      }
+    ]
+  },
+  {
+    "code": "7.5",
+    "text": "Un jugador en suspensión recoge el balón, cae sobre su pie derecho y salta sobre ese mismo pie. Posteriormente, apoya primero el pie izquierdo en el suelo y luego el derecho para lanzar a portería. ¿Cuántos pasos ha realizado?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "3"
+      },
+      {
+        "key": "b",
+        "text": "2"
+      },
+      {
+        "key": "c",
+        "text": "1"
+      },
+      {
+        "key": "d",
+        "text": "0"
+      }
+    ]
+  },
+  {
+    "code": "7.6",
+    "text": "BLANCO 5 está intentando recepcionar el balón y finalmente lo consigue. Entonces da tres pasos, bota el balón una vez y vuelve a dar otros tres pasos antes de marcar un gol. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Gol"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de banda para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "7.7",
+    "text": "BLANCO 5 quiere iniciar un ataque. Bota el balón mientras da 5 pasos. Entonces coge el balón y lo pasa. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "7.8",
+    "text": "NEGRO 6 recepciona el balón, resbala y cae. Tendido sobre su espalda, lanza el balón a NEGRO 9. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "7.9",
+    "text": "BLANCO 3 corre entre dos contrarios y empuja el balón en la misma dirección en la que él está corriendo. BLANCO 3 coge de nuevo el balón antes que haya tocado el suelo, y el camino hacia la portería del equipo NEGRO está ahora libre. BLANCO 3 bota el balón una vez y marca gol. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "7.10",
+    "text": "Después de botar el balón una vez BLANCO 7 quiere pasar el balón a BLANCO 5, pero BLANCO 5 está cubierto por un contrario. BLANCO 7 está tan confuso que se le cae el balón, pero logra cogerlo de nuevo antes de que toque el suelo. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "7.11",
+    "text": "¿Cómo se sanciona el juego pasivo repetido?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco y amonestación"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco y 2’ de exclusión"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco y descalificación (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "7.12",
+    "text": "Posteriormente a un lanzamiento a portería de BLANCO 4 el balón es rechazado por el poste de la portería del equipo NEGRO, golpea al árbitro que estaba en el área de portería y, a causa de esto, el balón sale del terreno de juego por la línea de banda y no por la línea de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "7.13",
+    "text": "El equipo BLANCO ejecuta un saque de banda. BLANCO 5 lanza el balón dentro del terreno de juego, donde golpea al árbitro y luego entra en la portería del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Repetición del lanzamiento después de toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Gol para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "7.14",
+    "text": "NEGRO 3 ejecuta un lanzamiento en suspensión y BLANCO 9 bloquea el balón. El balón cae al suelo donde BLANCO 9 lo recoge con ambas manos y comienza a botar en contraataque. Su lanzamiento acaba dentro de la portería del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para BLANCO 9"
+      },
+      {
+        "key": "d",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "7.15",
+    "text": "BLANCO 5 bota el balón a lo largo de la línea de banda. NEGRO 2 le obstruye correctamente. Entonces, para poder superar a NEGRO 2, BLANCO 5 pisa más allá de la línea de banda mientras continúa botando. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "El juego continúa sin interrupción"
+      }
+    ]
+  },
+  {
+    "code": "7.16",
+    "text": "Después de un pase impreciso de BLANCO 3 a BLANCO 9, el balón rueda en dirección a la línea de banda, cerca de la zona de cambios del equipo BLANCO. NEGRO 10 se encuentra a un metro de distancia, listo para recoger el balón, cuando BLANCO 9 se lanza a por el balón y lo golpea con su puño en dirección al terreno de juego, hacia BLANCO 3. Como consecuencia del movimiento, BLANCO 9 se desliza fuera de la línea de banda y fuera del terreno de juego. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Sanción progresiva para BLANCO 9"
+      },
+      {
+        "key": "d",
+        "text": "Saque de banda para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "7.17",
+    "text": "NEGRO 7, del equipo atacante, ocupa una posición fuera del terreno de juego sin tener el balón. Los árbitros indican al jugador que debe volver al terreno de juego pero éste no reacciona. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Sanción progresiva para NEGRO 7"
+      },
+      {
+        "key": "d",
+        "text": "Saque de banda para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "7.18",
+    "text": "Un jugador salta sobre el área de portería del equipo adversario. Tiene un completo control del balón y de su cuerpo, y está en una buena posición para lanzar. Sin embargo, en vez de lanzar se da la vuelta en el aire y pasa el balón hacia atrás a un compañero de equipo, que posteriormente la vuelve a pasar. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gesto de advertencia de juego pasivo"
+      },
+      {
+        "key": "b",
+        "text": "Inmediato golpe franco debido al juego pasivo"
+      },
+      {
+        "key": "c",
+        "text": "Inmediato golpe franco debido a una conducta antideportiva"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva"
+      }
+    ]
+  },
+  {
+    "code": "7.19",
+    "text": "BLANCO 3 efectúa un lanzamiento a la portería del equipo NEGRO y el balón golpea en el poste. El balón rechazado vuelve rodando en dirección al área de juego. Junto a la línea de golpe franco, BLANCO 3 y NEGRO 4 se lanzan a por el balón sin ponerse mutuamente en peligro. NEGRO 4 logra golpear la pelota en dirección a NEGRO 66, quien inicia un contraataque y marca gol. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Amonestación para NEGRO 4"
+      },
+      {
+        "key": "b",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO o el equipo NEGRO, dependiendo de las circunstancias"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "7.20",
+    "text": "BLANCO 10 intenta pasar el balón a BLANCO 8 que está junto a la línea del área de portería del equipo NEGRO. NEGRO 10 está completamente quieto enfrente de BLANCO 8 cuando el balón golpea en su pie. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "c",
+        "text": "Depende de quien consiga el balón"
+      }
+    ]
+  },
+  {
+    "code": "7.21",
+    "text": "BLANCO 15 corta un pase de NEGRO 9, después de esto, el balón rueda por el suelo. BLANCO 15 y NEGRO 9 se lanzan al suelo por el balón, BLANCO 15 coge el balón y resbala en el suelo, se levanta, da tres pasos y juega el balón hacia un compañero que consigue marcar gol. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "7.22",
+    "text": "El equipo BLANCO está ganando por 24-23 en el minuto 57 pero tiene un jugador menos que los contrarios en el terreno de juego. El árbitro central ha concedido un golpe franco a favor de BLANCO 3. BLANCO 6 intenta manifiestamente ejecutar este golpe franco a varios metros del lugar correcto, incluso aunque el árbitro ha señalado muy claramente el lugar correcto. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Corrección de la posición; señal de reanudación del partido; ninguna otra decisión"
+      },
+      {
+        "key": "b",
+        "text": "Corrección de la posición; señal de reanudación del partido; los árbitros muestran el gesto de advertencia de juego pasivo"
+      },
+      {
+        "key": "c",
+        "text": "Corrección de la posición; sanción progresiva para BLANCO 6; señal de reanudación del partido; los árbitros muestran el gesto de advertencia de juego pasivo"
+      }
+    ]
+  },
+  {
+    "code": "7.23",
+    "text": "El equipo NEGRO está jugando con un jugador menos. Los jugadores del equipo NEGRO ya ocupan sus posiciones en ataque y han empezado una fase preparatoria. En este momento los jugadores NEGRO 6 y NEGRO 8 deciden salir del terreno para una sustitución. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Señal de advertencia de juego pasivo"
+      },
+      {
+        "key": "b",
+        "text": "Señal de advertencia de juego pasivo, si no hay incremento de ritmo en 5 segundos"
+      },
+      {
+        "key": "c",
+        "text": "Inmediato golpe franco a favor del equipo BLANCO por juego pasivo"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para NEGRO 6 o NEGRO 8 en caso de repetición"
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para NEGRO 6 o NEGRO 8 en caso de repetición"
+      }
+    ]
+  },
+  {
+    "code": "7.24",
+    "text": "¿Qué acciones cancelan la señal de advertencia de juego pasivo?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Recuperar la posesión del balón por parte del equipo atacante después de que el portero haya rechazado un lanzamiento de 7 metros"
+      },
+      {
+        "key": "b",
+        "text": "Recuperar la posesión del balón por parte del equipo atacante después de que el balón haya sido rechazado por los postes o el larguero de la portería"
+      },
+      {
+        "key": "c",
+        "text": "Tiempo Muerto de Equipo"
+      },
+      {
+        "key": "d",
+        "text": "Cambio de ritmo evidente, antes de las próximas acciones pasivas del equipo"
+      },
+      {
+        "key": "e",
+        "text": "Ninguna de las anteriores"
+      }
+    ]
+  },
+  {
+    "code": "7.25",
+    "text": "¿Cuáles de las siguientes instrucciones son correctas en relación con la señal de advertencia de juego pasivo (Gestoforma Nº 17)?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Si se observa una tendencia hacia el juego pasivo, el árbitro central debe ser el primero en señalarla mediante la Gestoforma 17. Entonces el árbitro de portería levanta su brazo en la misma forma"
+      },
+      {
+        "key": "b",
+        "text": "Si el equipo en posesión del balón solicita un Tiempo Muerto de Equipo después de haberse mostrado la señal de advertencia, entonces cuando se reanude el juego debe mostrarse nuevamente la misma señal"
+      },
+      {
+        "key": "c",
+        "text": "Si el equipo en posesión del balón no realiza claros esfuerzos para llegar a una posición de lanzamiento a portería después de haberse mostrado la señal de advertencia, el árbitro de central o el árbitro de portería señalan un golpe franco debido al juego pasivo"
+      },
+      {
+        "key": "d",
+        "text": "Después de la señal de advertencia, los árbitros deciden juego pasivo a más tardar, cuando un lanzamiento a portería no es ejecutado después de cuatro pases"
+      }
+    ]
+  },
+  {
+    "code": "7.26",
+    "text": "El equipo BLANCO retrasa la ejecución de un saque de centro. El equipo ya había sido advertido anteriormente por utilizar esa táctica. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa"
+      },
+      {
+        "key": "b",
+        "text": "Time-out; saque de centro después de toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Time-out; saque de centro después de toque de silbato; justo después señal de advertencia de juego pasivo"
+      },
+      {
+        "key": "d",
+        "text": "Toque de silbato para la ejecución del saque de centro; inmediatamente después señal de advertencia de juego pasivo"
+      },
+      {
+        "key": "e",
+        "text": "Sanción progresiva para el oficial responsable de equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "7.27",
+    "text": "¿Cuál(es) de las siguientes afirmaciones con respecto a la utilización de la señal de advertencia de juego pasivo es/son correctas?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "La señal de advertencia siempre debe finalizar cuando un oficial del equipo defensor recibe una sanción progresiva"
+      },
+      {
+        "key": "b",
+        "text": "Cuando la señal de advertencia se muestra por primera vez durante un ataque, los brazos deben bajarse después de 10 segundos aproximadamente"
+      },
+      {
+        "key": "c",
+        "text": "La señal de advertencia debe repetirse como un recordatorio después de la primera interrupción, si es que ha sido mostrada antes de esa interrupción"
+      },
+      {
+        "key": "d",
+        "text": "La señal de advertencia siempre debe finalizar cuando un jugador del equipo defensor recibe una sanción progresiva"
+      },
+      {
+        "key": "e",
+        "text": "Los árbitros deben de mostrar la señal de advertencia siempre cuando un jugador tiene claramente el balón bajo control"
+      }
+    ]
+  },
+  {
+    "code": "7.28",
+    "text": "¿Cuáles de las siguientes afirmaciones referentes al juego pasivo son correctas?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "A un equipo no se le permiten más de 5 segundos para pasar de la fase de construcción hasta la fase final del ataque"
+      },
+      {
+        "key": "b",
+        "text": "Los árbitros deben tener en cuenta los cambios lentos y tardíos después que un saque de centro haya sido ejecutado"
+      },
+      {
+        "key": "c",
+        "text": "Los árbitros deben observar si el equipo trata de incrementar su ritmo o ganar una ventaja espacial durante la fase de construcción"
+      },
+      {
+        "key": "d",
+        "text": "Los árbitros deben controlar la existencia del juego pasivo en cuanto un equipo ha ganado la posesión del balón en su propia mitad del terreno"
+      },
+      {
+        "key": "e",
+        "text": "A un equipo que ha tratado de realizar un contraataque se le debe permitir una sustitución normal cuando se pasa de la fase de contraataque a una fase natural de construcción"
+      }
+    ]
+  },
+  {
+    "code": "7.29",
+    "text": "El equipo BLANCO está en posesión del balón. Los árbitros muestran la señal de advertencia de juego pasivo. Después de un pase, BLANCO 5 realiza un lanzamiento a portería. El lanzamiento es bloqueado por NEGRO 2, y el balón rebotado vuelve a BLANCO 5, que pasa el balón a BLANCO 9. ¿Cuántos pases se han completado?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "3"
+      },
+      {
+        "key": "b",
+        "text": "4"
+      },
+      {
+        "key": "c",
+        "text": "5"
+      }
+    ]
+  },
+  {
+    "code": "7.30",
+    "text": "El equipo BLANCO está en posesión del balón. Los árbitros muestran la señal de advertencia de juego pasivo. BLANCO 9 intenta pasar el balón a BLANCO 2, pero el pase es bloqueado por NEGRO 8, y el balón vuelve a BLANCO 9. BLANCO 9 intenta penetrar en la defensa pero recibe un golpe franco. BLANCO 8 ejecuta el golpe franco pasando el balón a BLANCO 2. ¿Cuántos pases se han completado?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "1"
+      },
+      {
+        "key": "b",
+        "text": "2"
+      },
+      {
+        "key": "c",
+        "text": "3"
+      }
+    ]
+  },
+  {
+    "code": "7.31",
+    "text": "El equipo BLANCO está en posesión del balón. Los árbitros reconocen una tendencia pasiva en el juego de equipo BLANCO. Los árbitros muestran la señal de advertencia de juego pasivo. El equipo NEGRO ve que se muestra la señal de advertencia y se vuelven más agresivos en la defensa, tratando de cometer un golpe franco. Después de 3 pases del equipo BLANCO, el equipo NEGRO comete un golpe franco. ¿decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El equipo BLANCO tiene 4 pases para lanzar a portería"
+      },
+      {
+        "key": "b",
+        "text": "El equipo BLANCO tiene 2 pases para lanzar a portería"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO tiene 1 pase para lanzar a portería"
+      },
+      {
+        "key": "d",
+        "text": "El equipo BLANCO tiene que ejecutar el golpe franco como un lanzamiento directo a portería"
+      }
+    ]
+  },
+  {
+    "code": "7.32",
+    "text": "El equipo BLANCO está en ataque. Los árbitros reconocen una tendencia pasiva en el juego del equipo BLANCO y muestran la señal de advertencia. El equipo BLANCO pasa el balón 4 veces, antes de que BLANCO 9 realice un lanzamiento a portería. El lanzamiento es bloqueado por NEGRO 3, y el balón sobrepasa la línea lateral y se produce un saque de banda para el equipo BLANCO. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "La señal de advertencia ya no es válida"
+      },
+      {
+        "key": "b",
+        "text": "El equipo BLANCO tiene 4 pases para realizar un lanzamiento a portería"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO tiene 2 pases para realizar un lanzamiento a portería"
+      },
+      {
+        "key": "d",
+        "text": "El equipo BLANCO tiene 1 pase para realizar un lanzamiento a portería"
+      }
+    ]
+  },
+  {
+    "code": "7.33",
+    "text": "El equipo BLANCO está en posesión del balón, y debido a una tendencia pasiva en el juego del equipo BLANCO, los árbitros muestran la señal de advertencia. Después de 4 pases BLANCO 5 lanza a portería. NEGRO 3 bloquea el lanzamiento, y el balón vuelve a BLANCO 5. ¿Decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "El equipo BLANCO tiene 1 pase para realizar un lanzamiento a portería"
+      },
+      {
+        "key": "c",
+        "text": "Continúa la señal de advertencia"
+      },
+      {
+        "key": "d",
+        "text": "La advertencia previa ya no es válida"
+      },
+      {
+        "key": "e",
+        "text": "El equipo BLANCO no tiene más pases antes de lanzar a portería"
+      }
+    ]
+  },
+  {
+    "code": "7.34",
+    "text": "El equipo NEGRO está atacando. Los árbitros muestran la señal de advertencia de juego pasivo. NEGRO 7 pasa el balón a NEGRO 11. NEGRO 11 intenta abrirse paso, pero es detenido por BLANCO 3. Los árbitros decretan golpe franco para el equipo NEGRO. NEGRO 11 ejecuta el golpe franco y pasa el balón a NEGRO 2, que intenta lanzar a portería, pero el lanzamiento es bloqueado por el defensor BLANCO 4, y el balón va hacia NEGRO 11. NEGRO 11 lanza a portería, pero BLANCO 5 lo empuja ligeramente, y el portero BLANCO 1 logra tapar el lanzamiento. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO; Nuevo ataque, porque el equipo NEGRO consigue apoderarse del balón tras el lanzamiento a portería"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO; Tras la señal de advertencia de juego pasivo, el equipo NEGRO ha realizado dos pases"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO; Tras la señal de advertencia de juego pasivo, el equipo NEGRO ha realizado tres pases"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO; Tras la señal de advertencia de juego pasivo, el equipo NEGRO ha realizado cuatro pases"
+      }
+    ]
+  },
+  {
+    "code": "7.35",
+    "text": "El marcador es 27-27 a falta de 20 segundos para el final del partido. El equipo BLANCO juega sin portero. Los árbitros muestran la señal de advertencia de pasivo. Después de tres pases, BLANCO 8 pasa el balón a BLANCO 7, que lanza a portería. El balón es bloqueado por el defensa NEGRO 2, y el balón pasa la línea lateral. Poco después de ejecutar el saque de banda, suena el silbato de la mesa, porque el equipo BLANCO ha solicitado un time-out de equipo. ¿Cómo debe reanudarse el partido?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO."
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo BLANCO."
+      },
+      {
+        "key": "c",
+        "text": "El lanzamiento debe ejecutarse como un tiro directo a portería."
+      },
+      {
+        "key": "d",
+        "text": "Además de la posibilidad de ejecutar el lanzamiento como un tiro directo a portería, el lanzador puede pasar el balón a un compañero."
+      }
+    ]
+  },
+  {
+    "code": "7.36",
+    "text": "El equipo BLANCO ataca. Dos pases después de que los árbitros hayan mostrado la señal de advertencia de pasivo, BLANCO 7 lanza a portería. El balón es bloqueado por NEGRO 8. BLANCO 8 recibe el rebote e intenta lanzar a portería. De nuevo, el balón es bloqueado por NEGRO 8. BLANCO 8 recibe el balón tras el bloqueo y se lo pasa a BLANCO 6, que tiene una clara ocasión de gol. BLANCO 6 es derribado por detrás por NEGRO 7, perdiendo totalmente el control de su cuerpo. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 7",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO."
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO."
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para NEGRO 7."
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para NEGRO 7 (tarjeta roja mostrada por los árbitros)."
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo BLANCO."
+      },
+      {
+        "key": "f",
+        "text": "Tiempo muerto."
+      }
+    ]
+  }
+]

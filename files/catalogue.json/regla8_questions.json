@@ -1,0 +1,2209 @@
+[
+  {
+    "code": "8.1",
+    "text": "Durante un contraataque del equipo BLANCO, el jugador NEGRO 7 penetra en el terreno de juego como jugador adicional y sujeta al jugador BLANCO 5, de forma tal que destruye una clara ocasión de gol. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 7"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para NEGRO 7 sin informe escrito (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para NEGRO 7 con informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco"
+      },
+      {
+        "key": "e",
+        "text": "Lanzamiento de 7 metros"
+      }
+    ]
+  },
+  {
+    "code": "8.2",
+    "text": "NEGRO 8, que no está incluido en el acta de partido, llega tarde y se incorpora al terreno de juego directamente desde el vestuario. Evita una clara ocasión de gol al empujar por la espalda a BLANCO 6 que está lanzando en suspensión, de forma que BLANCO 6 pierde el control corporal. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el quipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el quipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación del jugador NEGRO 8 sin informe escrito (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación del jugador NEGRO 8 con informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "e",
+        "text": "Sanción progresiva al “oficial responsable de equipo” del equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "8.3",
+    "text": "En el camino a los vestuarios durante el descanso, el oficial B del equipo BLANCO protesta de forma antideportiva a los árbitros. El oficial A del equipo BLANCO ya había recibido una amonestación durante la primera parte del partido. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para el oficial B del equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para el oficial B del equipo BLANCO (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO empieza el segundo tiempo con un jugador menos"
+      },
+      {
+        "key": "d",
+        "text": "La sanción no es posible. Informe escrito"
+      }
+    ]
+  },
+  {
+    "code": "8.4",
+    "text": "BLANCO 6 ya ha sido sancionado en dos ocasiones con 2’ de exclusión. Ahora BLANCO 6 comete un cambio antirreglamentario. ¿Cuál es la decisión si también tiene una conducta antideportiva extremadamente grave después de que los árbitros le informasen del cambio antirreglamentario?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ al jugador BLANCO 6"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación de BLANCO 6 (Tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación de BLANCO 6 con informe escrito (Tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "El equipo BLANCO se reduce en un jugador en pista durante 2’"
+      },
+      {
+        "key": "e",
+        "text": "El equipo BLANCO se reduce en dos jugadores en pista durante 2’"
+      },
+      {
+        "key": "f",
+        "text": "El equipo BLANCO se reduce en un jugador en pista durante 4’"
+      }
+    ]
+  },
+  {
+    "code": "8.5",
+    "text": "BLANCO 2 está excluido por 2’ pero el oficial A lo envía de nuevo al terreno de juego después de un minuto. Antes del toque de silbato del anotador, BLANCO 2 logra destruir una clara ocasión de gol para el equipo NEGRO. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO y una exclusión adicional para BLANCO 2"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO y una exclusión adicional para BLANCO 2 y reducción del número de jugadores del equipo BLANCO durante el tiempo restante de exclusión de BLANCO 2"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros, descalificación sin informe escrito para BLANCO 2 y reducción del número de jugadores del equipo BLANCO durante el tiempo restante de exclusión de BLANCO 2 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros, descalificación para BLANCO 2 y reducción del número de jugadores del equipo BLANCO durante el tiempo restante de exclusión de BLANCO 2; informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.6",
+    "text": "Durante un ataque del equipo BLANCO, el pívot BLANCO 7, que no está en posesión del balón, bloquea a NEGRO 4 con su tronco. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco a favor del equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Sanción progresiva para BLANCO 7"
+      },
+      {
+        "key": "c",
+        "text": "El juego continúa sin interrupción"
+      }
+    ]
+  },
+  {
+    "code": "8.7",
+    "text": "El extremo BLANCO 4 tiene una clara ocasión de gol. En el último momento, NEGRO 7 intenta quitarle el balón de su mano, pero solamente consigue golpear su antebrazo. El balón se va fuera de la portería. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para NEGRO 7"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para NEGRO 7"
+      },
+      {
+        "key": "e",
+        "text": "Ninguna sanción para NEGRO 7"
+      }
+    ]
+  },
+  {
+    "code": "8.8",
+    "text": "BLANCO 6 está en un contraataque. El portero NEGRO 12 abandona su área de portería para conseguir la posesión del balón, pero choca con BLANCO 6. Sin embargo, un defensor podría haber detenido al atacante mediante métodos legales. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 12"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para NEGRO 12 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para NEGRO 12, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.9",
+    "text": "BLANCO 2 quiere pasar el balón a un compañero de equipo que se encuentra en la otra mitad de la pista, pero este compañero es agarrado por NEGRO 5. NEGRO 5 ya había recibido una amonestación por haber chocado con un contrario que aún no tenía el balón. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para NEGRO 5"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para NEGRO 5 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Informe escrito (tarjetas roja y azul mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.10",
+    "text": "El balón es jugado hacia el pívot BLANCO 9, que se encuentra solo en la línea de 6 metros del equipo NEGRO. NEGRO 2 tira hacia atrás de su brazo del lanzamiento. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para NEGRO 2"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para NEGRO 2 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "e",
+        "text": "Informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.11",
+    "text": "Poco después de que NEGRO 9 haya sido amonestado por empujar en el primer minuto del partido, NEGRO 7 agarra al pivote del equipo BLANCO (no hay clara ocasión de gol). ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Amonestación para NEGRO 7"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para NEGRO 7"
+      }
+    ]
+  },
+  {
+    "code": "8.12",
+    "text": "BLANCO 4 recibe el balón cerca del área de portería contraria, donde se encuentra solo ante el portero. Antes de que BLANCO 4 intente marcar un gol, NEGRO 3 lo derriba haciéndole caer al suelo de forma que pierde el balón. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Amonestación para NEGRO 3"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para NEGRO 3"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para NEGRO 3 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "8.13",
+    "text": "¿Cuándo un jugador debe ser descalificado (tarjeta roja o tarjetas roja y azul mostradas por los árbitros)?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Por una falta que pone en peligro la integridad de un contrario"
+      },
+      {
+        "key": "b",
+        "text": "Por conducta antideportiva extremadamente grave dentro o fuera del terreno de juego"
+      },
+      {
+        "key": "c",
+        "text": "Por conducta antideportiva repetida dentro del terreno de juego"
+      },
+      {
+        "key": "d",
+        "text": "Por un cambio antirreglamentario durante el tiempo de una exclusión (no clara ocasión de gol)"
+      }
+    ]
+  },
+  {
+    "code": "8.14",
+    "text": "Durante un contraataque de BLANCO 5, el oficial C del equipo NEGRO corre desde su banquillo dentro del terreno de juego en dirección a su propia área de portería. BLANCO 5 queda tan confundido que detiene su carrera. En la opinión de los árbitros BLANCO 5 tenía una clara ocasión de gol. El oficial infractor no toca al jugador adversario que tenía el balón. La distancia más corta a BLANCO 5 fue de aproximadamente 10 metros. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para el oficial C del equipo NEGRO (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para el oficial C del equipo NEGRO, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "f",
+        "text": "El equipo NEGRO se reduce en un jugador en pista durante 2’"
+      }
+    ]
+  },
+  {
+    "code": "8.15",
+    "text": "El equipo BLANCO inicia un contraataque. BLANCO 5 quiere hacer un pase en dirección a BLANCO 7 que está solo en la línea del área de portería del equipo NEGRO. Cuando BLANCO 5 pasa el balón, el oficial D del equipo NEGRO entra dentro del terreno de juego y coge el balón. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para el oficial D del equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para el oficial D del equipo NEGRO (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para el oficial D del equipo NEGRO, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "f",
+        "text": "El equipo NEGRO se reduce en un jugador en pista durante 2’"
+      }
+    ]
+  },
+  {
+    "code": "8.16",
+    "text": "¿Cuáles de las siguientes acciones deberían definirse como conducta antideportiva extremadamente grave y por tanto ser sancionadas con una descalificación con un informe escrito (tarjeta roja y tarjeta azul mostradas por los árbitros)?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Defensa reiterada con el pie o la pierna por debajo de la rodilla por parte de un jugador de campo"
+      },
+      {
+        "key": "b",
+        "text": "Un oficial de equipo destruye una clara ocasión de gol"
+      },
+      {
+        "key": "c",
+        "text": "Escupir a otra persona"
+      },
+      {
+        "key": "d",
+        "text": "Repetidos retrasos del juego con el propósito de perder tiempo"
+      }
+    ]
+  },
+  {
+    "code": "8.17",
+    "text": "Cuando los árbitros entran en el pabellón se encuentran con NEGRO 4, que viste el uniforme de jugador pero no está inscrito en el acta de partido. NEGRO 4 grita: “¡No, otra vez estos idiotas! Cuando se han jugado 12 minutos de partido, NEGRO 4 es añadido en el acta como jugador número 14 de su equipo. Los árbitros se dan cuenta. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación sin informe escrito de NEGRO 4 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "b",
+        "text": "El equipo NEGRO se reduce en un jugador durante 2’"
+      },
+      {
+        "key": "c",
+        "text": "El equipo NEGRO continúa sin reducción de jugadores en el terreno de juego"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación de NEGRO 4, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "e",
+        "text": "El equipo NEGRO puede añadir otro jugador y completar el número permitido de 14 jugadores"
+      }
+    ]
+  },
+  {
+    "code": "8.18",
+    "text": "Después de un golpe franco para el equipo BLANCO, el oficial C del equipo NEGRO entra en el terreno de juego y grita: “¡Eso debería ser un golpe franco para nosotros!” Los oficiales del equipo NEGRO no han sido sancionados anteriormente. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El oficial responsable del equipo NEGRO tiene que llevar fuera del pabellón al oficial C"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para el oficial C del equipo NEGRO, el equipo NEGRO se reduce en un jugador en pista durante 2’"
+      },
+      {
+        "key": "c",
+        "text": "Amonestación para el oficial C del equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "8.19",
+    "text": "El jugador BLANCO 3 recibe una amonestación en el terreno de juego por una falta que requiere sanción progresiva. Después de reiniciarse el juego y después de ser sustituido, BLANCO 3 insulta al árbitro desde el banquillo de suplentes. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación sin informe escrito de BLANCO 3 (tarjeta roja mostrada por los árbitros) y el equipo BLANCO se reduce en un jugador en pista durante 2 minutos)"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación de BLANCO 3, informe escrito (tarjetas roja y azul mostradas por los árbitros). El equipo se reduce en un jugador en pista durante 2 minutos)"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para BLANCO 3 y el equipo BLANCO se reduce en un jugador en pista durante 2’"
+      },
+      {
+        "key": "d",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.20",
+    "text": "Durante un contraataque, BLANCO 4, que ya había sido amonestado, sujeta por la camiseta a NEGRO 9. A pesar de ello, NEGRO 9 logra pasar el balón a NEGRO 8 que lanza y marca un gol. Los árbitros quieren sancionar a BLANCO 4 pero éste ya se encuentra sentado en el banquillo de suplentes. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para BLANCO 4; el equipo BLANCO se reduce en un jugador en pista durante 2’"
+      },
+      {
+        "key": "b",
+        "text": "BLANCO 4 no puede jugar en los próximos 2’ pero el equipo permanece completo en el terreno de juego"
+      },
+      {
+        "key": "c",
+        "text": "La sanción ya no es posible"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para BLANCO 4 (tarjeta roja mostrada por los árbitros), y el equipo BLANCO se reduce en un jugador en el terreno de juego durante 2’"
+      }
+    ]
+  },
+  {
+    "code": "8.21",
+    "text": "¿Cuándo un jugador debe ser descalificado (tarjeta roja o tarjetas roja y azul mostradas por los árbitros)?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Por conducta antideportiva grave"
+      },
+      {
+        "key": "b",
+        "text": "Por destruir una clara ocasión de gol al interceptar un lanzamiento o pase usando su pie"
+      },
+      {
+        "key": "c",
+        "text": "Por un cambio antirreglamentario durante el tiempo de una exclusión (no clara ocasión de gol)"
+      },
+      {
+        "key": "d",
+        "text": "Por no dejar el balón en el suelo tras un golpe franco contra su equipo (no en los últimos 30”)"
+      }
+    ]
+  },
+  {
+    "code": "8.22",
+    "text": "El equipo NEGRO está atacando. BLANCO 11 quita el balón a NEGRO 6 mediante una falta que pone en peligro la integridad de NEGRO 6. BLANCO 7 y BLANCO 8 se encontraban entre NEGRO 6 y la portería del equipo BLANCO en el momento de la falta. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para BLANCO 11"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para BLANCO 11 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "8.23",
+    "text": "¿Cuáles de las siguientes infracciones deben ser sancionadas con una descalificación con informe escrito de acuerdo con las Reglas de Juego (tarjeta roja y tarjeta azul mostradas por los árbitros)?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Un oficial entra dentro del terreno de juego por segunda vez sin permiso de los árbitros"
+      },
+      {
+        "key": "b",
+        "text": "Un oficial intenta forzar a su equipo a abandonar el partido"
+      },
+      {
+        "key": "c",
+        "text": "Cuando un lanzamiento de 7 metros golpea al portero en la cabeza, y el portero no está moviendo la cabeza en la dirección del balón"
+      },
+      {
+        "key": "d",
+        "text": "Después de una decisión arbitral, un jugador lanza el balón claramente hacia la grada"
+      },
+      {
+        "key": "e",
+        "text": "Un jugador fuera del terreno de juego escupe a un espectador"
+      }
+    ]
+  },
+  {
+    "code": "8.24",
+    "text": "BLANCO 3 ha recibido una exclusión de 2 minutos por cometer una falta y está sentado en el banquillo. En el momento de ejecutarse un saque de banda cerca del banquillo, BLANCO 3 grita a los árbitros para insultarlos. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2 minutos para BLANCO 3"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para BLANCO 3 (tarjeta roja mostrada por los árbitros), lo cual causa una inmediata reducción de 2 minutos para el equipo BLANCO en el terreno de juego"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO se reduce en un jugador en pista durante 4 minutos"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para BLANCO 3, informe escrito (tarjetas roja y azul mostradas por los árbitros), lo cual causa una inmediata reducción de 2 minutos para el equipo BLANCO en el terreno de juego"
+      }
+    ]
+  },
+  {
+    "code": "8.25",
+    "text": "Enfadado por un error, BLANCO 3 da una bofetada en la cara a un compañero. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Ninguna acción, porque se produce sobre un compañero"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para BLANCO 3"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación sin informe escrito para BLANCO 3 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para BLANCO 3, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.26",
+    "text": "Al entrar en el pabellón de juego los árbitros se encuentran con el jugador NEGRO 4, quien ya viste el uniforme de jugador, que inmediatamente les dice: “¡Seguro, estos idiotas otra vez!”. Los árbitros verifican que NEGRO 4 está incluido en el acta del partido. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 4 al comienzo del partido"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación sin informe escrito para NEGRO 4 (tarjeta roja mostrada por los árbitros), el equipo NEGRO se reduce en un jugador en pista durante 2’ al comienzo del partido"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para NEGRO 4, informe escrito (tarjetas roja y azul mostradas por los árbitros), el equipo NEGRO puede usar 14 jugadores en el partido"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para NEGRO 4, informe escrito (tarjetas roja y azul mostradas por los árbitros), el equipo NEGRO puede usar 14 jugadores, pero se reduce en un jugador en el terreno durante2 ’ al comienzo del partido"
+      }
+    ]
+  },
+  {
+    "code": "8.27",
+    "text": "En el calentamiento antes del partido, el jugador BLANCO 3 y el portero NEGRO 1 chocan por accidente. Los dos jugadores se encaran y NEGRO 1 golpea a BLANCO 3. BLANCO 3 le devuelve el golpe. Ambos jugadores están incluidos en el acta del partido. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación de NEGRO 1, informe escrito (tarjetas roja y azul mostradas por los árbitros) y exclusión de 2’ para BLANCO 3. Los dos equipos pueden usar 14 jugadores en el partido"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación de NEGRO 1 y BLANCO 3, informes escritos (tarjetas roja y azul mostradas por los árbitros). Los equipos pueden usar 14 jugadores en el partido, pero se reducen en un jugador en pista durante los 2 primeros minutos al inicio del partido"
+      },
+      {
+        "key": "c",
+        "text": "Ambos jugadores reciben 2’ de exclusión, los cuáles deben cumplirse al principio del partido"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación de NEGRO 1 y BLANCO 3, informes escritos (tarjetas roja y azul mostradas por los árbitros). Los equipos pueden usar 14 jugadores en el partido"
+      }
+    ]
+  },
+  {
+    "code": "8.28",
+    "text": "BLANCO 9 está realizando un lanzamiento en suspensión. NEGRO 5 agarra por detrás el brazo de lanzamiento de BLANCO 9 y tira de él hacia abajo. NEGRO 10 y NEGRO 11 están entre BLANCO 9 y la portería del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación sin informe escrito para NEGRO 5 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para NEGRO 5"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación de NEGRO 5, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.29",
+    "text": "¿Cuáles de las siguientes infracciones deben ser sancionadas con una descalificación?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Un oficial entra en el terreno de juego sin autorización por segunda vez"
+      },
+      {
+        "key": "b",
+        "text": "Un jugador en posesión del balón es empujado por detrás mientras corre en contraataque. La situación no es especialmente peligrosa"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros a la cara del portero que no está en movimiento en dirección al balón"
+      },
+      {
+        "key": "d",
+        "text": "Después de una decisión arbitral, el jugador lanza el balón a la grada en señal de protesta"
+      },
+      {
+        "key": "e",
+        "text": "El portero abandona el área de portería y consigue la posesión del balón pero choca con un oponente que está corriendo en un contraataque"
+      }
+    ]
+  },
+  {
+    "code": "8.30",
+    "text": "BLANCO 9 recibe una descalificación después de su tercera exclusión de 2’. Se pone su chándal y se sienta en la primera fila de la grada, detrás de la línea de banda frente a la zona de cambios del equipo contrario. Justo enfrente suyo, NEGRO 3 comete una acción particularmente peligrosa contra BLANCO 10. El jugador queda lesionado en el suelo. Entonces, antes de que los árbitros puedan sancionar a NEGRO 3, BLANCO 9 penetra corriendo en el terreno de juego y golpea a NEGRO 3 derribándolo. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para NEGRO 3, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "BLANCO 9 ya no participa más en el partido, no es posible ninguna observación"
+      },
+      {
+        "key": "d",
+        "text": "Informe escrito sobre el comportamiento de BLANCO 9"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación sin informe escrito para NEGRO 3 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "f",
+        "text": "BLANCO 10 debe abandonar el terreno de juego después de recibir atención médica y solo puede regresar al terreno después del tercer ataque de su equipo."
+      }
+    ]
+  },
+  {
+    "code": "8.31",
+    "text": "Una amonestación deberá mostrarse por:",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Infracciones donde la acción está principal o exclusivamente dirigida al cuerpo del oponente."
+      },
+      {
+        "key": "b",
+        "text": "Infracciones cuando los oponentes están ejecutando un lanzamiento."
+      },
+      {
+        "key": "c",
+        "text": "No dejar el balón en el suelo después de una decisión contra su propio equipo."
+      },
+      {
+        "key": "d",
+        "text": "El portero intenta realizar un cambio cuando el oponente está listo para ejecutar un lanzamiento de 7 metros."
+      }
+    ]
+  },
+  {
+    "code": "8.32",
+    "text": "¿Qué debe considerarse como conducta antideportiva?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzar el balón a la cara de un defensor que no está en movimiento en dirección al balón"
+      },
+      {
+        "key": "b",
+        "text": "Actitud pasiva del portero durante la ejecución de un lanzamiento de 7 metros, si es evidente que no trata de detener el lanzamiento."
+      },
+      {
+        "key": "c",
+        "text": "Intentar engañar a los árbitros con acciones simuladas."
+      },
+      {
+        "key": "d",
+        "text": "Bloquear intencionadamente un lanzamiento con el pie o la parte inferior de la pierna."
+      },
+      {
+        "key": "e",
+        "text": "Utilización repetida del área de portería por motivos tácticos"
+      },
+      {
+        "key": "f",
+        "text": "Un acto de revancha después de haber recibido una falta."
+      }
+    ]
+  },
+  {
+    "code": "8.33",
+    "text": "¿En qué situaciones una descalificación debe ir acompañada de informe escrito (tarjetas roja y azul mostradas por los árbitros)?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Agresión en el terreno de juego durante el tiempo de descanso"
+      },
+      {
+        "key": "b",
+        "text": "Una acción particularmente imprudente o peligrosa"
+      },
+      {
+        "key": "c",
+        "text": "Un acto de revancha después de haber sufrido una falta"
+      },
+      {
+        "key": "d",
+        "text": "Una acción maliciosa, que no está relacionada con la situación de juego."
+      }
+    ]
+  },
+  {
+    "code": "8.34",
+    "text": "En un saque de centro a favor del equipo BLANCO, el árbitro ya ha dado la orden y BLANCO 9 está listo para ejecutar el saque de centro. Despues de la señal de silbato, BLANCO 3 cruza la línea centro y es derribado desde atrás por NEGRO 5, de esa manera el pierde totalmente el control del cuerpo. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 5"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación sin informe escrito de NEGRO 5 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Saque de centro para el equipo BLANCO"
+      },
+      {
+        "key": "f",
+        "text": "Descalificación de NEGRO 5, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.35",
+    "text": "El jugador NEGRO 8 recibe una exclusión de 2’ debido a un cambio antirreglamentario. Dos segundos después de que el partido se haya reanudado, realiza un comentario a los árbitros de forma antideportiva desde su posición en el banquillo. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "2’ de exclusión adicionales para NEGRO 8"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación sin informe escrito para NEGRO 8 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "El equipo NEGRO se reduce en dos jugadores en pista durante 1 min 58 segundos y después en un jugador durante dos segundos"
+      },
+      {
+        "key": "d",
+        "text": "El equipo NEGRO se reduce en dos jugadores en pista durante 2 minutos"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "f",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.36",
+    "text": "El portero BLANCO 1 lanza un pase largo a BLANCO 15, que está corriendo solo hacia la portería contraria. El portero NEGRO 12 abandona su área de portería, salta y coge el balón y choca con BLANCO 15 mientras está en el aire. Ambos jugadores caen al suelo y quedan lesionados. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out, exclusión de 2’ para BLANCO 15"
+      },
+      {
+        "key": "b",
+        "text": "Time-out, exclusión de 2’ para NEGRO 12"
+      },
+      {
+        "key": "c",
+        "text": "Time-out, descalificación para NEGRO 12"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "f",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "8.37",
+    "text": "El equipo NEGRO está en posesión del balón. El Delegado interrumpe el partido porque el Oficial A del equipo NEGRO ha lanzado una silla hacia el terreno de juego, como protesta a una decisión arbitral. Anteriormente no había habido sanción alguna a los oficiales del equipo NEGRO. NEGRO 7 tenía una clara ocasión de gol cuando el juego fue interrumpido. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Amonestación para el Oficial A del equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para el Oficial A del equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación sin informe escrito para Oficial A del equipo NEGRO (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "f",
+        "text": "Descalificación para Oficial A del equipo NEGRO, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.38",
+    "text": "El oficial A del equipo BLANCO protesta ruidosamente una decisión de los árbitros contra su equipo y dice: “Sois idiotas”. El oficial C del equipo BLANCO ya había recibido una amonestación 10 minutos antes. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Amonestación al oficial A del equipo BLANCO por conducta antideportiva"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para el oficial A del equipo BLANCO. El equipo BLANCO se reduce en un jugador en la pista durante 2’"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para el oficial A del equipo BLANCO, informe escrito (tarjeta roja y tarjeta azul mostradas por los árbitros). El equipo BLANCO se reduce en un jugador en la pista durante 2’"
+      },
+      {
+        "key": "d",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.39",
+    "text": "El portero BLANCO 1 quiere ejecutar un saque de portería. Por segunda vez, NEGRO 3 entra en el área de portería e intenta impedir que BLANCO 1 ejecute el lanzamiento, sin ningún contacto corporal con él. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo A"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo BLANCO, después de un toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Amonestación para NEGRO 3"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para NEGRO 3"
+      },
+      {
+        "key": "e",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.40",
+    "text": "BLANCO 4 toca el balón que está rodando en el suelo en el área de portería del equipo NEGRO. Después es empujado al suelo por NEGRO 6. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Sanción progresiva para NEGRO 6"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "8.41",
+    "text": "BLANCO 7 acaba de recibir una exclusión de 2’ por conducta antideportiva. Esta es su primera exclusión. 10 segundos después de que el juego ha sido reiniciado, hace evidentes gestos en el banquillo para mostrar, que no está de acuerdo con los árbitros. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación sin informe escrito de BLANCO 7 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para BLANCO 7, BLANCO 7 debe permanecer 4 minutos en el banquillo"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión adicional de 2’ para BLANCO 7, el equipo BLANCO se reducirá en dos jugadores en pista durante 1 minuto y 50 segundos y luego en un jugador en pista durante 10 segundos"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación porque la sanción progresiva en el banquillo está separada de las sanciones en la pista"
+      }
+    ]
+  },
+  {
+    "code": "8.42",
+    "text": "BLANCO 6 es empujado por NEGRO 3 y escupe demostrativamente en el suelo delante de NEGRO 3. ¿Cómo debería sancionarse a BLANCO 6?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Sanción progresiva"
+      },
+      {
+        "key": "b",
+        "text": "Siempre con 2’ de exclusión"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación sin informe escrito (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación, informe escrito (tarjeta roja y tarjeta azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.43",
+    "text": "El portero BLANCO 12 sale corriendo del área de portería hacia el jugador NEGRO 10, quien está corriendo un contraataque. BLANCO 12 consigue ponerse al lado de NEGRO 10 y sujetarle, pero NEGRO 10 es capaz de coger el balón y lanzarlo dentro de la portería vacía. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de centro"
+      },
+      {
+        "key": "b",
+        "text": "Time-out"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para BLANCO 12"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 12"
+      },
+      {
+        "key": "e",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "8.44",
+    "text": "El portero BLANCO 12 ejecuta un saque de portería haciendo un pase largo en dirección a su compañero BLANCO 4, quién está corriendo el contraataque. BLANCO 4 salta, recibe el balón e inmediatamente después de hacerlo, choca con el portero NEGRO 1, quien ha decidido abandonar su área de portería en un intento de detener el contraataque. En el momento del choque, NEGRO 1 está completamente inmóvil delante de la línea de 9 metros. Después del choque, BLANCO 4 pierde su equilibrio corporal y cae al suelo. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Falta en ataque – golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para NEGRO 1"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación sin informe escrito para NEGRO 1 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.45",
+    "text": "¿Cuál de las siguientes infracciones deben ser sancionadas con una descalificación con informe escrito, conforme a las reglas de juego (tarjeta roja y tarjeta azul mostradas por los árbitros)?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Un jugador escupe a un contrario y lo alcanza"
+      },
+      {
+        "key": "b",
+        "text": "Un oficial intenta forzar a su equipo para que abandone el partido"
+      },
+      {
+        "key": "c",
+        "text": "Cuando un lanzamiento de 7 metros golpea al portero en la cabeza, siempre que el portero no esté moviendo su cabeza en la dirección del balón"
+      },
+      {
+        "key": "d",
+        "text": "Después de una decisión arbitral, un jugador lanza el balón claramente hacia las gradas"
+      },
+      {
+        "key": "e",
+        "text": "Un jugador que se encuentra fuera del terreno de juego escupe a un espectador y consigue alcanzarlo"
+      },
+      {
+        "key": "f",
+        "text": "Un jugador golpea intencionadamente a un oponente en el estómago"
+      }
+    ]
+  },
+  {
+    "code": "8.46",
+    "text": "Tiempo de juego 59:26. El jugador NEGRO 10 está ejecutando un contraataque. Cuando recibe el balón de un compañero de equipo, NEGRO 10 choca con el portero BLANCO 1 que ha salido del área de portería pero, antes de caer, puede pasar el balón a NEGRO 7 que lanza a portería vacía pero el balón sale fuera de la portería. Cuando los árbitros señalan time-out, el tiempo de juego es de 59:31. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros"
+      },
+      {
+        "key": "c",
+        "text": "Tarjeta roja para BLANCO 1"
+      },
+      {
+        "key": "d",
+        "text": "Tarjeta azul para BLANCO 1"
+      },
+      {
+        "key": "e",
+        "text": "Saque de portería"
+      }
+    ]
+  },
+  {
+    "code": "8.47",
+    "text": "El equipo BLANCO está en ataque y juega con 7 jugadores de pista. NEGRO 5 intercepta un pase y obtiene la posesión del balón. Inmediatamente intenta lanzar a portería. BLANCO 2 intenta evitar que NEGRO 5 lance a portería tratando de quitarle el balón de la mano. Al hacerlo, golpea a NEGRO 5 en el antebrazo con el resultado de que el balón no entra en la portería. El equipo BLANCO ya recibió 3 amonestaciones durante el partido ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 2"
+      },
+      {
+        "key": "e",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.48",
+    "text": "El equipo BLANCO está en ataque y juega con 7 jugadores de pista. NEGRO 5 intercepta un pase y obtiene la posesión del balón. Inmediatamente intenta lanzar a portería. BLANCO 2 intenta evitar que NEGRO 5 lance a portería tirando de él hacia abajo. El balón no entra en la portería. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 2"
+      },
+      {
+        "key": "e",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.49",
+    "text": "El equipo BLANCO está en ataque y juega con 7 jugadores de pista. BLANCO 4 lanza a portería, pero el portero NEGRO 1 para el balón. NEGRO 1 pasa el balón a NEGRO 9. Justo cuando el portero BLANCO 12 entra en su área de portería, NEGRO 9 intenta lanzar a portería, pero se lo impide una falta de BLANCO 2. El balón sobrepasa la línea exterior de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "8.50",
+    "text": "El equipo BLANCO está en ataque y juega con 7 jugadores de pista. BLANCO 4 lanza a portería, pero el balón es detenido por el portero NEGRO 1, que está de pie con el balón en su área de portería, listo para ejecutar el saque de portería. En ese momento el delegado interrumpe el juego debido a un cambio antirreglamentario, porque el portero BLANCO 1 entró en la pista antes de que BLANCO 7 lo hubiera dejado. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo NEGRO después de toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Time-out"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para BLANCO 1"
+      },
+      {
+        "key": "f",
+        "text": "Exclusión de 2’ para BLANCO 7"
+      }
+    ]
+  },
+  {
+    "code": "8.51",
+    "text": "El equipo BLANCO está en ataque y juega con 7 jugadores de pista. BLANCO 4 lanza a portería, pero el balón es detenido por el portero NEGRO 12. NEGRO 12 pasa el balón a NEGRO 9. NEGRO 9 lanza a portería. El jugador de pista BLANCO 10 entra en su área de portería y logra salvar el balón. El balón pasa la línea exterior de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para BLANCO 10"
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para BLANCO 10"
+      }
+    ]
+  },
+  {
+    "code": "8.52",
+    "text": "El equipo BLANCO está en ataque y juega con 7 jugadores de pista. BLANCO 6 lanza a portería, pero el balón es detenido por el portero NEGRO 1. NEGRO 1 inmediatamente intenta marcar en la portería vacía, pero falla el gol, y el balón pasa la línea exterior de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "El saque de portería puede ser ejecutado por cualquier jugador en la pista del equipo BLANCO para mantener la continuidad en el juego"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO tiene que hacer la sustitución para conseguir un portero en la pista para ejecutar el saque de portería"
+      },
+      {
+        "key": "d",
+        "text": "El time-out es obligatorio"
+      }
+    ]
+  },
+  {
+    "code": "8.53",
+    "text": "El equipo NEGRO está jugando con 7 jugadores de pista. NEGRO 5 realiza un lanzamiento a portería, pero el lanzamiento es detenido por el portero BLANCO 1. BLANCO 1 intenta marcar en la portería vacía. Al mismo tiempo el portero NEGRO 12 hace un cambio antirreglamentario, ya que entra en la pista antes de que NEGRO 7 la haya dejado. El delegado inmediatamente interrumpe el juego con un toque de silbato. Justo después del pitido del delegado, el balón cruza la línea exterior de portería del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 12"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para NEGRO 7"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "f",
+        "text": "El delegado debería haber esperado a que se acabara la clara ocasión de gol antes de interrumpir el juego."
+      }
+    ]
+  },
+  {
+    "code": "8.54",
+    "text": "El equipo NEGRO está jugando con 7 jugadores de pista. NEGRO 6 realiza un lanzamiento a portería, pero el lanzamiento es parado por el portero BLANCO 1. BLANCO 1 intenta marcar en la portería vacía. Al mismo tiempo el portero NEGRO 12 hace un cambio antirreglamentario, ya que entra en la pista antes de que NEGRO 7 la haya dejado. El delegado inmediatamente interrumpe el juego con un toque de silbato. Justo después del pitido del delegado, el balón cruza la línea de gol dentro de la portería del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 12"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para NEGRO 7"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "f",
+        "text": "El delegado debería haber esperado a que se acabara la clara ocasión de gol antes de interrumpir el juego."
+      }
+    ]
+  },
+  {
+    "code": "8.55",
+    "text": "El equipo NEGRO está jugando con 7 jugadores de pista. BLANCO 9 intercepta el balón y marca un gol en la portería vacía. El balón se detiene en el área de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol y saque de centro para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Time-out"
+      },
+      {
+        "key": "c",
+        "text": "Un portero debe entrar en la pista bajo una sustitución correcta para coger el balón en el área de portería"
+      },
+      {
+        "key": "d",
+        "text": "El balón puede ser recogido por cualquier jugador de pista del equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "8.56",
+    "text": "El resultado es 27-27 y faltan 6 segundos para acabar el partido. El equipo BLANCO está en ataque, BLANCO 7 intenta pasar el balón al pivote BLANCO 3. NEGRO 7 intercepta el balón. En ese momento es derribado por BLANCO 3. Un segundo después, la señal final del reloj mural suena para finalizar el partido. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El partido ha terminado"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 3"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para BLANCO 3 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "f",
+        "text": "Descalificación con informe escrito para BLANCO 3 (tarjeta roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.57",
+    "text": "El marcador es 27-27 y faltan 10 segundos para acabar el partido. El equipo BLANCO está en ataque. NEGRO 5 intercepta un pase e inicia un contraataque. Un momento después es atacado por detrás por BLANCO 11, quien de una manera peligrosa lo empuja para que pierda el control del cuerpo. Antes de que el árbitro señale la infracción, suena la señal final del reloj mural. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego ha terminado"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 11"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para BLANCO 11 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "f",
+        "text": "Descalificación con informe escrito para BLANCO 11 (tarjeta roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.58",
+    "text": "NEGRO 10 está en posesión del balón. En el minuto 59:27 ejecuta un lanzamiento en suspensión. BLANCO 2 lo empuja con tanta fuerza en el pecho, que pierde totalmente el control del cuerpo. Cae con el balón al suelo. El árbitro pita y para el reloj en 59:31. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para BLANCO 2"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para BLANCO 2 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "e",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.59",
+    "text": "Faltando 15 segundos para acabar el partido, el equipo NEGRO está en posesión del balón. Los árbitros señalan un golpe franco para el equipo NEGRO en la línea central. Antes de que NEGRO 7 pueda ejecutar el golpe franco, es agarrado por BLANCO 2. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out"
+      },
+      {
+        "key": "b",
+        "text": "Corrección y un nuevo golpe franco para el equipo NEGRO después de toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 2"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para BLANCO 2 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "f",
+        "text": "Descalificación con informe escrito para BLANCO 2 (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.60",
+    "text": "El equipo NEGRO está en ataque. Los árbitros conceden un golpe franco para el equipo NEGRO en la línea de golpe franco faltando 3 segundos para acabar el partido. NEGRO 10 está en la posición correcta y listo para ejecutar el golpe franco directamente a portería, pero el jugador BLANCO 5, que está de pie a 1 metro de NEGRO 10 bloquea el lanzamiento a portería y la señal final suena después. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para BLANCO 5"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para BLANCO 5 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO después de toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "8.61",
+    "text": "El equipo NEGRO está en ataque. Los árbitros conceden un golpe franco para el equipo NEGRO en la línea de golpe franco faltando 3 segundos para acabar el partido. El jugador NEGRO 10 está en la posición correcta para ejecutar el golpe franco directamente a portería, pero antes de que pueda ejecutarlo, BLANCO 5 lo impide, colocándose a una distancia de 1 metro moviendo sus brazos y saltando delante de NEGRO 10, y la señal final suena. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para BLANCO 5"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para BLANCO 5 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "8.62",
+    "text": "Faltando 19 segundos para acabar el partido, BLANCO 2 está tratando de atacar, pero los árbitros señalan pasos contra BLANCO 2. Después del pitido de los árbitros, BLANCO 2 lanza a portería. El balón es agarrado por el portero NEGRO 12, y está listo para comenzar un contraataque. ¿Decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Continua el juego"
+      },
+      {
+        "key": "b",
+        "text": "Time-out"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para BLANCO 2"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para BLANCO 2 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "f",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "8.63",
+    "text": "El marcador está 28:26 a favor del equipo BLANCO. Faltando 25 segundos para acabar el partido, el equipo NEGRO marca un gol. El portero BLANCO 12 patea el balón a propósito para que termine en los asientos de los espectadores. Está claro que patea la pelota con la intención de retrasar el juego, de modo que el lanzamiento no se puede ejecutar de inmediato. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out"
+      },
+      {
+        "key": "b",
+        "text": "Saque de centro para el equipo BLANCO."
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO."
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO."
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para BLANCO 12"
+      },
+      {
+        "key": "f",
+        "text": "Descalificación para BLANCO 12 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "g",
+        "text": "Descalificación para BLANCO 12 con informe escrito (tarjeta roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.64",
+    "text": "El marcador es 25:25 faltando 3 segundos para acabar el partido. El equipo BLANCO está atacando. NEGRO 5 le realiza una falta a BLANCO 2 en la línea de golpe franco. Poco después suena la señal final. Los árbitros decretan un lanzamiento de golpe franco tras la señal final. Antes de que el balón haya abandonado la mano del lanzador, NEGRO 6 avanza y bloquea el balón sin mantener la distancia. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego ha terminado."
+      },
+      {
+        "key": "b",
+        "text": "El golpe franco debe ser repetido."
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO."
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para NEGRO 6"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para NEGRO 6 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.65",
+    "text": "El equipo BLANCO está jugando sin portero y con 7 jugadores de campo. NEGRO 5 intercepta un pase y corre con el balón en dirección a la portería vacía del equipo BLANCO. El portero BLANCO 12 ingresa al terreno de juego mediante una sustitución correcta y corre en la misma dirección que NEGRO 5. Al mismo tiempo que NEGRO 5 lanza a portería, el portero BLANCO 12 empuja a NEGRO 5 desde el costado, de modo que pierde el control del cuerpo y tras su lanzamiento no marca gol ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO."
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO."
+      },
+      {
+        "key": "c",
+        "text": "Time-out"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 12"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para BLANCO 12 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.66",
+    "text": "El marcador está 26:26 faltando 4 segundos para acabar el partido. El equipo BLANCO está atacando. Se produce un golpe franco para BLANCO 4. BLANCO 4 ejecuta inmediatamente el golpe franco. El balón es bloqueado activamente por NEGRO 5, que está demasiado cerca. Al mismo tiempo, suena la señal final. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El golpe franco debe ser retomado."
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO."
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para NEGRO 5"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para NEGRO 5 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.67",
+    "text": "El marcador está 26:26 faltando 4 segundos para acabar el partido. El equipo BLANCO está atacando. NEGRO 5 le provoca un golpe franco a BLANCO 6. NEGRO 5 inmediatamente regresa a la distancia correcta. BLANCO 6 ejecuta el golpe franco, y el balón golpea a NEGRO 5, quien no realiza una acción activa. El balón vuelve a BLANCO 6. Al mismo tiempo, suena la señal final. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Ninguna otra acción. El partido ha terminado"
+      },
+      {
+        "key": "b",
+        "text": "El golpe franco debe ser retomado."
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para NEGRO 5"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para NEGRO 5"
+      }
+    ]
+  },
+  {
+    "code": "8.68",
+    "text": "El marcador está 29:29 faltando 20 segundos para acabar el partido. El portero BLANCO 12 para un lanzamiento a portería, y el balón cruza la línea de fondo. Los árbitros decretan el saque de portería para el equipo BLANCO. BLANCO 12 quiere ejecutar rápidamente el saque de portería. NEGRO 2 corre hacia el área de portería y retrasa la ejecución del lanzamiento. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo BLANCO después de la señal de silbato."
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO después de la señal del silbato."
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO."
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para NEGRO 2"
+      },
+      {
+        "key": "f",
+        "text": "Descalificación para NEGRO 2 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "g",
+        "text": "Descalificación para NEGRO 2 con informe escrito (tarjeta roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.69",
+    "text": "El marcador está 29:29 faltando 20 segundos para acabar el partido. El portero BLANCO 12 para un lanzamiento a portería, y la pelota cruza la línea de fondo. Los árbitros decretan el saque de portería para el equipo BLANCO. BLANCO 12 se prepara para ejecutar el saque de portería. Antes de que el balón haya salido de su mano, suena la señal del cronometrador debido a un cambio antirreglamentario hecho por el equipo NEGRO. NEGRO 3 ha entrado al terreno de juego antes de que NEGRO 11 lo haya abandonado. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo BLANCO después de la señal del silbato."
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO en la zona de cambios del equipo NEGRO."
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO."
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para NEGRO 3"
+      },
+      {
+        "key": "f",
+        "text": "Descalificación para NEGRO 3 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.70",
+    "text": "El marcador está 29:29 faltando 20 segundos para acabar el partido. El portero BLANCO 12 para un lanzamiento a portería, y la pelota cruza la línea de fondo. Los árbitros decretan el saque de portería para el equipo BLANCO. BLANCO 12 ejecuta el lanzamiento con un pase hacia BLANCO 9, que se encuentra justo fuera del área de portería. Antes de que el balón haya cruzado la línea del área de portería, suena la señal de silbato del cronometrador debido a un cambio antirreglamentario hecho por el equipo NEGRO. NEGRO 3 ha entrado en el terreno de juego antes de que NEGRO 11 lo haya abandonado. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out."
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO en la zona de cambios del equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO."
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para NEGRO 3"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para NEGRO 3 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "8.71",
+    "text": "El marcador está 29:29 faltando 10 segundos para acabar el partido. El equipo BLANCO está en un contraataque. NEGRO 10 golpea a BLANCO 9 de una manera peligrosa para su integridad física. Antes de caer, BLANCO 9 le pasa el balón a BLANCO 11. BLANCO 11 lanza a portería, pero el balón es tapado por el portero NEGRO 12. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 10"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para NEGRO 10 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO."
+      },
+      {
+        "key": "f",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.72",
+    "text": "El marcador está 29:29 faltando 10 segundos para acabar el partido. El equipo BLANCO está en un contraataque. NEGRO 10 golpea a BLANCO 9 de una manera peligrosa para su integridad física. Antes de caer, BLANCO 9 le pasa el balón a BLANCO 11. BLANCO 11 marca gol. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 10"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para NEGRO 10 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "f",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.73",
+    "text": "El marcador está 29:29 faltando 10 segundos para acabar partido. El equipo BLANCO está en un contraataque. NEGRO 10 golpea a BLANCO 9 de una manera peligrosa para su integridad física. Antes de caer, BLANCO 9 le pasa el balón a BLANCO 11. BLANCO 11 le pasa el balón a BLANCO 4. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 10"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para NEGRO 10 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "El árbitro pita después del pase de BLANCO 11 a BLANCO 4"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO."
+      },
+      {
+        "key": "e",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO."
+      },
+      {
+        "key": "f",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.74",
+    "text": "BLANCO 7 está en un contraataque. Tiene una clara ocasión de gol y lanza a portería sin obstáculos. El balón golpea en la cabeza al portero NEGRO 12, que cae al suelo. El balón rebotado es recuperado por BLANCO 9, que tiene una clara ocasión de gol en el área de portería del equipo NEGRO. En ese momento, los árbitros pitan para solicitar asistencia médica para el portero NEGRO 12. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para BLANCO 7"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "f",
+        "text": "No hay sanción para BLANCO 7"
+      },
+      {
+        "key": "g",
+        "text": "El portero NEGRO 12 debe abandonar la pista y sólo puede volver a entrar después de que su equipo haya completado 3 ataques"
+      },
+      {
+        "key": "h",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.75",
+    "text": "El equipo BLANCO va ganando por un gol a falta de 7 segundos para el final del partido. El equipo BLANCO está preparado para ejecutar un saque de centro desde el área de saque de centro, y los árbitros dan la señal con el silbato para la ejecución. En lugar de pasar el balón a un compañero, BLANCO 7 deja el balón en el suelo dentro del área de saque de centro y se marcha. Ningún compañero de equipo está interesado en entrar en el área de saque para recoger el balón. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Corregir el saque de centro"
+      },
+      {
+        "key": "b",
+        "text": "Time-out"
+      },
+      {
+        "key": "c",
+        "text": "Los árbitros deben esperar 3 segundos después de dar la señal con el silbato para la ejecución antes de poder conceder un golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 7"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "8.76",
+    "text": "NEGRO 8 penetra en la defensa del equipo BLANCO y no tiene jugadores entre él y el portero BLANCO 1. Cuando está a punto de lanzar a portería, es empujado lateralmente por BLANCO 7. Aunque pierde parcialmente el control de su cuerpo, es capaz de lanzar con fuerza a portería. El balón golpea la cabeza del portero BLANCO 1, cambia de dirección y entra en la portería. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco a favor del equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para NEGRO 8"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 7"
+      },
+      {
+        "key": "e",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "f",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.77",
+    "text": "El pivote NEGRO 8 recibe el balón. Cuando intenta girar hacia la portería, es fuertemente sujetado y derribado por BLANCO 7. Sin embargo, recupera el control total de su cuerpo. Sin ningún jugador entre él y el portero, salta por encima del área de portería. Lanza con fuerza y total control de su cuerpo. El balón golpea al portero BLANCO 1 en la cabeza. La cabeza es el primer punto de contacto con el balón. El balón cambia de dirección y entra en la portería. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para el equipo NEGRO 8"
+      },
+      {
+        "key": "f",
+        "text": "Exclusión de 2’ para el equipo BLANCO 7"
+      },
+      {
+        "key": "g",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "8.78",
+    "text": "El extremo NEGRO 3 tiene una clara ocasión de gol y lanza a portería. El balón toca el lateral de la cabeza del portero BLANCO 1 sin cambiar de dirección. El balón entra en la portería. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 3"
+      },
+      {
+        "key": "b",
+        "text": "Sanción progresiva para BLANCO 1"
+      },
+      {
+        "key": "c",
+        "text": "Gol"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "8.79",
+    "text": "El extremo NEGRO 3 tiene una clara ocasión de gol y lanza a portería. El balón golpea el lateral de la cabeza del portero BLANCO 1 y cambia de dirección. La cabeza es el primer punto de contacto con el balón. El balón entra en la portería. BLANCO 1 cae al suelo, se lleva la mano a la cabeza y necesita claramente asistencia médica. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out"
+      },
+      {
+        "key": "b",
+        "text": "Los árbitros solicitan asistencia médica para BLANCO 1 haciendo las gestoformas 15 y 16"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para NEGRO 3"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para BLANCO 1"
+      },
+      {
+        "key": "e",
+        "text": "Gol"
+      },
+      {
+        "key": "f",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "g",
+        "text": "Después de recibir asistencia médica BLANCO 1 debe abandonar la pista y sólo puede volver a entrar después de que su equipo haya completado 3 ataques"
+      }
+    ]
+  },
+  {
+    "code": "8.80",
+    "text": "A 10 segundos del final del partido, el equipo NEGRO ataca. Con el balón en juego, NEGRO 10 golpea intencionalmente a BLANCO 7 en la cara con el codo. BLANCO 7 cae al suelo y queda lesionado. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación sin informe escrito para NEGRO 10 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación con informe escrito para NEGRO 10 (tarjetas roja y azul mostradas por los árbitros)."
+      },
+      {
+        "key": "c",
+        "text": "Time-out."
+      },
+      {
+        "key": "d",
+        "text": "El juego se reinicia con un tiro libre para el equipo BLANCO."
+      },
+      {
+        "key": "e",
+        "text": "El juego se reinicia con un lanzamiento de 7 metros para el equipo BLANCO."
+      },
+      {
+        "key": "f",
+        "text": "Los árbitros podrán dar permiso a dos personas del equipo BLANCO para entrar a la cancha para ayudar a BLANCO 7."
+      },
+      {
+        "key": "g",
+        "text": "Luego de recibir atención médica en la cancha, BLANCO 7 debe abandonar la cancha y sólo podrá reingresar luego del tercer ataque de su equipo."
+      }
+    ]
+  },
+  {
+    "code": "8.81",
+    "text": "El equipo BLANCO juega con la portería vacía. NEGRO 7 intercepta un pase y dispara a la portería vacía. BLANCO 4 atrapa el balón mientras corre justo fuera del área. No puede detenerse y entra en el área con ambos pies y el balón en las manos. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 8",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Tiro libre para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Sancion progresiva para BLANCO 4"
+      },
+      {
+        "key": "d",
+        "text": "Suspensión de 2 minutos para BLANCO 4"
+      },
+      {
+        "key": "e",
+        "text": "Sin sanción"
+      },
+      {
+        "key": "f",
+        "text": "Time-out."
+      }
+    ]
+  }
+]

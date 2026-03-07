@@ -15,18 +15,12 @@ export class CompetitionsService {
       where: isAdmin
         ? undefined
         : {
-            matches: {
-              some: {
-                referees: { some: { userId: user.id } },
-              },
+            referees: {
+              some: { userId: user.id },
             },
           },
       include: {
-        _count: { select: { matches: true } },
         matches: {
-          where: isAdmin
-            ? undefined
-            : { referees: { some: { userId: user.id } } },
           orderBy: { date: 'desc' },
           take: 1,
           select: { date: true },
@@ -34,12 +28,17 @@ export class CompetitionsService {
       },
     });
 
+    const counts = await this.computeMatchStats(
+      competitions.map((competition) => competition.id),
+    );
+
     return competitions
       .map((c) => ({
         id: c.id,
         name: c.name,
         seasonLabel: c.seasonLabel,
-        matchesCount: c._count.matches, // total matches (admin y general)
+        matchesCount: counts.get(c.id)?.total ?? 0,
+        matchesClosedCount: counts.get(c.id)?.closed ?? 0,
         lastMatchDate: c.matches[0]?.date ?? null, // admin: último match global, general: último match del user
       }))
       .sort((a, b) => {
@@ -66,7 +65,7 @@ export class CompetitionsService {
   }
 
   async findAll() {
-    return this.prisma.competition.findMany({
+    const competitions = await this.prisma.competition.findMany({
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,
@@ -76,6 +75,16 @@ export class CompetitionsService {
         updatedAt: true,
       },
     });
+
+    const counts = await this.computeMatchStats(
+      competitions.map((competition) => competition.id),
+    );
+
+    return competitions.map((competition) => ({
+      ...competition,
+      matchesCount: counts.get(competition.id)?.total ?? 0,
+      matchesClosedCount: counts.get(competition.id)?.closed ?? 0,
+    }));
   }
 
   async findOne(id: string) {
@@ -124,5 +133,97 @@ export class CompetitionsService {
       where: { id },
       select: { id: true },
     });
+  }
+
+  async setReferees(competitionId: string, refereeIds: string[]) {
+    await this.findOne(competitionId);
+
+    return this.prisma.competition.update({
+      where: { id: competitionId },
+      data: {
+        referees: {
+          createMany: {
+            data: refereeIds.map((userId) => ({ userId })),
+            skipDuplicates: true,
+          },
+        },
+      },
+      include: {
+        referees: {
+          include: {
+            user: {
+              select: { id: true, firstName: true, lastName: true, role: true },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async listReferees(competitionId: string) {
+    await this.findOne(competitionId);
+
+    const refs = await this.prisma.competitionReferee.findMany({
+      where: { competitionId },
+      include: {
+        user: {
+          select: { id: true, firstName: true, lastName: true, email: true, role: true },
+        },
+      },
+      orderBy: { user: { lastName: "asc" } },
+    });
+
+    return refs.map((ref) => ref.user);
+  }
+
+  private async computeMatchStats(competitionIds: string[]) {
+    if (!competitionIds.length) return new Map<string, { total: number; closed: number }>();
+
+    const matches = await this.prisma.match.findMany({
+      where: { competitionId: { in: competitionIds } },
+      select: { id: true, competitionId: true },
+    });
+
+    const matchIds = matches.map((match) => match.id);
+    const clipStats = new Map<string, { total: number; closed: number }>();
+
+    if (matchIds.length) {
+      const grouped = await this.prisma.clip.groupBy({
+        by: ['matchId', 'status'],
+        where: { matchId: { in: matchIds } },
+        _count: { _all: true },
+      });
+
+      for (const row of grouped) {
+        const entry = clipStats.get(row.matchId) ?? { total: 0, closed: 0 };
+        entry.total += row._count._all;
+        if (row.status === 'CLOSED') entry.closed += row._count._all;
+        clipStats.set(row.matchId, entry);
+      }
+    }
+
+    const counts = new Map<string, { total: number; closed: number }>();
+
+    for (const match of matches) {
+      const entry = counts.get(match.competitionId) ?? { total: 0, closed: 0 };
+      entry.total += 1;
+      const stats = clipStats.get(match.id);
+      if (stats && stats.total > 0 && stats.closed === stats.total) {
+        entry.closed += 1;
+      }
+      counts.set(match.competitionId, entry);
+    }
+
+    return counts;
+  }
+
+  async removeReferee(competitionId: string, userId: string) {
+    await this.findOne(competitionId);
+
+    await this.prisma.competitionReferee.deleteMany({
+      where: { competitionId, userId },
+    });
+
+    return { ok: true };
   }
 }

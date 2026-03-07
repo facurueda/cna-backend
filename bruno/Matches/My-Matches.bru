@@ -1,0 +1,14 @@
+meta {
+  name: My Matches
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/matches/my
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

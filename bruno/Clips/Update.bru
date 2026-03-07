@@ -1,0 +1,23 @@
+meta {
+  name: Update
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{baseUrl}}/clips/{{clipId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "title": "Contacto en suspensión - 2 minutos (edit)"
+}

@@ -1,0 +1,14 @@
+meta {
+  name: Open (Admin)
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/clips/{{clipId}}/open
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}

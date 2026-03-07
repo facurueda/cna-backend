@@ -1,0 +1,14 @@
+meta {
+  name: Open (Admin)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/matches/{{matchId}}/open
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}

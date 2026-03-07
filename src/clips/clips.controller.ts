@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ClipsService } from './clips.service';
-import { CognitoAuthGuard } from '../auth/guards/cognito-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { UpdateClipDto } from './dto/update-clip.dto';
 import { Roles } from '../auth/roles/roles.decorator';
@@ -22,11 +22,11 @@ import { CreateClipBatchDto } from './dto/create-clip-batch.dto';
 type AuthUserPayload = { id: string; role: Role };
 
 @Controller('clips')
-@UseGuards(CognitoAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class ClipsController {
   constructor(private readonly clipsService: ClipsService) {}
 
-  @UseGuards(CognitoAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('my')
   myClips(
     @AuthUser() user: AuthUserPayload,
@@ -41,8 +41,9 @@ export class ClipsController {
   }
 
   @Get()
-  list(@Query('matchId') matchId: string, @AuthUser() user: any) {
-    return this.clipsService.listByMatch(matchId, user);
+  list(@Query('matchId') matchId: string | undefined, @AuthUser() user: any) {
+    const normalizedMatchId = matchId?.trim();
+    return this.clipsService.list(normalizedMatchId, user);
   }
 
   @Post('batch')

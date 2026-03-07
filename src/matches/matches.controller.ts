@@ -14,7 +14,7 @@ import { CreateMatchDto } from './dto/create-match.dto';
 import { UpdateMatchDto } from './dto/update-match.dto';
 import { Roles } from '../auth/roles/roles.decorator';
 import { Role } from '@prisma/client';
-import { CognitoAuthGuard } from '../auth/guards/cognito-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles/roles.guard';
 import { AuthUser } from 'src/auth/decorators/auth-user.decorator';
 
@@ -26,7 +26,7 @@ type AuthUserPayload = {
   lastName: string;
 };
 
-@UseGuards(CognitoAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('matches')
 export class MatchesController {
   constructor(private readonly matchesService: MatchesService) {}
@@ -38,10 +38,10 @@ export class MatchesController {
     return this.matchesService.create(dto);
   }
 
-  @UseGuards(CognitoAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('my')
   myMatches(@AuthUser() user: AuthUserPayload) {
-    return this.matchesService.findMyMatches(user.id);
+    return this.matchesService.findMyMatches(user);
   }
 
   // Listado por competencia (para user/admin)

@@ -1,0 +1,26 @@
+meta {
+  name: Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/clips
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "matchId": "{{matchId}}",
+  "title": "Contacto en suspensión - 2 minutos",
+  "videoUrl": "https://example.com/dummy.mp4",
+  "refereeIds": ["{{refereeId1}}", "{{refereeId2}}"]
+}

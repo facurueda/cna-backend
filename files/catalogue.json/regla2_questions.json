@@ -1,0 +1,1542 @@
+[
+  {
+    "code": "2.1",
+    "text": "El portero BLANCO 1 rechaza un lanzamiento y el balón sale por la línea de gol fuera de la portería justo antes de la señal final automática del reloj público. Los árbitros se dan cuenta de que el partido ha terminado cinco minutos antes de tiempo. Como los jugadores aún están en la pista, se reanuda el juego con:",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Sin toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Después de toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "2.2",
+    "text": "Después de sonar la señal automática de final del primer tiempo, el árbitro se da cuenta inmediatamente que la primera parte ha finalizado un minuto antes. ¿Decisión correcta ?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Prolongar un minuto el segundo tiempo"
+      },
+      {
+        "key": "b",
+        "text": "Se pierde ese minuto y no puede ser recuperado"
+      },
+      {
+        "key": "c",
+        "text": "Después del primer tiempo, primero se juega un minuto en las mismas posiciones que en el primer tiempo, luego se cambian de campo y comienza el segundo tiempo"
+      },
+      {
+        "key": "d",
+        "text": "Retener a los jugadores en el terreno de juego y jugar el minuto restante"
+      }
+    ]
+  },
+  {
+    "code": "2.3",
+    "text": "BLANCO 11 efectúa un lanzamiento a portería. El portero NEGRO 1 recepciona el balón. Justo en ese momento suena la señal automática de final de partido. Los árbitros señalan al cronometrador que todavía quedan 30 segundos del segundo tiempo del partido. Todos los jugadores están todavía en el terreno de juego. ¿Cómo debe reanudarse el partido?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Después del toque de silbato"
+      },
+      {
+        "key": "e",
+        "text": "Sin toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "2.4",
+    "text": "El equipo BLANCO va a ejecutar un golpe franco después de la señal de final de partido. Con este fin, primero BLANCO 3 y después BLANCO 4, abandonan el terreno de juego y son sustituidos en primer lugar por BLANCO 5 y posteriormente por BLANCO 6, quienes entran en el terreno de juego. ¿Cuál(es) de las siguientes afirmación(es) es/son correcta(s)?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El cronometrador hace sonar el silbato e indica que se ha producido un cambio antirreglamentario del equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para BLANCO 4 por cambio antirreglamentario"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para BLANCO 6 por cambio antirreglamentario"
+      },
+      {
+        "key": "d",
+        "text": "No hay ninguna razón para que el cronometrador haga sonar el silbato"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "f",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "2.5",
+    "text": "El equipo NEGRO ejecuta un golpe franco como un lanzamiento directo a portería, poco antes del final del partido. La señal final automática suena justo antes de que el balón entre en la portería. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Final de partido"
+      },
+      {
+        "key": "b",
+        "text": "Repetición del golpe franco para el equipo NEGRO sin toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Repetición del golpe franco para el equipo NEGRO con toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "2.6",
+    "text": "Justo antes del final del partido, NEGRO 2 recibe el balón junto a la línea del área de portería del equipo BLANCO y tiene una clara ocasión de gol. Intenta marcar gol pero se lo impiden haciéndole una falta. Antes que el balón abandone la mano de NEGRO 2, suena la señal de final de partido. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Final del partido"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Final del partido e informe escrito"
+      }
+    ]
+  },
+  {
+    "code": "2.7",
+    "text": "Poco antes de finalizar el primer tiempo, el equipo BLANCO tiene que ejecutar un lanzamiento de 7 metros. El lanzamiento realizado por BLANCO 9 golpea en el larguero, luego en la espalda del portero, que está aproximadamente a 3 metros por delante de su portería, y luego entra en la portería. La señal del cronometrador suena justo cuando el balón iba desde el larguero a la espalda del portero. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol"
+      },
+      {
+        "key": "b",
+        "text": "Repetición del lanzamiento de 7 metros"
+      },
+      {
+        "key": "c",
+        "text": "Final del primer tiempo; ninguna otra decisión"
+      }
+    ]
+  },
+  {
+    "code": "2.8",
+    "text": "Después de finalizar el tiempo de juego, todavía tiene que ejecutarse un lanzamiento de 7 metros. Los árbitros esperan por el resultado inmediato del lanzamiento. ¿Qué árbitro debería entonces dar por finalizado el partido?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El árbitro designado en primer lugar"
+      },
+      {
+        "key": "b",
+        "text": "Uno de los dos árbitros"
+      },
+      {
+        "key": "c",
+        "text": "El árbitro de centro"
+      },
+      {
+        "key": "d",
+        "text": "El árbitro de portería"
+      }
+    ]
+  },
+  {
+    "code": "2.9",
+    "text": "¿Cuándo comienza el partido?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Cuando el árbitro designado en primer lugar hace sonar su silbato"
+      },
+      {
+        "key": "b",
+        "text": "Cuando el balón abandona la mano del lanzador"
+      },
+      {
+        "key": "c",
+        "text": "Cuando el cronometrador pone en marcha el cronómetro o el reloj oficial"
+      },
+      {
+        "key": "d",
+        "text": "Después del toque de silbato del árbitro central para efectuar el saque de centro"
+      }
+    ]
+  },
+  {
+    "code": "2.10",
+    "text": "Para un desempate por medio de lanzamientos de 7 metros, ¿quién decide qué portería debe usarse?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El equipo que gana el sorteo"
+      },
+      {
+        "key": "b",
+        "text": "El equipo que pierde el sorteo"
+      },
+      {
+        "key": "c",
+        "text": "Los árbitros"
+      },
+      {
+        "key": "d",
+        "text": "El árbitro designado en primer lugar"
+      }
+    ]
+  },
+  {
+    "code": "2.11",
+    "text": "Un golpe franco para el equipo NEGRO debe ejecutarse después de la señal de final de partido. Antes de su ejecución, BLANCO 8 y BLANCO 9 abandonan el terreno de juego al mismo tiempo. Son sustituidos primero por BLANCO 10 e inmediatamente después por BLANCO 11. ¿Cuál(es) de las siguientes respuestas es/son correcta(s)?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El cronometrador pita e indica a los árbitros que ha habido un cambio antirreglamentario del equipo BLANCO."
+      },
+      {
+        "key": "b",
+        "text": "Exclusión para BLANCO 10 por cambio antirreglamentario"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión para BLANCO 11 por cambio antirreglamentario"
+      },
+      {
+        "key": "d",
+        "text": "El cronometrador no pita dado que no hay ninguna infracción"
+      },
+      {
+        "key": "e",
+        "text": "BLANCO 11 debe volver a la zona de cambios; o BLANCO 8 o BLANCO 9 deben regresar al terreno de juego"
+      }
+    ]
+  },
+  {
+    "code": "2.12",
+    "text": "Justo antes de finalizar el primer tiempo, BLANCO 7 agrede a NEGRO 5 destruyendo así una clara ocasión de gol. La señal automática suena antes de que el árbitro tenga tiempo de pitar. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "La primera parte ha finalizado; no hay sanción progresiva para BLANCO 7"
+      },
+      {
+        "key": "b",
+        "text": "La primera parte ha finalizado; no es posible señalar ni golpe franco ni lanzamiento de 7 metros"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para BLANCO 7, informe escrito (la tarjeta roja y la tarjeta azul deben de ser mostradas por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para BLANCO 7 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "2.13",
+    "text": "¿Hasta cuándo puede un árbitro anular un gol que ya ha sido concedido?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Hasta el toque de silbato para el saque de centro"
+      },
+      {
+        "key": "b",
+        "text": "Hasta el toque de silbato para el final de partido"
+      },
+      {
+        "key": "c",
+        "text": "Debe anularse si fue conseguido después de que el cronometrador interrumpiera el juego, aunque el saque de centro se hubiera ejecutado antes de la interrupción"
+      },
+      {
+        "key": "d",
+        "text": "No se puede anular nunca"
+      }
+    ]
+  },
+  {
+    "code": "2.14",
+    "text": "Los árbitros acaban de señalar un saque de banda para el equipo BLANCO. En ese momento, el oficial responsable del equipo BLANCO solicita un Tiempo Muerto de Equipo. ¿Cuál(es) de las siguientes situación(es) es/son correcta(s)?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El tiempo muerto de equipo no es posible, dado que el balón no está en juego"
+      },
+      {
+        "key": "b",
+        "text": "El cronometrador hace sonar la señal, detiene el crono, y realiza la gestoforma Nº 15."
+      },
+      {
+        "key": "c",
+        "text": "Los árbitros confirman el Tiempo Muerto de Equipo para el equipo BLANCO."
+      },
+      {
+        "key": "d",
+        "text": "El anotador anota el Tiempo Muerto de Equipo en el acta del partido."
+      }
+    ]
+  },
+  {
+    "code": "2.15",
+    "text": "¿En qué situaciones es obligatorio un Time-out?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’"
+      },
+      {
+        "key": "c",
+        "text": "Influencias externas"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación"
+      }
+    ]
+  },
+  {
+    "code": "2.16",
+    "text": "BLANCO 9 lanza a portería. El portero NEGRO 12 recoge el balón. En ese instante, el cronometrador señala el final del partido. Los árbitros indican al cronometrador que todavía faltan 30 segundos del segundo tiempo. Todos los jugadores están en el terreno de juego. ¿Cómo debe reanudarse el encuentro?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Es necesario toque de silbato para reanudar el juego"
+      }
+    ]
+  },
+  {
+    "code": "2.17",
+    "text": "Después de finalizar el tiempo habitual de juego con el resultado 20-20, el partido debe continuar hasta determinar un ganador. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "1 minuto de descanso antes de que la prórroga comience"
+      },
+      {
+        "key": "b",
+        "text": "5 minutos de descanso antes de que la prórroga comience"
+      },
+      {
+        "key": "c",
+        "text": "1 minuto de descanso al final de la primera parte de la prórroga"
+      },
+      {
+        "key": "d",
+        "text": "5 minutos de descanso al final de la primera parte de la prórroga"
+      }
+    ]
+  },
+  {
+    "code": "2.18",
+    "text": "¿En cuáles de las siguientes situaciones es obligatorio un Time-out?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco"
+      },
+      {
+        "key": "c",
+        "text": "Juego pasivo"
+      },
+      {
+        "key": "d",
+        "text": "Cambio antirreglamentario"
+      },
+      {
+        "key": "e",
+        "text": "Amonestación"
+      },
+      {
+        "key": "f",
+        "text": "Saque de banda"
+      }
+    ]
+  },
+  {
+    "code": "2.19",
+    "text": "¿A quién no se le permite participar en los lanzamientos de 7 metros cuando el partido está todavía empatado después de las prórrogas?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Un jugador que insulta a los árbitros justo después de que la prórroga haya finalizado"
+      },
+      {
+        "key": "b",
+        "text": "Los porteros"
+      },
+      {
+        "key": "c",
+        "text": "Un jugador cuya exclusión de 2’ no ha finalizado al final de la prórroga"
+      },
+      {
+        "key": "d",
+        "text": "Un jugador descalificado"
+      },
+      {
+        "key": "e",
+        "text": "Un jugador que ha recibido atención médica en la pista y aun no se han producido tres ataques de su equipo"
+      }
+    ]
+  },
+  {
+    "code": "2.20",
+    "text": "El portero BLANCO 12 despeja un lanzamiento 5 segundos antes de finalizar el partido. El balón toca el techo sobre el área de portería. La señal automática de final de partido suena inmediatamente antes de que el saque de banda sea ejecutado por el equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de banda para el equipo NEGRO después de un toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Time–out"
+      },
+      {
+        "key": "c",
+        "text": "Final del partido"
+      },
+      {
+        "key": "d",
+        "text": "Esperar al resultado del saque de banda; después el partido termina"
+      }
+    ]
+  },
+  {
+    "code": "2.21",
+    "text": "NEGRO 8 ya ha recibido una amonestación. Durante un Tiempo Muerto de Equipo, NEGRO 8 está sentado en el banquillo de suplentes y se dirige a los árbitros de manera antideportiva. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación para NEGRO 8 (los árbitros muestran la tarjeta roja)"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para NEGRO 8"
+      },
+      {
+        "key": "c",
+        "text": "Amonestación para NEGRO 8"
+      },
+      {
+        "key": "d",
+        "text": "Ninguna acción es posible"
+      },
+      {
+        "key": "e",
+        "text": "El equipo NEGRO se verá reducido en un jugador en pista durante 2 minutos desde el reinicio del partido después del Tiempo Muerto de Equipo"
+      }
+    ]
+  },
+  {
+    "code": "2.22",
+    "text": "¿Quién está autorizado a participar en un desempate por medio de lanzamientos de 7 metros?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Todos los jugadores que están incluidos en el acta del partido"
+      },
+      {
+        "key": "b",
+        "text": "Los jugadores que no han recibido una descalificación"
+      },
+      {
+        "key": "c",
+        "text": "Los jugadores que no estén cumpliendo una exclusión de 2’ cuando el tiempo de prórroga haya expirado"
+      },
+      {
+        "key": "d",
+        "text": "Los jugadores que han recibido autorización de los árbitros"
+      }
+    ]
+  },
+  {
+    "code": "2.23",
+    "text": "Un golpe franco directo debe ser ejecutado después de la señal automática de final del partido. NEGRO 9 ocupa la posición correcta y lanza a la portería del equipo BLANCO. Cuando el balón sale de la mano de NEGRO 9, hay un pitido desde la mesa del cronometrador. El balón entra en la portería, sin que el portero BLANCO 1 tenga opción. El cronometrador informa a los árbitros de que BLANCO 7, que estaba dentro del terreno de juego en defensa durante la ejecución del golpe franco, había entrado en el terreno para sustituir a BLANCO 6 justo antes de que el golpe franco fuera ejecutado. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para BLANCO 7"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación de BLANCO 7 (los árbitros muestran la tarjeta roja)"
+      },
+      {
+        "key": "c",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Repetición del golpe franco para el equipo NEGRO después del toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "2.24",
+    "text": "El partido está todavía empatado después de las prórrogas y las normas exigen una decisión por medio de lanzamientos de 7 metros. BLANCO 7 recibió una exclusión de 2’ en el minuto 9 de la segunda prórroga. Él es designado por el “oficial responsable de equipo” para participar en los lanzamientos de 7 metros. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "BLANCO 7 está autorizado a participar"
+      },
+      {
+        "key": "b",
+        "text": "BLANCO 7 no está autorizado a participar"
+      }
+    ]
+  },
+  {
+    "code": "2.25",
+    "text": "¿Cuándo es obligatorio un Time-out?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Cuando un oficial de equipo recibe una exclusión de 2’"
+      },
+      {
+        "key": "b",
+        "text": "Cuando un jugador recibe su tercera exclusión de 2’"
+      },
+      {
+        "key": "c",
+        "text": "Después de una conducta antideportiva repetida"
+      },
+      {
+        "key": "d",
+        "text": "Cuando los árbitros necesitan consultarse entre ellos para tomar una decisión"
+      },
+      {
+        "key": "e",
+        "text": "Después de una conducta antideportiva grave"
+      },
+      {
+        "key": "f",
+        "text": "Después de mostrar una tarjeta amarilla a un oficial de equipo"
+      }
+    ]
+  },
+  {
+    "code": "2.26",
+    "text": "Justo antes del final del primer tiempo, BLANCO 7 comete una agresión sobre NEGRO 5 quien pierde una clara ocasión de gol. La señal final automática suena antes de que los árbitros tengan tiempo para pitar. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "La primera parte ha terminado; ninguna otra acción"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para BLANCO 7 sin informe escrito (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para BLANCO 7, informe escrito (tarjeta roja y tarjeta azul mostradas por los árbitros)"
+      },
+      {
+        "key": "f",
+        "text": "El equipo BLANCO será reducido en un jugador en pista durante 2 minutos desde el inicio de la segunda parte"
+      }
+    ]
+  },
+  {
+    "code": "2.27",
+    "text": "Un golpe franco debe ser ejecutado después de la señal de final de primer tiempo. ¿Qué jugadores pueden ser sustituidos?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Todos los jugadores de ambos equipos"
+      },
+      {
+        "key": "b",
+        "text": "Sólo jugadores del equipo defensor"
+      },
+      {
+        "key": "c",
+        "text": "Sólo jugadores del equipo atacante"
+      },
+      {
+        "key": "d",
+        "text": "Sólo un jugador del equipo atacante"
+      },
+      {
+        "key": "e",
+        "text": "Un jugador del equipo defensor por un portero, si el equipo jugaba en el momento de la señal de final jugaba sin portero"
+      }
+    ]
+  },
+  {
+    "code": "2.28",
+    "text": "¿Qué posiciones deben tener los jugadores durante la ejecución de un golpe franco después de la señal de final de partido?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Todos los compañeros del lanzador deben estar fuera de la línea de golpe franco del contrario"
+      },
+      {
+        "key": "b",
+        "text": "Todos los compañeros del lanzador deben estar en su propia mitad del terreno"
+      },
+      {
+        "key": "c",
+        "text": "Los contrarios deben estar a 3 metros del lanzador o junto a su propia línea de área de portería"
+      },
+      {
+        "key": "d",
+        "text": "Todos los compañeros del lanzador deben estar al menos a 3 menos de éste"
+      },
+      {
+        "key": "e",
+        "text": "Todos los compañeros del lanzador podrán permanecer junto a éste en la línea de golpe franco de los contrarios"
+      }
+    ]
+  },
+  {
+    "code": "2.29",
+    "text": "El atacante BLANCO 7 pasa el balón a BLANCO 8. En ese momento el cronometrador pita para un Tiempo Muerto del equipo BLANCO. Los árbitros y jugadores no oyen la señal y BLANCO 8 pasa el balón a BLANCO 10 que tiene una clara ocasión de gol. BLANCO 10 es ilegalmente parado por NEGRO 5. Los árbitros conceden un lanzamiento de 7 metros para el equipo BLANCO y una exclusión de 2’ para NEGRO 5. En este momento los árbitros se dan cuenta de que el cronometrador había pitado debido a la solicitud del Tiempo Muerto de Equipo. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para NEGRO 5"
+      },
+      {
+        "key": "c",
+        "text": "Tiempo Muerto de Equipo para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Toque de silbato para reanudar"
+      },
+      {
+        "key": "f",
+        "text": "Reanudación con golpe franco para el equipo BLANCO en la posición donde se encontraba BLANCO 7 en el momento del toque de silbato del cronometrador"
+      }
+    ]
+  },
+  {
+    "code": "2.30",
+    "text": "La señal automática que indica el final de la primera parte ha sonado 1 minuto demasiado pronto. En el momento del pitido, ningún equipo estaba en posesión del balón y no hubo ninguna infracción (el balón estaba en el suelo, sobre el área de juego). Ambos equipos están todavía en el terreno de juego. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El minuto no se juega"
+      },
+      {
+        "key": "b",
+        "text": "El minuto se juega antes del descanso"
+      },
+      {
+        "key": "c",
+        "text": "El minuto se juega después del descanso, antes del inicio de la segunda parte"
+      },
+      {
+        "key": "d",
+        "text": "El minuto es añadido a la segunda parte"
+      },
+      {
+        "key": "e",
+        "text": "Se decide a través de un sorteo cuál es el equipo que continua en posesión del balón cuando se juegue el minuto"
+      },
+      {
+        "key": "f",
+        "text": "El último equipo que estaba en posesión del balón es el que continua con la posesión cuando el juego se reanude"
+      }
+    ]
+  },
+  {
+    "code": "2.31",
+    "text": "La primera parte del partido ha finalizado 1 minuto demasiado pronto. No ha habido ninguna infracción y el balón estaba en el aire sobre el área de portería. El portero coge el balón después de la señal final. Ambos equipos están todavía en el terreno de juego. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El minuto no se juega"
+      },
+      {
+        "key": "b",
+        "text": "El minuto se juega antes del descanso"
+      },
+      {
+        "key": "c",
+        "text": "El minuto se juega después del descanso, antes del inicio de la segunda parte"
+      },
+      {
+        "key": "d",
+        "text": "El minuto es añadido a la segunda parte"
+      },
+      {
+        "key": "e",
+        "text": "El equipo que estaba en posesión del balón es el que continúa con la posesión cuando el juego se reanude"
+      },
+      {
+        "key": "f",
+        "text": "El juego se reanuda por medio de un saque de portería"
+      }
+    ]
+  },
+  {
+    "code": "2.32",
+    "text": "La primera parte del partido ha finalizado 1 minuto demasiado pronto. No ha habido ninguna infracción y el balón se encuentra en el aire sobre el área de portería. Después de la señal final, el balón se va por la línea exterior de portería. Ambos equipos están todavía en el terreno de juego. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El minuto no se juega"
+      },
+      {
+        "key": "b",
+        "text": "El minuto se juega antes del descanso"
+      },
+      {
+        "key": "c",
+        "text": "El minuto se juega después del descanso, antes del inicio de la segunda parte"
+      },
+      {
+        "key": "d",
+        "text": "El minuto se añade a la segunda parte"
+      },
+      {
+        "key": "e",
+        "text": "El equipo que estaba en posesión del balón es el que continúa con la posesión cuando el juego se reanude"
+      },
+      {
+        "key": "f",
+        "text": "El juego se reanuda por medio con un saque de portería"
+      }
+    ]
+  },
+  {
+    "code": "2.33",
+    "text": "El equipo BLANCO ha marcado un gol y el equipo NEGRO quiere realizar un saque de centro rápido. Por eso NEGRO 5 bota rápidamente el balón en dirección a la línea de centro. Mientras hace esto, BLANCO 3 pasa corriendo y con su mano abierta le quita el balón a NEGRO 5. Por este motivo, el balón golpea en el pie de NEGRO 5 y sale rodando por encima de la línea de centro hasta el terreno de juego de los oponentes. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out"
+      },
+      {
+        "key": "b",
+        "text": "Saque de centro para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Sanción progresiva para BLANCO 3"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para BLANCO 3"
+      }
+    ]
+  },
+  {
+    "code": "2.34",
+    "text": "¿En qué situaciones NO es obligatorio un Time-out?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El balón se va lejos del terreno de juego"
+      },
+      {
+        "key": "b",
+        "text": "El cronometrador hace sonar su silbato"
+      },
+      {
+        "key": "c",
+        "text": "Un jugador parece estar lesionado"
+      },
+      {
+        "key": "d",
+        "text": "Cuando los árbitros indican diferentes direcciones al tomar una decisión"
+      },
+      {
+        "key": "e",
+        "text": "Un jugador de campo es sustituido por un portero para ejecutar un saque de portería"
+      }
+    ]
+  },
+  {
+    "code": "2.35",
+    "text": "¿Quién puede solicitar un Tiempo Muerto de Equipo?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Uno de los oficiales de equipo"
+      },
+      {
+        "key": "b",
+        "text": "Un jugador"
+      },
+      {
+        "key": "c",
+        "text": "Solamente el “oficial responsable de equipo”"
+      },
+      {
+        "key": "d",
+        "text": "El capitán del equipo"
+      }
+    ]
+  },
+  {
+    "code": "2.36",
+    "text": "¿Cuáles de las siguientes afirmaciones sobre el Tiempo Muerto de Equipo son correctas?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El Tiempo Muerto de Equipo sólo puede ser solicitado por el “oficial responsable del equipo”"
+      },
+      {
+        "key": "b",
+        "text": "Si un Tiempo Muerto de Equipo es solicitado cuando el equipo contrario está en posesión del balón, el cronometrador debe devolver la “tarjeta verde” al oficial"
+      },
+      {
+        "key": "c",
+        "text": "El periodo de 1 minuto para el Tiempo Muerto de Equipo comienza con el toque de silbato del cronometrador"
+      },
+      {
+        "key": "d",
+        "text": "Las infracciones a las reglas durante un Tiempo Muerto de Equipo tienen las mismas consecuencias que durante el tiempo de juego"
+      },
+      {
+        "key": "e",
+        "text": "Después de un Tiempo Muerto de Equipo, el partido siempre se reanuda con un lanzamiento a favor del equipo que lo solicitó"
+      }
+    ]
+  },
+  {
+    "code": "2.37",
+    "text": "El equipo BLANCO tiene la posesión del balón. Un oficial del equipo NEGRO solicita un Tiempo Muerto de Equipo colocando la “tarjeta verde” sobre la mesa enfrente del cronometrador. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "La “tarjeta verde” es mostrada en alto sobre la mesa"
+      },
+      {
+        "key": "b",
+        "text": "El cronometrador pita tan pronto como el equipo NEGRO gane la posesión del balón"
+      },
+      {
+        "key": "c",
+        "text": "El cronometrador devuelve la “tarjeta verde” al oficial"
+      },
+      {
+        "key": "d",
+        "text": "Sólo el “oficial responsable de equipo” puede solicitar el Tiempo Muerto de Equipo"
+      }
+    ]
+  },
+  {
+    "code": "2.38",
+    "text": "NEGRO 3 lanza a portería y el balón se queda parado en el suelo dentro del área de portería sin que haya sido tocado por ningún otro jugador. En este momento, el “oficial responsable de equipo” del equipo NEGRO solicita un Tiempo Muerto de Equipo. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El cronometrador pita, detiene el reloj al mismo tiempo e indica a los árbitros el Tiempo Muerto de Equipo para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "El cronometrador devuelve la tarjeta verde al “oficial responsable de equipo” del equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "El partido se reanuda con un golpe franco a favor del equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "2.39",
+    "text": "El portero BLANCO 1 pasa el balón a BLANCO 8, que está solo ante el portero NEGRO 12 junto al área de portería del equipo NEGRO. Justo antes de que el balón le llegue a BLANCO 8, el cronometrador hace sonar el silbato, ya que el entrenador del equipo BLANCO ha solicitado un Tiempo Muerto de Equipo en este desafortunado momento. ¿Cómo debería continuar el partido?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO fuera del área de portería del equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO junto a la zona de cambios del equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO junto a la línea de golpe franco del equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "2.40",
+    "text": "BLANCO 4 bloquea un lanzamiento de NEGRO 11. El balón toca el techo sobre el área de portería. Inmediatamente después, el oficial A del equipo NEGRO pone la “tarjeta verde” en la mesa frente al cronometrador. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El equipo NEGRO inmediatamente recibe el Tiempo Muerto de Equipo"
+      },
+      {
+        "key": "b",
+        "text": "El equipo NEGRO no recibe el Tiempo Muerto de Equipo, porque el balón ha tocado el techo"
+      },
+      {
+        "key": "c",
+        "text": "El equipo NEGRO no recibe el Tiempo Muerto de Equipo, porque el equipo BLANCO tiene la posesión del balón cuando el partido se reanude"
+      },
+      {
+        "key": "d",
+        "text": "El equipo NEGRO recibe el Tiempo Muerto de Equipo, pero después de que el partido se haya reanudado"
+      }
+    ]
+  },
+  {
+    "code": "2.41",
+    "text": "El equipo BLANCO tiene posesión de balón y solicita un Tiempo Muerto de Equipo. Los árbitros no escuchan el toque de silbato debido al ruido ambiental. Es después de 10 segundos, cuando el equipo NEGRO tiene posesión del balón, que los árbitros escuchan el toque de silbato. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Se concede el Tiempo Muerto de Equipo"
+      },
+      {
+        "key": "b",
+        "text": "El juego se reanuda con golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "El Tiempo Muerto de Equipo no se concede"
+      },
+      {
+        "key": "d",
+        "text": "El juego se reanuda con golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "2.42",
+    "text": "En el 78:00 el jugador BLANCO 7 recibe una exclusión de 2’, más tarde el partido finaliza empatado y las normas requieren una decisión mediante lanzamientos de 7 metros. BLANCO 7 es designado por el oficial responsable del equipo para participar en los lanzamientos de 7 metros. BLANCO 7 ejecuta el lanzamiento de 7 metros y consigue gol. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El gol es válido, BLANCO 7 está autorizado a participar"
+      },
+      {
+        "key": "b",
+        "text": "El gol no es válido, BLANCO 7 no está autorizado a participar"
+      },
+      {
+        "key": "c",
+        "text": "El lanzamiento se considera fallado"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para BLANCO 7"
+      }
+    ]
+  },
+  {
+    "code": "2.43",
+    "text": "En el 55:00 el oficial responsable del equipo BLANCO solicita un Tiempo Muerto de Equipo, que es el segundo en el partido. En el 59:00 el mismo oficial responsable de equipo solicita el tercer Tiempo Muerto de Equipo. ¿Decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El Tiempo Muerto de Equipo es posible"
+      },
+      {
+        "key": "b",
+        "text": "El Tiempo Muerto de Equipo no es posible"
+      }
+    ]
+  },
+  {
+    "code": "2.44",
+    "text": "El equipo BLANCO está atacando. El oficial A del equipo BLANCO desea solicitar un Tiempo Muerto de Equipo y se dirige a la mesa para colocar la “tarjeta verde” y la coloca frente al cronometrador. Al mismo tiempo, BLANCO 4 lanza a portería y logra marcar gol. El cronometrador pita por el Tiempo Muerto de Equipo justo después de que el balón rebasase la línea de gol del equipo NEGRO. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "El gol no es válido, porque el equipo BLANCO ha solicitado un Tiempo Muerto de Equipo"
+      },
+      {
+        "key": "c",
+        "text": "Tiempo Muerto de Equipo para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "No hay Tiempo Muerto para el equipo BLANCO, porque ya no están en posesión del balón"
+      },
+      {
+        "key": "e",
+        "text": "La “tarjeta verde” debe ser devuelta al equipo"
+      },
+      {
+        "key": "f",
+        "text": "Saque de centro para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "2.45",
+    "text": "El equipo BLANCO tuvo su segundo Tiempo Muerto de Equipo en el 55:10. En el 59:25, el equipo BLANCO quiere solicitar un tercer Tiempo Muerto de Equipo y coloca la “tarjeta verde” en la mesa frente al cronometrador. El equipo BLANCO está en posesión del balón. El cronometrador pita, detiene el tiempo y señala el Tiempo Muerto de Equipo para el equipo BLANCO. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Tiempo Muerto de Equipo para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "No se concede el Tiempo Muerto de Equipo"
+      },
+      {
+        "key": "c",
+        "text": "Sanción progresiva para el oficial A del equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "El partido se reinicia con un golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "El partido se reinicia con un golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "2.46",
+    "text": "El equipo BLANCO desea solicitar un Tiempo Muerto de Equipo. El oficial A del equipo BLANCO coloca la “tarjeta verde” en la mesa frente al cronometrador. Al mismo tiempo, BLANCO 9 lanza hacia la portería del equipo NEGRO. El cronometrador pita mientras el balón está en el aire. Poco después del toque de silbato, el portero NEGRO 12 atrapa el balón. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "No hay Tiempo Muerto de Equipo para el equipo BLANCO porque no está en posesión del balón"
+      },
+      {
+        "key": "b",
+        "text": "Tiempo Muerto de Equipo para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "La “tarjeta verde” se devuelve al equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "El partido se reinicia con un saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "El partido se reinicia con un golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "2.47",
+    "text": "El equipo BLANCO desea solicitar un Tiempo Muerto de Equipo. El oficial A del equipo BLANCO coloca la “tarjeta verde” en la mesa frente al cronometrador. Antes de que el cronometrador conceda el Tiempo Muerto de Equipo, BLANCO 9 lanza a portería. El portero NEGRO 12 bloquea el disparo, y el cronometrador pita mientras el balón rueda dentro del área de portería. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "No hay Tiempo Muerto de Equipo para el equipo BLANCO porque no está en posesión del balón"
+      },
+      {
+        "key": "b",
+        "text": "Tiempo Muerto de Equipo para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "La “tarjeta verde” se devuelve al equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "El partido se reinicia con un saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "El partido se reinicia con un golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "f",
+        "text": "El partido se reinicia con un golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "2.48",
+    "text": "El equipo BLANCO desea solicitar un Tiempo Muerto de Equipo. El oficial A del equipo BLANCO coloca la “tarjeta verde” en la mesa frente al cronometrador. Antes de que el cronometrador conceda el Tiempo Muerto de Equipo, BLANCO 9 lanza a portería. El portero NEGRO 12 para el lanzamiento, y el cronometrador pita, mientras que el balón, después de la parada, está en el aire sobre el área de portería. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "No hay Tiempo Muerto de Equipo para el equipo BLANCO porque no está en posesión de la pelota"
+      },
+      {
+        "key": "b",
+        "text": "Tiempo Muerto de Equipo para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "La “tarjeta verde” se devuelve al equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "El partido se reinicia con un saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "El partido se reinicia con un golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "f",
+        "text": "El partido se reinicia con un golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "2.49",
+    "text": "El equipo BLANCO desea solicitar un Tiempo Muerto de Equipo. El oficial A del equipo BLANCO coloca la “tarjeta verde” en la mesa frente al cronometrador. Antes de que el cronometrador conceda el Tiempo Muerto de Equipo, BLANCO 11 comete una falta en ataque. El cronometrador pita por el Tiempo Muerto de Equipo justo antes de que el árbitro pite la falta en ataque. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Los árbitros deciden que no habrá Tiempo Muerto de Equipo, ya que la falta en ataque se cometió antes de que el cronometrador pitara para el Tiempo Muerto de Equipo"
+      },
+      {
+        "key": "b",
+        "text": "Tiempo Muerto de Equipo para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "La “tarjeta verde” se devuelve al equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "El partido se reinicia con un golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "El partido se reinicia con un golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "2.50",
+    "text": "Se utiliza el sistema electrónico de Tiempo Muerto de Equipo en el partido. El equipo BLANCO tuvo su segundo Tiempo Muerto de Equipo en el 55:10. En el 59:35, el oficial A del equipo BLANCO quiere solicitar un tercer Tiempo Muerto de Equipo y activa el pulsador de bocina de Tiempo Muerto de Equipo. El balón está en juego y el equipo BLANCO está en posesión del balón. Suena la señal automática y el tiempo se para. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Tiempo Muerto de Equipo para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "No se concede Tiempo Muerto de Equipo"
+      },
+      {
+        "key": "c",
+        "text": "Sanción progresiva para el oficial A del equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "El partido se reanuda con un golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "El partido se reanuda con un golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "f",
+        "text": "El equipo NEGRO puede elegir entre golpe franco y lanzamiento de 7 metros"
+      }
+    ]
+  },
+  {
+    "code": "2.51",
+    "text": "Se utiliza el sistema electrónico de Tiempo Muerto de Equipo en el partido. El equipo BLANCO está en posesión del balón. En el 58:40, BLANCO 7 comete una falta en ataque. Antes de que los árbitros pudieran pitar la falta en ataque, suena la señal automática porque el Oficial A del equipo BLANCO activó el pulsador de bocina de Tiempo Muerto de Equipo para solicitar un Tiempo Muerto de Equipo. Inmediatamente después, los árbitros pitan la falta en ataque contra BLANCO 7. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El Tiempo Muerto de Equipo no es posible porque el equipo BLANCO ya no está en posesión del balón."
+      },
+      {
+        "key": "b",
+        "text": "Tiempo Muerto de Equipo para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO perderá un Tiempo Muerto de Equipo"
+      },
+      {
+        "key": "d",
+        "text": "El partido se reanuda con un golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "El partido se reanuda con un golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "f",
+        "text": "El partido se reanuda con un lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "g",
+        "text": "El equipo NEGRO puede elegir entre golpe franco y lanzamiento de 7 metros"
+      },
+      {
+        "key": "h",
+        "text": "Sanción progresiva para el Oficial A del equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "2.52",
+    "text": "Se utiliza el sistema electrónico de Tiempo Muerto de Equipo en el partido. En el 29:50 de la primera parte, BLANCO 9 lanza a portería. El lanzamiento es parado por el portero NEGRO 12 y, tras la parada, el balón queda en el aire por encima del área de portería. En ese momento, suena la señal automática porque el oficial A del equipo NEGRO ha activado el pulsador de bocina para solicitar un Tiempo Muerto de Equipo. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "No hay Tiempo Muerto de Equipo posible porque el equipo NEGRO no está en posesión delbalón"
+      },
+      {
+        "key": "b",
+        "text": "Tiempo Muerto de Equipo para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "El equipo NEGRO perderá un Tiempo Muerto de Equipo."
+      },
+      {
+        "key": "d",
+        "text": "El partido se reanuda con un saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "El partido se reanuda con un golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "f",
+        "text": "El partido se reanuda con un golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "g",
+        "text": "El equipo BLANCO puede elegir entre un lanzamiento de 7 metros y un golpe franco"
+      },
+      {
+        "key": "h",
+        "text": "El partido se reanudará con un lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "i",
+        "text": "Sanción progresiva para el Oficial A del equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "2.53",
+    "text": "El equipo NEGRO está en ataque. Los árbitros muestran la señal de pasivo. Después de dos pases suena el silbato del delegado porque el oficial A del equipo NEGRO ha solicitado un Tiempo Muerto de Equipo. Ni los árbitros ni los jugadores oyen el silbato y el juego continúa. El cuarto pase del equipo NEGRO va al extremo que tiene una clara ocasión de gol. El extremo salta para lanzar. Al hacerlo, es empujado por BLANCO 4 y pierde parcialmente el control de su cuerpo. El portero para el lanzamiento. Sólo en ese momento los árbitros y los jugadores se dan cuenta de que el delegado interrumpió el partido debido a la solicitud de Tiempo Muerto de Equipo. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Tiempo Muerto de Equipo para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "El partido se reanuda con un golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "El partido se reanuda con un lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2 minutos para el equipo BLANCO 4"
+      },
+      {
+        "key": "e",
+        "text": "No hay ninguna sanción"
+      },
+      {
+        "key": "f",
+        "text": "La señal de pasivo sigue siendo válida – el equipo NEGRO ha realizado dos pases"
+      },
+      {
+        "key": "g",
+        "text": "La señal de pasivo sigue siendo válida – el equipo NEGRO ha realizado cuatro pases"
+      },
+      {
+        "key": "h",
+        "text": "La señal de pasivo deja de ser válida porque BLANCO 4 es sancionado con 2 minutos de exclusión"
+      }
+    ]
+  },
+  {
+    "code": "2.54",
+    "text": "El equipo BLANCO lanza a portería. El portero NEGRO 1 para el lanzamiento. El balón está botando dentro del área de portería cuando el Oficial A del equipo BLANCO solicita un Tiempo Muerto de Equipo poniendo la “tarjeta verde” delante del cronometrador. El cronometrador pita cuando el balón todavía está botando dentro del área de portería, pero el balón está muy cerca de BLANCO 13 que está completamente solo justo fuera del área de portería. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Tiempo Muerto de Equipo para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "No hay Tiempo Muerto de Equipo posible y se devuelve la “tarjeta verde” al Oficial A del equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "f",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "2.55",
+    "text": "(En el partido se utiliza el sistema de tiempo muerto electrónico). El equipo BLANCO está en ataque y el marcador es 31:31. A falta de 20 segundos para el final del partido, el jugador 7 del equipo BLANCO marca un gol. El OFICIAL A del equipo NEGRO corre hacia la mesa del cronometrador para pulsar el timbre y solicitar un tiempo muerto. Antes de que el OFICIAL A pueda pulsar el timbre, el jugador 10 del equipo NEGRO se levanta del banquillo y pulsa el timbre justo antes de que el equipo NEGRO ejecute el saque. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Tiempo muerto para el equipo NEGRO."
+      },
+      {
+        "key": "b",
+        "text": "No hay tiempo muerto para el equipo NEGRO."
+      },
+      {
+        "key": "c",
+        "text": "El juego se reanuda con un saque para el equipo NEGRO."
+      },
+      {
+        "key": "d",
+        "text": "El juego se reanuda con un tiro libre para el equipo BLANCO."
+      },
+      {
+        "key": "e",
+        "text": "El juego se reanuda con un lanzamiento de 7 metros para el equipo BLANCO."
+      },
+      {
+        "key": "f",
+        "text": "El Oficial A del equipo BLANCO puede elegir entre un lanzamiento de 7 metros y un tiro libre."
+      },
+      {
+        "key": "g",
+        "text": "Sanción progresiva para el Oficial A del equipo NEGRO."
+      },
+      {
+        "key": "h",
+        "text": "Suspensión de 2 minutos para el jugador NEGRO 10."
+      },
+      {
+        "key": "i",
+        "text": "Descalificación sin informe escrito para el jugador NEGRO 10 (tarjeta roja mostrada por los árbitros)."
+      },
+      {
+        "key": "j",
+        "text": "El equipo NEGRO perderá un tiempo muerto."
+      }
+    ]
+  },
+  {
+    "code": "2.56",
+    "text": "En este partido se puede utilizar la repetición de vídeo y se está utilizando un sistema electrónico de tiempo muerto por equipos. A falta de 20 segundos para el final del partido, el jugador BLANCO 7 corre con el balón en las manos. Los árbitros pitan una falta de pasos contra el jugador BLANCO 7. El jugador BLANCO 7 retiene el balón durante 2 segundos antes de colocarlo en el suelo. Justo cuando el jugador NEGRO 4 recoge el balón, el oficial B del equipo NEGRO pulsa el timbre para solicitar un tiempo muerto técnico. Los árbitros deciden utilizar la repetición de vídeo para comprobar una posible infracción de la regla 8:11a. Durante la revisión de la repetición de vídeo, ven que el jugador BLANCO 7 solo dio tres pasos. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 2",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Se puede utilizar la repetición de vídeo."
+      },
+      {
+        "key": "b",
+        "text": "El tiempo muerto del equipo NEGRO comienza inmediatamente."
+      },
+      {
+        "key": "c",
+        "text": "La decisión sobre el tiempo muerto del equipo se pospone hasta después de la VR."
+      },
+      {
+        "key": "d",
+        "text": "Tiempo muerto."
+      },
+      {
+        "key": "e",
+        "text": "Después del VR, tiempo muerto para el equipo NEGRO."
+      },
+      {
+        "key": "f",
+        "text": "Después del VR, no hay tiempo muerto para el equipo NEGRO."
+      },
+      {
+        "key": "g",
+        "text": "Descalificación sin informe escrito para el jugador BLANCO 7 (tarjeta roja mostrada por los árbitros)."
+      },
+      {
+        "key": "h",
+        "text": "Suspensión de 2 minutos para el jugador BLANCO 7."
+      },
+      {
+        "key": "i",
+        "text": "El partido se reanuda con un tiro libre para el equipo NEGRO."
+      },
+      {
+        "key": "j",
+        "text": "El partido se reanuda con un lanzamiento de 7 metros para el equipo NEGRO."
+      },
+      {
+        "key": "k",
+        "text": "El partido se reanuda con un tiro libre para el equipo BLANCO."
+      },
+      {
+        "key": "l",
+        "text": "El equipo NEGRO perderá un tiempo muerto."
+      },
+      {
+        "key": "m",
+        "text": "Sanción progresiva para el Oficial B del equipo NEGRO."
+      }
+    ]
+  }
+]

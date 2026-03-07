@@ -1,0 +1,241 @@
+[
+  {
+    "code": "17.1",
+    "text": "Los árbitros tienen opiniones distintas sobre qué equipo debe ejecutar un saque de banda. ¿Cómo se debería actuar?",
+    "categoryName": "Regla 17",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El árbitro central decide"
+      },
+      {
+        "key": "b",
+        "text": "El árbitro de portería decide"
+      },
+      {
+        "key": "c",
+        "text": "Los dos árbitros toman una decisión conjunta después de consultarse"
+      },
+      {
+        "key": "d",
+        "text": "Time-out"
+      },
+      {
+        "key": "e",
+        "text": "No es necesario un time-out pero el saque de banda es ejecutado después del toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "17.2",
+    "text": "La señal automática del reloj mural no funciona. El cronometrador no conoce el problema y no reacciona aunque el tiempo de juego ya ha terminado. En este caso, ¿quién debe dar la señal final?",
+    "categoryName": "Regla 17",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Solo el anotador"
+      },
+      {
+        "key": "b",
+        "text": "Solo el árbitro central"
+      },
+      {
+        "key": "c",
+        "text": "Solo el delegado"
+      },
+      {
+        "key": "d",
+        "text": "Solo uno de los árbitros"
+      },
+      {
+        "key": "e",
+        "text": "Solo el cronometrador"
+      },
+      {
+        "key": "f",
+        "text": "Ya sea el cronometrador, el delegado o uno de los árbitros"
+      }
+    ]
+  },
+  {
+    "code": "17.3",
+    "text": "NEGRO 2 ha cometido una infracción. El árbitro central decide descalificación de NEGRO 2 (tarjeta roja mostrada por los arbitros) y golpe franco. El árbitro de portería decide 2 minutos de exclusión para NEGRO 2 y lanzamiento de 7 metros. ¿Cómo se sancionará al jugador y cómo debe reanudarse el partido?",
+    "categoryName": "Regla 17",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Si no se llega a una decisión conjunta, suspensión de 2 minutos para NEGRO 2"
+      },
+      {
+        "key": "b",
+        "text": "Si no se llega a una decisión conjunta, descalificación de NEGRO 2 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Si no se llega a una decisión conjunta, tiro libre"
+      },
+      {
+        "key": "d",
+        "text": "Si no se llega a una decisión conjunta, lanzamiento de 7 metros"
+      },
+      {
+        "key": "e",
+        "text": "Los árbitros deben intentar llegar a una decisión conjunta"
+      }
+    ]
+  },
+  {
+    "code": "17.4",
+    "text": "¿En caso de duda, quién decide sobre la exactitud del tiempo de juego?",
+    "categoryName": "Regla 17",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El cronometrador y el anotador"
+      },
+      {
+        "key": "b",
+        "text": "Los dos árbitros conjuntamente"
+      },
+      {
+        "key": "c",
+        "text": "El cronometrador"
+      },
+      {
+        "key": "d",
+        "text": "Los dos árbitros y el cronometrador conjuntamente"
+      }
+    ]
+  },
+  {
+    "code": "17.5",
+    "text": "¿Qué sanciones necesitan explicarse en el acta de partido?",
+    "categoryName": "Regla 17",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Todas las descalificaciones, excepto aquellas causadas por 3 exclusiones"
+      },
+      {
+        "key": "b",
+        "text": "Todas las sanciones excepto las advertencias"
+      },
+      {
+        "key": "c",
+        "text": "Todas las exclusiones y todas las descalificaciones"
+      },
+      {
+        "key": "d",
+        "text": "Las descalificaciones debido a faltas peligrosas o conductas antideportivas graves en los últimos treinta segundos de juego, si la acción se realiza para evitar que los contrarios puedan crear una ocasión de gol"
+      },
+      {
+        "key": "e",
+        "text": "Las descalificaciones debidas a una conducta extremadamente antideportiva"
+      },
+      {
+        "key": "f",
+        "text": "Cualquier sanción progresiva durante los últimos treinta segundos del partido, si la acción se realiza para evitar que los contrarios puedan crear una ocasión de gol"
+      }
+    ]
+  },
+  {
+    "code": "17.6",
+    "text": "¿Quién está autorizado a dirigirse a los árbitros durante el partido?",
+    "categoryName": "Regla 17",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Todos los jugadores"
+      },
+      {
+        "key": "b",
+        "text": "El entrenador"
+      },
+      {
+        "key": "c",
+        "text": "El oficial responsable de equipo"
+      },
+      {
+        "key": "d",
+        "text": "El capitán del equipo"
+      }
+    ]
+  },
+  {
+    "code": "17.7",
+    "text": "Los árbitros tienen diferentes opiniones sobre el tiempo que resta por jugar. El árbitro de portería (que es el designado en primer lugar) quiere que se jueguen 50 segundos más, mientras que el árbitro central dice que faltan 42 segundos. ¿Decisión correcta?",
+    "categoryName": "Regla 17",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Se aplica la mayor cantidad de tiempo - 50 segundos"
+      },
+      {
+        "key": "b",
+        "text": "El árbitro designado en primer lugar decide – 50 segundos"
+      },
+      {
+        "key": "c",
+        "text": "El árbitro central es el responsable – 42 segundos"
+      },
+      {
+        "key": "d",
+        "text": "Los dos árbitros deben tomar una decisión conjunta"
+      }
+    ]
+  },
+  {
+    "code": "17.8",
+    "text": "¿Qué árbitro comienza como árbitro central y quién como árbitro de portería al comienzo del partido?",
+    "categoryName": "Regla 17",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El árbitro designado en primer lugar comienza como árbitro central"
+      },
+      {
+        "key": "b",
+        "text": "El árbitro designado en primer lugar comienza como de árbitro de portería"
+      },
+      {
+        "key": "c",
+        "text": "Los árbitros realizan un sorteo para decidir dónde comienza cada uno"
+      },
+      {
+        "key": "d",
+        "text": "Los árbitros son libres para decidir su propia elección"
+      }
+    ]
+  },
+  {
+    "code": "17.9",
+    "text": "Los dos árbitros pitan después de un choque entre dos jugadores. El árbitro central señala falta del atacante, pero el árbitro de portería indica una infracción del defensor. ¿Cómo debería decidirse?",
+    "categoryName": "Regla 17",
+    "answers": [
+      {
+        "key": "a",
+        "text": "La decisión del árbitro de portería es válida"
+      },
+      {
+        "key": "b",
+        "text": "La decisión del árbitro central es válida"
+      },
+      {
+        "key": "c",
+        "text": "Los árbitros alcanzan una decisión conjunta tras una consulta entre ambos"
+      },
+      {
+        "key": "d",
+        "text": "El time-out obligatorio"
+      },
+      {
+        "key": "e",
+        "text": "El time-out es necesario sólo si la decisión conjunta alcanzada es en contra del equipo atacante"
+      },
+      {
+        "key": "f",
+        "text": "El time-out no es obligatorio si los árbitros están usando un equipo electrónico para su comunicación interna"
+      }
+    ]
+  }
+]

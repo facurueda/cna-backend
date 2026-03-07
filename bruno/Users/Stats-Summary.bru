@@ -1,0 +1,14 @@
+meta {
+  name: Stats Summary
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/users/stats/summary
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

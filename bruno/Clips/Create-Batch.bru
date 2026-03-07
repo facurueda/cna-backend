@@ -1,0 +1,37 @@
+meta {
+  name: Create Batch
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/clips/batch
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "matchId": "{{matchId}}",
+  "clips": [
+    {
+      "title": "Clip 1",
+      "videoUrl": "https://example.com/clip1.mp4",
+      "thumbnailUrl": "https://example.com/thumb1.webp",
+      "refereeIds": ["{{refereeId1}}"]
+    },
+    {
+      "title": "Clip 2",
+      "videoUrl": "https://example.com/clip2.mp4",
+      "thumbnailUrl": "https://example.com/thumb2.webp",
+      "refereeIds": ["{{refereeId2}}"]
+    }
+  ]
+}

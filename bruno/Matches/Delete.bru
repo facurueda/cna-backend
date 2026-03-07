@@ -1,0 +1,14 @@
+meta {
+  name: Delete (Admin)
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{baseUrl}}/matches/{{matchId}}
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}

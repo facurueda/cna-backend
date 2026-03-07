@@ -1,0 +1,28 @@
+meta {
+  name: Presign
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/uploads/presign
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "competitionId": "{{competitionId}}",
+  "matchId": "{{matchId}}",
+  "fileName": "clip.mp4",
+  "contentType": "video/mp4",
+  "assetType": "video",
+  "size": 12345678
+}

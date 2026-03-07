@@ -1,0 +1,140 @@
+[
+  {
+    "code": "11.1",
+    "text": "BLANCO 3 ejecuta un saque de banda en una posición a 2 metros de la línea de banda. ¿Decisión correcta?",
+    "categoryName": "Regla 11",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Ninguna, puesto que está permitido"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Repetir el saque de banda sin toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Repetir el saque de banda después del toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "11.2",
+    "text": "NEGRO 4 está situado con un pie en la línea de banda y el otro en el terreno de juego. Está ejecutando un saque de banda y marca un gol directamente. ¿Decisión correcta?",
+    "categoryName": "Regla 11",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Repetición del saque de banda del equipo NEGRO después del toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "11.3",
+    "text": "BLANCO 6 ejecuta un saque de banda estando con un pie dentro del terreno de juego y el otro fuera de la línea de banda. Él lanza el balón dentro de la portería del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 11",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Repetición del saque de banda para el equipo BLANCO después del toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "11.4",
+    "text": "BLANCO 11 realiza un lanzamiento a portería. El balón rechazado por el larguero golpea un objeto fijo que cuelga del techo por encima del área de portería del equipo NEGRO. Desde ahí el balón cae en los brazos del portero NEGRO 1. ¿Decisión correcta?",
+    "categoryName": "Regla 11",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO después del toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Saque de banda para el equipo NEGRO después del toque de silbato"
+      },
+      {
+        "key": "e",
+        "text": "Time-out obligatoriamente"
+      }
+    ]
+  },
+  {
+    "code": "11.5",
+    "text": "¿Cuándo está permitido que el equipo defensor esté a menos de 3 metros del balón durante la ejecución del lanzamientos tras una interrupción del juego?",
+    "categoryName": "Regla 11",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Tan pronto como el árbitro haya dado la señal para la ejecución del lanzamiento"
+      },
+      {
+        "key": "b",
+        "text": "Cuando el balón haya salido de la mano del jugador que ejecuta un golpe franco"
+      },
+      {
+        "key": "c",
+        "text": "En caso de golpe franco o saque de banda, cuando los jugadores estén situados en su propia línea del área de portería"
+      },
+      {
+        "key": "d",
+        "text": "Durante la ejecución de un saque de portería o de un saque de centro, cuando el jugador defensor se halle fuera del área de portería o del área de saque de centro"
+      }
+    ]
+  },
+  {
+    "code": "11.6",
+    "text": "BLANCO 5 recepciona incorrectamente un pase. Corre detrás del balón y lo para justo antes que cruce la línea de banda, pero él no puede evitar cruzar esta línea. ¿Decisión correcta?",
+    "categoryName": "Regla 11",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de banda para el equipo NEGRO"
+      }
+    ]
+  }
+]

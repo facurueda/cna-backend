@@ -1,0 +1,232 @@
+[
+  {
+    "code": "9.1",
+    "text": "BLANCO 7 está situado en el centro de la defensa de su equipo cuando NEGRO 3 intenta pasar el balón en bote. BLANCO 7 de forma intencionada intenta parar el pase con su pie y no es la primera vez que lo hace. El balón golpea en su pie y se introduce en la portería del equipo BLANCO. ¿Decisión correcta?",
+    "categoryName": "Regla 9",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 7"
+      }
+    ]
+  },
+  {
+    "code": "9.2",
+    "text": "Un lanzamiento de BLANCO 5 es rechazado por el poste de la portería del equipo NEGRO. Golpea en el pie de NEGRO 3, que está en el terreno de juego, y entra en la portería del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 9",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "9.3",
+    "text": "El portero BLANCO 1 para un lanzamiento y el rechace golpea en la espalda del defensor BLANCO 3, que está 2 metros dentro del área de portería, entrando en la portería del equipo BLANCO. ¿Decisión correcta?",
+    "categoryName": "Regla 9",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Sanción progresiva para BLANCO 3"
+      },
+      {
+        "key": "d",
+        "text": "Gol para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "9.4",
+    "text": "El portero BLANCO 1 retiene el balón durante 4 segundos en una posición en la que tres cuartas partes del balón ya han rebasado la línea de gol. ¿Decisión correcta?",
+    "categoryName": "Regla 9",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "9.5",
+    "text": "BLANCO 3 penetra en el área de portería de su equipo para intentar parar un lanzamiento con el pie pero el balón, desviado por su pie, entra en la portería del equipo BLANCO. ¿Decisión correcta?",
+    "categoryName": "Regla 9",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "9.6",
+    "text": "BLANCO 11 ejecuta una vaselina por encima del portero NEGRO 1, que está adelantado a su portería. Antes que el balón rebase la línea de portería, el manager del equipo NEGRO, que está sentado en la primera fila del público detrás de la portería y no está incluido en el acta del partido, despeja el balón. ¿Decisión correcta?",
+    "categoryName": "Regla 9",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para el gerente del equipo NEGRO con informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Informe escrito"
+      }
+    ]
+  },
+  {
+    "code": "9.7",
+    "text": "A 2 segundos de finalizar el partido y con el marcador 25-25, un oficial del equipo BLANCO (equipo local), que no está inscrito en el acta de partido, intercepta el balón que se dirige a la portería vacía. Por esta acción evita un gol a favor del equipo NEGRO. Inmediatamente después, suena la señal final. ¿Qué es lo correcto?",
+    "categoryName": "Regla 9",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Marcador final 25-25"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Marcador final 25-26"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación del oficial con informe escrito (tarjeta roja y tarjeta azul mostradas por los árbitros)"
+      },
+      {
+        "key": "e",
+        "text": "Informe escrito"
+      }
+    ]
+  },
+  {
+    "code": "9.8",
+    "text": "Gol para el equipo NEGRO después de un lanzamiento de 7 metros de NEGRO 9. El equipo BLANCO ejecuta inmediatamente un saque de centro rápido después del toque de silbato del árbitro. Tras dos pases BLANCO 4 consigue un gol. En ese momento el cronometrador pita e informa que NEGRO 9, que entretanto ha regresado al banquillo, le restaban 20 segundos por cumplir de una exclusión de 2’ en el momento del lanzamiento de 7 metros. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 9",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El lanzamiento de 7 metros para el equipo NEGRO debe ser repetido"
+      },
+      {
+        "key": "b",
+        "text": "NEGRO 9 recibe una exclusión adicional de 2’"
+      },
+      {
+        "key": "c",
+        "text": "Ambos goles son válidos"
+      },
+      {
+        "key": "d",
+        "text": "Ninguno de los dos goles es válido"
+      }
+    ]
+  },
+  {
+    "code": "9.9",
+    "text": "Justo antes del final del partido, cuando el resultado es 22-21 para su equipo, BLANCO 5 ha ejecutado correctamente un saque de centro. El balón va hacia atrás en dirección a la portería del equipo BLANCO. El portero BLANCO 1 no toca el balón porque se encuentra dentro de su área de portería y el balón entra dentro de la portería. Los compañeros de BLANCO 5 habían cruzado la línea central después del toque de silbato del árbitro pero antes de que el balón fuera jugado, corriendo en dirección a la portería del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 9",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Repetición del saque de centro después de toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Sanción personal contra BLANCO 5"
+      },
+      {
+        "key": "e",
+        "text": "Time–out"
+      }
+    ]
+  },
+  {
+    "code": "9.10",
+    "text": "BLANCO 9 trata de parar un lanzamiento bajo con la parte más baja de su pierna, pero al hacerlo desvía el balón, que va dentro de su propia portería. Esta es la segunda vez que él trata de detener un lanzamiento con su pierna. ¿Decisión correcta?",
+    "categoryName": "Regla 9",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para BLANCO 9"
+      }
+    ]
+  }
+]

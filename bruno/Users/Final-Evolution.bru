@@ -1,0 +1,14 @@
+meta {
+  name: Final Evolution
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/users/stats/final-evolution?months=6
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

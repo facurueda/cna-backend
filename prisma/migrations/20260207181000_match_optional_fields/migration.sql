@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Match" ALTER COLUMN "category" DROP NOT NULL;
+ALTER TABLE "Match" ALTER COLUMN "date" DROP NOT NULL;

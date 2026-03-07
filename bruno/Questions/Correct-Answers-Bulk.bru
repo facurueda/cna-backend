@@ -1,0 +1,22 @@
+meta {
+  name: Correct Answers Bulk
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/correct-answers/bulk
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "correctAnswers": [
+    { "code": "2.1", "keys": ["a", "d"] },
+    { "code": "SAR1", "keys": ["d"] }
+  ]
+}

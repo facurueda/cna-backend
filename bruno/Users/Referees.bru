@@ -1,0 +1,14 @@
+meta {
+  name: Referees (Non-Admin)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/users/referees?competitionId={{competitionId}}
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

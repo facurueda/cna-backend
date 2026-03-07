@@ -1,5 +1,15 @@
-import { ArrayMinSize, IsArray, IsOptional, IsString, IsUUID, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
+import { Type } from 'class-transformer';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsInt,
+  IsOptional,
+  IsString,
+  IsUUID,
+  Min,
+  ValidateNested,
+  ArrayUnique,
+} from 'class-validator';
 
 class BatchClipItemDto {
   @IsString()
@@ -9,8 +19,24 @@ class BatchClipItemDto {
   videoUrl!: string;
 
   @IsOptional()
+  @IsString()
+  thumbnailUrl?: string;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  duration?: number;
+
+  @IsOptional()
   @IsArray()
-  @IsUUID("4", { each: true })
+  @ArrayUnique()
+  @IsString({ each: true })
+  categoryIds?: string[];
+
+  @IsOptional()
+  @IsArray()
+  @IsUUID('4', { each: true })
   refereeIds?: string[];
 }
 

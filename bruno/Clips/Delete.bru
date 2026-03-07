@@ -1,0 +1,14 @@
+meta {
+  name: Delete (Admin)
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{baseUrl}}/clips/{{clipId}}
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}

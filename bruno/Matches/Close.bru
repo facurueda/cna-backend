@@ -1,0 +1,14 @@
+meta {
+  name: Close (Admin)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/matches/{{matchId}}/close
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}

@@ -1,0 +1,625 @@
+[
+  {
+    "code": "16.1",
+    "text": "Un oficial de equipo está protestando y recibe una exclusión de 2’. Antes de reanudarse el juego protesta de nuevo y por tanto es descalificado. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El equipo BLANCO se reduce en dos jugadores durante 2’"
+      },
+      {
+        "key": "b",
+        "text": "El equipo BLANCO se reduce en un jugador durante 4’"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO se reduce en un jugador durante 2’"
+      }
+    ]
+  },
+  {
+    "code": "16.2",
+    "text": "BLANCO 8 recibe una exclusión de 2’ por empujar a un contrario. Se acerca al árbitro y lo insulta con las siguientes palabras: “¡Estúpido, idiota, nunca vas a aprender!”. Antes de abandonar el terreno de juego, escupe en la cara del árbitro. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación para BLANCO 8, el equipo BLANCO se reduce en un jugador durante 4’ (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación para BLANCO 8, el equipo A se reduce en dos jugadores durante 2’ (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para BLANCO 8, el equipo BLANCO se reduce en un jugador durante 4’, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para BLANCO 8, el equipo BLANCO se reduce en dos jugadores durante 2’, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "16.3",
+    "text": "¿Cuántas amonestaciones deberían mostrarse como máximo a los oficiales de un equipo durante un partido?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Ninguna"
+      },
+      {
+        "key": "b",
+        "text": "1"
+      },
+      {
+        "key": "c",
+        "text": "2"
+      },
+      {
+        "key": "d",
+        "text": "3"
+      }
+    ]
+  },
+  {
+    "code": "16.4",
+    "text": "¿Cuándo comienza el tiempo de exclusión de un jugador?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Cuando el árbitro realiza la gestoforma de exclusión"
+      },
+      {
+        "key": "b",
+        "text": "Cuando el jugador excluido cruza la línea de banda"
+      },
+      {
+        "key": "c",
+        "text": "Cuando el árbitro hace sonar su silbato para que se reanude el partido"
+      },
+      {
+        "key": "d",
+        "text": "Cuando el cronometrador pone en marcha el cronómetro"
+      }
+    ]
+  },
+  {
+    "code": "16.5",
+    "text": "¿A quién se debe indicar las exclusiones?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Al jugador excluido y al anotador/cronometrador"
+      },
+      {
+        "key": "b",
+        "text": "Al oficial responsable de equipo y al cronometrador"
+      },
+      {
+        "key": "c",
+        "text": "Al anotador/cronometrador"
+      },
+      {
+        "key": "d",
+        "text": "Al jugador excluido, al oficial responsable de equipo y al anotador"
+      }
+    ]
+  },
+  {
+    "code": "16.6",
+    "text": "NEGRO 5 ha recibido ya dos exclusiones, una por una falta que fue sancionada progresivamente y otra por lanzar el balón lejos cuando el árbitro ha señalado un golpe franco a favor de los contrarios. Ahora él realiza un segundo cambio antirreglamentario para su equipo, y antes de que el juego se reanude, comete una conducta extremadamente antideportiva. ¿Qué sanción es correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 5"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación de NEGRO 5, informe escrito (tarjetas roja y azul mostradas por los árbitros); el equipo NEGRO se reduce con un jugador en pista durante 4’"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación de NEGRO 5, informe escrito (tarjetas roja y azul mostradas por los árbitros); el equipo NEGRO se reduce con un jugador en pista durante 2’"
+      }
+    ]
+  },
+  {
+    "code": "16.7",
+    "text": "BLANCO 5 recibe una exclusión de 2 minutos por cometer una falta. Mientras sale del terreno de juego, insulta al árbitro y es descalificado. BLANCO 5 se enfada tanto que golpea a uno de los árbitros. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "b",
+        "text": "El equipo BLANCO se reduce en un jugador en pista durante 2’"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO se reduce en dos jugadores en pista durante 2’"
+      },
+      {
+        "key": "d",
+        "text": "El equipo BLANCO se reduce en un jugador en pista durante 4’"
+      }
+    ]
+  },
+  {
+    "code": "16.8",
+    "text": "BLANCO 7 acaba de ser excluido por una actitud antideportiva. Inmediatamente dice al árbitro: “¡Tú debes estar ciego, idiota!”. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Otra exclusión de 2’ para BLANCO 7"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación sin informe escrito para BLANCO 7 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO se reduce en dos jugadores en pista durante 2’"
+      },
+      {
+        "key": "d",
+        "text": "El equipo BLANCO se reduce en un jugador en pista durante 4’"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación de BLANCO 7, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "16.9",
+    "text": "BLANCO 3 ha sido excluido 2’. Después de abandonar el terreno de juego, pero antes de reanudarse el partido, BLANCO 3 comete una conducta antideportiva grave en la zona de cambios contra el oficial B del equipo NEGRO. El oficial B del equipo NEGRO, justo antes de eso, entraba corriendo dentro del terreno de juego aunque no se había dado permiso pero no se había ordenado sanción alguna contra los oficiales del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación sin informe escrito para BLANCO 3 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "b",
+        "text": "Amonestación para el oficial B de equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO se reduce en dos jugadores en pista durante 2’"
+      },
+      {
+        "key": "d",
+        "text": "El equipo BLANCO se reduce en un jugador en pista durante 4’"
+      }
+    ]
+  },
+  {
+    "code": "16.10",
+    "text": "Cuando un jugador es descalificado, el equipo se reduce en un jugador en pista durante 2 minutos, excepto si la descalificación es:",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Por conducta antideportiva grave durante el descanso."
+      },
+      {
+        "key": "b",
+        "text": "Por una infracción cometida fuera del terreno de juego"
+      },
+      {
+        "key": "c",
+        "text": "Antes del comienzo del partido"
+      },
+      {
+        "key": "d",
+        "text": "Por insultar a los árbitros"
+      }
+    ]
+  },
+  {
+    "code": "16.11",
+    "text": "Durante el descanso, el jugador BLANCO 7 agrede al portero NEGRO 12 cuando éste está en el terreno de juego. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación a BLANCO 7, informe escrito (tarjetas roja y azul mostradas por los árbitros). El equipo BLANCO se reduce en un jugador en pista durante 2’ a partir del inicio de la segunda parte"
+      },
+      {
+        "key": "b",
+        "text": "Amonestación para BLANCO 7"
+      },
+      {
+        "key": "c",
+        "text": "Advertencia verbal para BLANCO 7, porque el partido estaba interrumpido"
+      }
+    ]
+  },
+  {
+    "code": "16.12",
+    "text": "Durante el descanso un árbitro es insultado por NEGRO 7 en el camino a los vestuarios. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación sin informe escrito de NEGRO 7 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para NEGRO 7"
+      },
+      {
+        "key": "c",
+        "text": "El equipo NEGRO se reduce en un jugador en pista durante 2’ al inicio del segundo tiempo"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación de NEGRO 7, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "16.13",
+    "text": "Tras el toque de silbato de final del primer tiempo, NEGRO 5 choca con BLANCO 9 y se gritan uno a otro. Entonces BLANCO 9 empuja en el pecho a NEGRO 5 con ambas manos de forma que NEGRO 5 casi pierde el control de su cuerpo ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para BLANCO 9, al inicio del segundo tiempo"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación sin informe escrito para el jugador BLANCO 9 (tarjeta roja mostrada por los árbitros), el equipo BLANCO se reduce en un jugador en pista durante 2’ desde el inicio del segundo tiempo"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para BLANCO 9, el equipo BLANCO comienza el segundo tiempo sin reducción"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para el jugador BLANCO 9, informe escrito (tarjetas roja y azul mostradas por los árbitros), el equipo BLANCO se reduce en un jugador en pista durante 2’ desde el inicio del segundo tiempo"
+      }
+    ]
+  },
+  {
+    "code": "16.14",
+    "text": "Después del partido BLANCO 10 grita al árbitro: “¡Nos robaste el partido, idiota!” ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Amonestación para BLANCO 10"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación de BLANCO 10, informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Informe escrito"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para BLANCO 10, informe escrito"
+      }
+    ]
+  },
+  {
+    "code": "16.15",
+    "text": "En la pista durante el descanso de un partido, BLANCO 9 agrede al oficial B del equipo NEGRO, quien posteriormente insulta al jugador BLANCO 9. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación de BLANCO 9, informe escrito (tarjetas roja y azul mostradas por los árbitros); el equipo BLANCO se reduce en un jugador en pista durante 2’ desde el inicio de la segunda parte"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación del oficial B del equipo NEGRO, informe escrito (tarjetas roja y azul mostradas por los árbitros); el equipo NEGRO se reduce en un jugador en pista durante 2’ desde el inicio de la segunda parte"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación de BLANCO 9 (tarjeta roja mostrada por los árbitros); el equipo BLANCO no se reduce al inicio de la segunda parte"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación del oficial B del equipo NEGRO (tarjeta roja mostrada por los árbitros); el equipo NEGRO no se reduce al inicio de la segunda parte"
+      }
+    ]
+  },
+  {
+    "code": "16.16",
+    "text": "BLANCO 7 es descalificado porque acaba de recibir su tercera exclusión de 2’. Él trata de discutir con los árbitros y no abandona el terreno de juego. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Ninguna otra acción"
+      },
+      {
+        "key": "b",
+        "text": "El equipo BLANCO se reduce en un jugador en pista durante 4’"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO se reduce en un jugador en pista durante 2’"
+      }
+    ]
+  },
+  {
+    "code": "16.17",
+    "text": "BLANCO 11 fue amonestado durante el tiempo de juego y es nuevamente responsable de una conducta antideportiva durante el descanso. El equipo BLANCO está jugando sin reducción en pista cuando finaliza la primera parte. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Amonestación para BLANCO 11"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para BLANCO 11"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para BLANCO 11"
+      },
+      {
+        "key": "d",
+        "text": "El equipo BLANCO se reduce en un jugador en pista durante 2’ desde el inicio de la segunda parte"
+      },
+      {
+        "key": "e",
+        "text": "El equipo BLANCO no se reduce en su número de jugadores en pista al inicio de la segunda parte"
+      }
+    ]
+  },
+  {
+    "code": "16.18",
+    "text": "BLANCO 4 se ha lesionado. Los árbitros conceden time–out y realizan la señal para permitir al equipo BLANCO entrar y atender al jugador. Dos oficiales del equipo BLANCO, pero también el oficial A del equipo NEGRO, entran en el terreno de juego. El oficial A del equipo NEGRO ya había recibido una amonestación. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Ninguna intervención"
+      },
+      {
+        "key": "b",
+        "text": "El equipo NEGRO continúa el partido sin ninguna reducción en el terreno de juego cuando el partido se reinicia"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para el oficial A del equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para el oficial A del equipo NEGRO (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "e",
+        "text": "El equipo NEGRO se reduce en un jugador en pista durante 2’ cuando el partido se reinicia"
+      },
+      {
+        "key": "f",
+        "text": "Después de recibir atención médica en la pista, BLANCO 4 debe abandonar la pista y solo puede volver a entrar después del tercer ataque de su equipo"
+      }
+    ]
+  },
+  {
+    "code": "16.19",
+    "text": "NEGRO 9 es descalificado debido a una falta grave contra BLANCO 9. Antes de que el juego se reanude, NEGRO 9 golpea en la cara al oficial A del equipo BLANCO. ¿Decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Descalificación sin informe escrito de NEGRO 9 (tarjeta roja mostrada por los árbitros), el equipo NEGRO se reduce en dos jugadores en pista durante 2’"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación sin informe escrito de NEGRO 9 (tarjeta roja mostrada por los árbitros), el equipo NEGRO se reduce en un jugador en pista durante 4’"
+      },
+      {
+        "key": "c",
+        "text": "No es posible ninguna sanción adicional"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación de NEGRO 9, informe escrito (tarjetas roja y azul mostradas por los árbitros), el equipo NEGRO se reduce en dos jugadores en pista durante 2’"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación de NEGRO 9, informe escrito (tarjetas roja y azul mostradas por los árbitros), el equipo NEGRO se reduce en un jugador en pista durante 4’"
+      }
+    ]
+  },
+  {
+    "code": "16.20",
+    "text": "NEGRO 8 ha recibido su primera exclusión de 2’ seguida de un time-out. Cuando deja la pista antes de que el juego se reanude de dirige a los árbitros de manera incorrecta. ¿Decisión Correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Una exclusión adicional de 2’ para NEGRO 8, el equipo NEGRO se reduce en dos jugadores en pista durante 2’"
+      },
+      {
+        "key": "b",
+        "text": "Una exclusión adicional de 2’ para NEGRO 8, el equipo NEGRO se reduce en un jugador en pista durante 4’"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para NEGRO 8 (tarjeta roja mostrada por los árbitros), el equipo NEGRO se reduce en dos jugadores en pista durante 2’"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para NEGRO 8 (tarjeta roja mostrada por los árbitros), el equipo NEGRO se reduce en un jugador en pista durante 4’"
+      }
+    ]
+  },
+  {
+    "code": "16.21",
+    "text": "¿En cuáles de las siguientes situaciones debe un equipo reducirse en el terreno de juego durante 4’?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Un jugador ha sido descalificado; cuando está abandonando el terreno de juego él protesta de tal forma que justifica una exclusión de 2’"
+      },
+      {
+        "key": "b",
+        "text": "Un jugador ha recibido una exclusión de 2’; cuando está abandonando el terreno de juego él insulta a los árbitros y es descalificado"
+      },
+      {
+        "key": "c",
+        "text": "Un jugador ha recibido una exclusión de 2’ por conducta antideportiva contra un oponente. Mientras aún está en el terreno de juego, él golpea a un contrario en la cara y es descalificado."
+      },
+      {
+        "key": "d",
+        "text": "Un jugador ha recibido una exclusión de 2’ por conducta antideportiva; después de cruzar la línea de banda él vuelve atrás al terreno de juego y protesta; los árbitros le sancionan con una exclusión adicional de 2’"
+      },
+      {
+        "key": "e",
+        "text": "Un jugador ha sido descalificado por escupir a un oponente. Cuando está abandonando el terreno de juego, empuja a un árbitro"
+      },
+      {
+        "key": "f",
+        "text": "Un jugador ha sido descalificado por una infracción grave; después de abandonar el terreno de juego y después de que el partido se haya reanudado, él insulta a los árbitros mientras está sentado en la zona de los espectadores"
+      }
+    ]
+  },
+  {
+    "code": "16.22",
+    "text": "BLANCO 5 recibe una exclusión de 2’ en el minuto 7. Él mismo protesta antes de que se reanude el juego y recibe una exclusión adicional de ‘2. Justo un minuto después, entra al terreno de juego y el cronometrador pita. Debido a la exclusión adicional por entrar al terreno de juego, es descalificado. A causa de esto, insulta a los árbitros. ¿Decisión Correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El equipo BLANCO se reduce en un jugador en pista desde el 7:00 al 8:00; en 2 jugadores desde el 8:00 al 10:00 y en un jugador desde el 10:00 al 11:00"
+      },
+      {
+        "key": "b",
+        "text": "El equipo BLANCO se reduce en un jugador en pista desde el 7:00 al 8:00; en dos jugadores del 8:00 al 11:00 y en un jugador del 11:00 al 12:00"
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO se reduce en dos jugadores en pista desde el 7:00 al 8:00; en tres jugadores desde el 8:00 al 10:00 y en dos jugadores desde el 10:00 al 11:00"
+      },
+      {
+        "key": "d",
+        "text": "El equipo BLANCO se reduce en dos jugadores en pista desde el 7:00 al 8:00; en cuatro jugadores desde el 8:00 al 10:00 y en dos jugadores desde el 10:00 al 11:00."
+      },
+      {
+        "key": "e",
+        "text": "Descalificación de BLANCO 5. informe escrito (tarjetas roja y azul mostradas por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "16.23",
+    "text": "El oficial C del equipo BLANCO recibe una amonestación en la primera mitad debido a una conducta antideportiva. El tiempo de juego es de 35:50, y el oficial B del equipo BLANCO, con gestos enérgicos, muestra que no está de acuerdo con la decisión de los árbitros. Para ello, recibe una exclusión de 2’. Tres minutos antes del final del partido, el oficial A del equipo BLANCO ingresa a la cancha sin el permiso de los árbitros. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Amonestación para el oficial A del equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para el oficial A del equipo BLANCO; el equipo BLANCO se reduce en el terreno de juego por 1 jugador durante 2’. El oficial A puede quedarse en la zona de cambios"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para el oficial A del equipo BLANCO; el equipo BLANCO se reduce en el terreno de juego por 1 jugador durante 2’. El oficial A debe abandonar la zona de cambios"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para el oficial A del equipo BLANCO (tarjeta roja mostrada por los árbitros); el equipo BLANCO se reduce en el terreno de juego por 1 jugador durante 2’"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para el oficial A del equipo BLANCO con informe escrito (tarjetas roja y azul mostradas por los árbitros); el equipo BLANCO e reduce en el terreno de juego por 1 jugador durante 2’"
+      }
+    ]
+  },
+  {
+    "code": "16.24",
+    "text": "NEGRO 11 marca un gol. Mientras esta lanzando, BLANCO 10 lo empuja lateralmente, de modo que pierde parcialmente el control de su cuerpo. Los árbitros sancionan con 2 minutos de exclusión a BLANCO 10. BLANCO 10 abandona la cancha. Los árbitros dan la señal para el saque de centro, y antes de que se ejecute el saque, BLANCO 9 entra en la cancha como jugador adicional. El delegado pita y el reloj se detiene. El reloj público marca 1 minuto y 58 segundos restantes de la sanción a BLANCO 10. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Suspensión de 2 minutos para BLANCO 9."
+      },
+      {
+        "key": "b",
+        "text": "El equipo BLANCO se queda con dos jugadores menos en la cancha durante 2 minutos."
+      },
+      {
+        "key": "c",
+        "text": "Durante 1 minuto y 58 segundos, el equipo BLANCO pierde dos jugadores en la cancha. Después de 1 minuto y 58 segundos, la primera suspensión caduca y el equipo BLANCO pierde un jugador en la cancha durante otros 2 segundos."
+      },
+      {
+        "key": "d",
+        "text": "El juego se reanuda con un saque inicial para el equipo BLANCO."
+      },
+      {
+        "key": "e",
+        "text": "El juego se reinicia con un tiro libre para el equipo NEGRO"
+      },
+      {
+        "key": "f",
+        "text": "Time-out."
+      }
+    ]
+  },
+  {
+    "code": "16.25",
+    "text": "El equipo BLANCO tiene la posesión del balón y este está en juego. El OFICIAL B del equipo BLANCO se queja de la suspensión olvidada al equipo NEGRO. El delegado interrumpe el partido y el OFICIAL B recibe una tarjeta amarilla. Debido a esta sanción, y antes de que se reanude el partido, se queja de nuevo y los árbitros le imponen una suspensión de 2 minutos. El OFICIAL B llama entonces \"idiota\" al árbitro. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 16",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El equipo BLANCO se queda con un jugador menos en la cancha durante 4 minutos."
+      },
+      {
+        "key": "b",
+        "text": "El equipo BLANCO se queda con dos jugadores en la cancha durante 2 minutos."
+      },
+      {
+        "key": "c",
+        "text": "El equipo BLANCO se queda con un jugador menos en la cancha durante 2 minutos."
+      },
+      {
+        "key": "d",
+        "text": "Descalificación sin informe escrito para el oficial B del equipo BLANCO (tarjeta roja mostrada por los árbitros)."
+      },
+      {
+        "key": "e",
+        "text": "Descalificación con informe escrito para el oficial B del equipo BLANCO (tarjetas roja y azul mostradas por los árbitros)."
+      },
+      {
+        "key": "f",
+        "text": "Más adelante en el partido, es posible dar una tarjeta amarilla y/o una suspensión de 2 minutos a otro OFICIAL del equipo BLANCO."
+      },
+      {
+        "key": "g",
+        "text": "Tarjeta amarilla, suspensión de 2 minutos y descalificación es anotada en el acta del partido."
+      },
+      {
+        "key": "h",
+        "text": "El partido se reanuda con un tiro libre para el equipo BLANCO."
+      },
+      {
+        "key": "i",
+        "text": "El partido se reanuda con un tiro libre para el equipo NEGRO"
+      }
+    ]
+  }
+]

@@ -1,0 +1,14 @@
+meta {
+  name: Review
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/exams/{{examId}}/review
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

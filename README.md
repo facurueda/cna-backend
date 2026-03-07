@@ -97,3 +97,118 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 # vyro-api
+
+## Exams review endpoint
+
+`GET /exams/:examId/review`
+
+Requiere JWT. Devuelve detalle de revisión solo cuando el examen existe, el usuario tiene acceso (propietario o `ADMIN`) y el examen está `FINISHED`.
+
+Respuesta:
+
+```json
+{
+  "id": "exam-123",
+  "status": "FINISHED",
+  "questionCount": 10,
+  "correctCount": 4,
+  "wrongCount": 6,
+  "scorePercent": 40,
+  "isPassed": false,
+  "examQuestions": [
+    {
+      "id": "eq-1",
+      "order": 1,
+      "prompt": "Texto de la pregunta",
+      "options": [
+        { "key": "a", "text": "Opción A", "isCorrect": false },
+        { "key": "b", "text": "Opción B", "isCorrect": true }
+      ]
+    }
+  ],
+  "answers": [{ "examQuestionId": "eq-1", "selectedKeys": ["a"] }]
+}
+```
+
+Errores:
+
+- `401` sin autenticación.
+- `403` sin permisos para el examen.
+- `404` examen inexistente.
+- `409` examen todavía no finalizado.
+
+Nota: `GET /exams/:examId` (quiz) no expone respuestas correctas.
+
+## Users referees stats
+
+`GET /users/referees?competitionId=<id>`
+
+Además de los campos base del usuario, la respuesta ahora incluye estadísticas agregadas:
+
+- `practiceTestsCount`
+- `practiceAverage` (escala 0-10)
+- `finalTestsPassedCount`
+- `finalTestsTotalCount`
+- `finalAverage` (escala 0-10)
+- `clipsCount`
+- `commentsCount`
+
+Estas métricas se persisten en `UserStats` (1:1 con `User`) y se actualizan en tiempo real cuando:
+
+- se finaliza un examen de práctica/final
+- se crea un clip
+- se crea un comentario
+
+## Admin dashboard summary
+
+`GET /users/stats/summary` (solo `ADMIN`)
+
+Retorna los datos de las cards del dashboard:
+
+- `refereesCount`
+- `practiceTestsCount`
+- `finalAverageGlobal` (escala 0-10)
+- `clipsUploadedCount`
+
+## Admin final evolution
+
+`GET /users/stats/final-evolution?months=6` (solo `ADMIN`)
+
+Serie mensual del promedio de exámenes finales (`FINISHED` + `FINAL`) usando `finishedAt`.
+
+Respuesta:
+
+```json
+{
+  "months": [
+    { "month": "2025-09", "label": "Sep", "average": null, "examsCount": 0 },
+    { "month": "2025-10", "label": "Oct", "average": 7.8, "examsCount": 2 },
+    { "month": "2025-11", "label": "Nov", "average": null, "examsCount": 0 },
+    { "month": "2025-12", "label": "Dic", "average": 8.4, "examsCount": 1 },
+    { "month": "2026-01", "label": "Ene", "average": null, "examsCount": 0 },
+    { "month": "2026-02", "label": "Feb", "average": null, "examsCount": 0 }
+  ]
+}
+```
+
+## Final exam catalog and retries
+
+Los reintentos aplican solo a exámenes finales de catálogo.
+
+- `POST /final-exams` (`ADMIN`): crea catálogo final.
+- `POST /final-exams/:id/publish` (`ADMIN`): publica catálogo.
+- `GET /final-exams/my` (autenticado): lista catálogos disponibles + estado de intentos del usuario.
+- `GET /final-exams/:id/referees` (`ADMIN`): lista árbitros vinculados al catálogo, metadata del examen (fecha/competencias/preguntas/reintentos) y resumen (resoluciones/promedio/aprobados/pendientes).
+- `POST /final-exams/:id/start` (autenticado): inicia o reanuda intento.
+
+`POST /final-exams` acepta `title` opcional. Si no llega, se usa `"Examen"`.
+
+Reglas de reintentos:
+
+- `maxRetries` define la cantidad total de intentos permitidos.
+- `maxAttempts = maxRetries`.
+- Si existe intento `PENDING`, se reanuda ese intento.
+- Si el usuario ya aprobó el catálogo, no se habilitan más intentos.
+- Si `usedAttempts >= maxAttempts`, responde `409`.
+
+Nota: `POST /exams` ya no permite `examType=FINAL`; los finales se inician desde `/final-exams/:id/start`.

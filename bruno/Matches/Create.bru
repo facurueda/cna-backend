@@ -1,0 +1,28 @@
+meta {
+  name: Create (Admin)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/matches
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "competitionId": "{{competitionId}}",
+  "teamA": "Argentina",
+  "teamB": "Chile",
+  "category": "Adulto Masculino",
+  "date": "{{matchDate}}",
+  "refereeIds": ["{{refereeId1}}", "{{refereeId2}}"]
+}

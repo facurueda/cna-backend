@@ -2,27 +2,43 @@ import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/commo
 import { PrismaService } from "../prisma/prisma.service";
 import { ClipStatus, Role } from "@prisma/client";
 import { CreateCommentDto } from "./dto/create-comment.dto";
+import { UserStatsService } from "../users/user-stats.service";
 
 type AuthUser = { id: string; role: Role };
 
 @Injectable()
 export class CommentsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly userStatsService: UserStatsService,
+  ) {}
 
   private async assertCanAccessClip(clipId: string, user: AuthUser) {
     const clip = await this.prisma.clip.findUnique({
       where: { id: clipId },
-      select: { id: true, matchId: true, status: true },
+      select: {
+        id: true,
+        matchId: true,
+        status: true,
+        match: { select: { competitionId: true } },
+      },
     });
     if (!clip) throw new NotFoundException("Clip no encontrado");
 
     // Admin siempre
     if (user.role === Role.ADMIN) return clip;
 
-    // Referee del match
-    const isReferee = await this.prisma.matchReferee.findUnique({
-      where: { matchId_userId: { matchId: clip.matchId, userId: user.id } },
-      select: { matchId: true },
+    const competitionId = clip.match?.competitionId;
+    if (!competitionId) throw new NotFoundException("Match no encontrado");
+
+    const isReferee = await this.prisma.competitionReferee.findUnique({
+      where: {
+        competitionId_userId: {
+          competitionId,
+          userId: user.id,
+        },
+      },
+      select: { competitionId: true },
     });
 
     if (!isReferee) throw new ForbiddenException("No tenés acceso a este clip");
@@ -37,15 +53,20 @@ export class CommentsService {
       throw new ForbiddenException("El clip está cerrado, solo admin puede comentar");
     }
 
-    return this.prisma.comment.create({
-      data: {
-        clipId: dto.clipId,
-        userId: user.id,
-        content: dto.content,
-      },
-      include: {
-        user: { select: { id: true, firstName: true, lastName: true, role: true } },
-      },
+    return this.prisma.$transaction(async (tx) => {
+      const createdComment = await tx.comment.create({
+        data: {
+          clipId: dto.clipId,
+          userId: user.id,
+          content: dto.content,
+        },
+        include: {
+          user: { select: { id: true, firstName: true, lastName: true, role: true } },
+        },
+      });
+
+      await this.userStatsService.incrementComments(user.id, 1, tx);
+      return createdComment;
     });
   }
 

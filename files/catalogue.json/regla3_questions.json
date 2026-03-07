@@ -1,0 +1,94 @@
+[
+  {
+    "code": "3.1",
+    "text": "¿Cuántos colores puede tener el balón?",
+    "categoryName": "Regla 3",
+    "answers": [
+      {
+        "key": "a",
+        "text": "1"
+      },
+      {
+        "key": "b",
+        "text": "2"
+      },
+      {
+        "key": "c",
+        "text": "3"
+      },
+      {
+        "key": "d",
+        "text": "Ilimitados"
+      }
+    ]
+  },
+  {
+    "code": "3.2",
+    "text": "¿Cuál de estos balones deben elegir los árbitros para un partido masculino?",
+    "categoryName": "Regla 3",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Circunferencia 57cm, peso 450g"
+      },
+      {
+        "key": "b",
+        "text": "Circunferencia 58cm, peso 400g"
+      },
+      {
+        "key": "c",
+        "text": "Circunferencia 59cm, peso 425g"
+      },
+      {
+        "key": "d",
+        "text": "Circunferencia 60cm, peso 500g"
+      }
+    ]
+  },
+  {
+    "code": "3.3",
+    "text": "¿Cuál de estos balones deben elegir los árbitros para un partido femenino?",
+    "categoryName": "Regla 3",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Circunferencia 53cm, peso 350g"
+      },
+      {
+        "key": "b",
+        "text": "Circunferencia 54cm, peso 300g"
+      },
+      {
+        "key": "c",
+        "text": "Circunferencia 55cm, peso 425g"
+      },
+      {
+        "key": "d",
+        "text": "Circunferencia 56cm, peso 375g"
+      }
+    ]
+  },
+  {
+    "code": "3.4",
+    "text": "Los árbitros han decidido poner en juego el balón de reserva. ¿Cuándo debería volver a utilizarse el balón original?",
+    "categoryName": "Regla 3",
+    "answers": [
+      {
+        "key": "a",
+        "text": "En la próxima interrupción"
+      },
+      {
+        "key": "b",
+        "text": "No puede ser utilizado de nuevo, excepto si fuera imposible seguir jugando con el balón reserva"
+      },
+      {
+        "key": "c",
+        "text": "Cuando los árbitros decidan que es necesario utilizarlo otra vez"
+      },
+      {
+        "key": "d",
+        "text": "Si uno de los equipos lo solicita"
+      }
+    ]
+  }
+]

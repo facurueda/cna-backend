@@ -1,0 +1,14 @@
+meta {
+  name: Delete (Admin)
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/competitions/{{competitionId}}
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}

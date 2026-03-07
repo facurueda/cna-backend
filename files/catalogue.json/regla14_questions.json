@@ -1,0 +1,582 @@
+[
+  {
+    "code": "14.1",
+    "text": "El resultado del partido es 20:20. NEGRO 7 intercepta un pase del equipo BLANCO y comienza un contraataque sin que nadie del equipo BLANCO sea capaz de seguirle. Un espectador entra corriendo al terreno de juego y derriba a NEGRO 7, lo cual provoca un tumulto con aún más espectadores dentro del terreno de juego. El oficial A del equipo NEGRO golpea al espectador que había parado a NEGRO 7. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Suspensión definitiva del partido"
+      },
+      {
+        "key": "b",
+        "text": "Time-Out, lanzamiento de 7 metros para el equipo NEGRO, descalificación del oficial A del equipo NEGRO, reducción de un jugador del equipo NEGRO en el terreno durante 2’. Informe escrito (tarjeta roja y tarjeta azul mostradas por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Time-Out, lanzamiento de 7 metros para el equipo NEGRO, descalificación del oficial A del equipo NEGRO, reducción de un jugador del equipo NEGRO en el terreno durante 2’ (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Time-Out, lanzamiento de 7 metros para el equipo NEGRO, 2’ de exclusión para el oficial A del equipo NEGRO, reducción de un jugador del equipo NEGRO en el terreno durante 2’"
+      }
+    ]
+  },
+  {
+    "code": "14.2",
+    "text": "Saque de banda para el equipo NEGRO. NEGRO 7 lo ejecuta correctamente y observa que el portero BLANCO 12 se encuentra parado lejos de su portería. NEGRO 7 lanza el balón directamente en la dirección de la portería vacía. El jugador de pista BLANCO 3 entra en el área de portería y para el balón. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para BLANCO 3"
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para BLANCO 3"
+      }
+    ]
+  },
+  {
+    "code": "14.3",
+    "text": "Cuando se está ejecutando un lanzamiento de 7 metros, BLANCO 4 lanza y el balón golpea en el poste. El balón rebota hacia BLANCO 4 sin tocar a ningún compañero ni contrario. Lanza el balón dentro de la portería. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Gol para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "14.4",
+    "text": "BLANCO 3 se mueve alrededor de NEGRO 4 junto a la línea de golpe franco. Después del tercer paso intenta realizar un lanzamiento, pero es empujado por NEGRO 4. Inmediatamente después de efectuar el cuarto paso marca un bonito gol. Ningún otro jugador del equipo NEGRO hubiera podido intervenir. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Ley de ventaja y por tanto gol para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Sanción progresiva para NEGRO 4"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "14.5",
+    "text": "BLANCO 9 ejecuta un lanzamiento de 7 metros y el balón entra en la portería; pero antes de que el balón abandonara la mano del lanzador, BLANCO 4 cruzó la línea de golpe franco. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Repetir el lanzamiento de 7 metros"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Repetir el lanzamiento y amonestación para BLANCO 4"
+      }
+    ]
+  },
+  {
+    "code": "14.6",
+    "text": "NEGRO 2 está preparado para ejecutar un lanzamiento de 7 metros después del toque de silbato del árbitro. En ese momento BLANCO 5 cruza la línea de golpe franco. A pesar de esa acción, NEGRO 2 marca un gol. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol y descalificación para BLANCO 5 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "b",
+        "text": "Gol y exclusión para BLANCO 5"
+      },
+      {
+        "key": "c",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Repetir el lanzamiento de 7 metros y descalificación de BLANCO 5"
+      }
+    ]
+  },
+  {
+    "code": "14.7",
+    "text": "BLANCO 6 tiene el balón y está listo para ejecutar un lanzamiento de 7 metros cuando el oficial A del equipo NEGRO llama a su portero NEGRO 12 para ser sustituido. NEGRO 12 se dispone a realizar lo que le ha pedido. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Ninguna acción"
+      },
+      {
+        "key": "b",
+        "text": "Amonestación para el oficial A del equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Amonestación para el oficial A del equipo NEGRO y para NEGRO 12"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para NEGRO 12"
+      }
+    ]
+  },
+  {
+    "code": "14.8",
+    "text": "BLANCO 4 ha ejecutado un lanzamiento a la portería del equipo NEGRO. El balón golpea en el poste y vuelve en dirección al terreno de juego. BLANCO 6 se encuentra junto a la línea del área de portería y está listo para recoger el balón. NEGRO 4 entra claramente en el área de portería para golpear el balón que sale por fuera de la línea exterior de portería de su equipo. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "14.9",
+    "text": "Como BLANCO 3 está ejecutando un lanzamiento de 7 metros, BLANCO 5 cruza la línea de golpe franco después del toque de silbato del árbitro, pero antes de que el balón haya abandonado la mano de BLANCO 3. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Repetición del lanzamiento de 7 metros"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva contra BLANCO 5"
+      }
+    ]
+  },
+  {
+    "code": "14.10",
+    "text": "BLANCO 9 está completamente solo junto a la línea del área de portería del equipo contrario, listo para recibir el balón. BLANCO 10 lo ha visto y le pasa el balón botando a través del área de portería. Esto es advertido por NEGRO 3, que claramente entra en su propia área de portería y para el balón, estando con los dos pies dentro del área. Esta es la segunda ocasión en el partido que realiza esta acción. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para en equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Sanción progresiva para NEGRO 3"
+      }
+    ]
+  },
+  {
+    "code": "14.11",
+    "text": "El pivote NEGRO 10 está bloqueando correctamente al defensor BLANCO 2. Cuando NEGRO 10 está preparado para moverse, su compañero NEGRO 4 lanza un pase en bote al espacio abierto donde NEGRO 10 podría ser capaz de llegar. Antes de que NEGRO 10 pueda recibir el balón, es agarrado por detrás por BLANCO 2, que le sujeta por la camiseta. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO, independientemente de las posiciones de los contrarios"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO, si ningún otro jugador del equipo BLANCO podía impedir legalmente el lanzamiento de NEGRO 10."
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para BLANCO 2"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación obligatoria para BLANCO 2 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "14.12",
+    "text": "BLANCO 3 está corriendo un contraataque, con el balón, hacia la portería del equipo NEGRO. Cuando está haciendo un lanzamiento en salto, hay un pitido de un espectador que distrae a BLANCO 3 de forma que no lanza a la portería, parándose con el balón en el área de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo B después de un toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo NEGRO después de un toque de silbato"
+      },
+      {
+        "key": "e",
+        "text": "Informe escrito"
+      }
+    ]
+  },
+  {
+    "code": "14.13",
+    "text": "El equipo BLANCO corre un contraataque con el marcador 26:26. BLANCO 5 está listo para lanzar a la portería, solo junto a la línea del área de portería del equipo NEGRO. En ese momento hay un pitido del cronometrador, que indica que el partido ha terminado. Los árbitros determinan que quedan por jugar 20 segundos. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO, junto a la mesa del cronometrador"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Informe escrito"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO, desde el lugar donde estaba el balón en el momento en que sonó la señal"
+      }
+    ]
+  },
+  {
+    "code": "14.14",
+    "text": "¿Cuál(es) de las afirmaciones siguientes con respecto a la ejecución de un lanzamiento de 7 metros son correctas?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El jugador que ejecuta el lanzamiento tiene permitido situarse hasta un metro por detrás de la línea de 7 metros"
+      },
+      {
+        "key": "b",
+        "text": "Los árbitros deben conceder un Time-out si el equipo defensor está cambiando los porteros"
+      },
+      {
+        "key": "c",
+        "text": "El portero recibirá una sanción personal si traspasa repetidamente la línea de 4 metros"
+      },
+      {
+        "key": "d",
+        "text": "Los jugadores del equipo defensor deben estar siempre a 3 metros del lanzador"
+      }
+    ]
+  },
+  {
+    "code": "14.15",
+    "text": "BLANCO 5 está en posesión del balón y salta desde la esquina derecha hacia el área de portería del equipo NEGRO y choca con NEGRO 11, quién está con su brazos levantados unos 50cm dentro del área de portería. NEGRO 11 ha hecho esto por tercera vez en el partido ¿decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Falta en ataque contra BLANCO 5"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para NEGRO 11"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para NEGRO 11"
+      }
+    ]
+  },
+  {
+    "code": "14.16",
+    "text": "BLANCO 6 está corriendo un contraataque y tiene una clara ocasión de gol cuando las luces del pabellón se apagan. ¿Cuál/es de las siguientes afirmaciones es/son correctas?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Los árbitros esperan al resultado de la clara ocasión de gol"
+      },
+      {
+        "key": "b",
+        "text": "Los árbitros interrumpen el partido inmediatamente y conceden un Time-out"
+      },
+      {
+        "key": "c",
+        "text": "Después de que las luces estén funcionando de nuevo, el partido se reanuda con un golpe franco a favor del equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Después de que las luces estén funcionando de nuevo, el partido se reanuda con un lanzamiento de 7 metros a favor del equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Informe escrito"
+      }
+    ]
+  },
+  {
+    "code": "14.17",
+    "text": "Mientras BLANCO 3 está ejecutando un lanzamiento de 7 metros, BLANCO 5 cruza la línea de golpe franco después del toque de silbato del árbitro pero antes de que el balón haya abandonado la mano del lanzador. El portero NEGRO 1 para el lanzamiento. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Repetir el lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "14.18",
+    "text": "BLANCO 2 está preparado para ejecutar un lanzamiento de 7 metros. El árbitro central pita y BLANCO 2 deja caer el balón al suelo. Inmediatamente NEGRO 3 recoge el balón y lo pasa a NEGREO 2 que marca un gol en contraataque. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Repetición del lanzamiento de 7 metros"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Time–out"
+      }
+    ]
+  },
+  {
+    "code": "14.19",
+    "text": "BLANCO 6 tiene el balón junto a la línea de golpe franco del equipo NEGRO y es derribado por NEGRO 5 por medio de una falta imprudente. Al mismo tiempo NEGRO 8 está junto a la línea del área de portería, entre su propia portería y BLANCO 6. ¿Decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Descalificación de NEGRO 5 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para NEGRO 5"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "14.20",
+    "text": "El equipo BLANCO está atacando y juega 7 contra 6 con la portería vacía. NEGRO 8 intercepta un pase. NEGRO 8 dribla el balón, y antes de que pueda ponerse en posición para lanzar a la portería, es atacado por BLANCO 3, que logra retenerlo. Mientras tanto, el portero BLANCO 12 entra en el área de portería nuevamente después de una sustitución correcta con BLANCO 7. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Time-out"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "14.21",
+    "text": "El equipo BLANCO está atacando y juega 7 contra 6 con la portería vacía. NEGRO 5 intercepta un pase. NEGRO 5 inmediatamente trata de lanzar directamente hacia la portería vacía. En ese momento, BLANCO 6 lo empuja desde atrás, por lo que pierde parcialmente el control del cuerpo y en su disparo falla el gol. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Time-out"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 6"
+      },
+      {
+        "key": "e",
+        "text": "Descalificación para BLANCO 6 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "14.22",
+    "text": "El equipo BLANCO ataca y juega 7 contra 6 con la portería vacía. BLANCO 11 falla un pase y el balón cruza la línea de banda para el equipo NEGRO. NEGRO 9 toma el balón y ejecuta el saque de banda para intentar lanzar directamente a la portería vacía. El balón es bloqueado por BLANCO 4, que se encuentra demasiado cerca durante la ejecución del saque. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Corrección de la posición de BLANCO 4"
+      },
+      {
+        "key": "b",
+        "text": "Sanción progresiva para BLANCO 4"
+      },
+      {
+        "key": "c",
+        "text": "Repetición del lanzamiento de saque lateral para el equipo NEGRO después de la señal de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "f",
+        "text": "Exclusión de 2’ para BLANCO 4"
+      }
+    ]
+  },
+  {
+    "code": "14.23",
+    "text": "El equipo BLANCO está atacando y juega 7 contra 6 con la portería vacía. Los árbitros pitan falta de ataque contra BLANCO 7. NEGRO 8 toma el balón y está listo para ejecutar el golpe franco como un intento de lanzar el balón hacia la portería vacía. Mientras lo hace y antes de que el balón haya abandonado su mano, BLANCO 7 lo derriba por detrás. Poco después, el portero BLANCO 16 ingresa a su área de portería después de una sustitución correcta con BLANCO 2. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Sanción progresiva para BLANCO 7"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para BLANCO 7"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para BLANCO 7 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Time-out"
+      },
+      {
+        "key": "e",
+        "text": "Repetición del golpe franco para el equipo NEGRO después de la señal del silbato"
+      },
+      {
+        "key": "f",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "14.24",
+    "text": "El equipo BLANCO juega sin portero. El jugador NEGRO 9 intercepta un pase y lanza a la portería vacía. El jugador BLANCO 4 salta desde fuera del área de portería y, mientras está en el aire sobre el área de portería, atrapa el balón y aterriza dentro del área de portería con el balón en las manos. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 14",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Tiro libre para el equipo NEGRO."
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO."
+      },
+      {
+        "key": "c",
+        "text": "Sin sancion para BLANCO 4"
+      },
+      {
+        "key": "d",
+        "text": "Tarjeta amarilla para BLANCO 4"
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para BLANCO"
+      }
+    ]
+  }
+]

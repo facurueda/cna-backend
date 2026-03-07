@@ -1,0 +1,31 @@
+meta {
+  name: Create Catalog
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/final-exams
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "title": "Final Reglamento",
+  "questionCount": 20,
+  "categoryIds": ["{{questionCategoryId1}}", "{{questionCategoryId2}}"],
+  "competitionIds": ["{{competitionId}}"],
+  "maxRetries": 2,
+  "isTimed": true,
+  "totalTimeSeconds": 1200,
+  "shuffleOptions": true,
+  "passThresholdPercent": 70
+}

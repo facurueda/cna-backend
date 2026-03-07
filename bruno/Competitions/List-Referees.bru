@@ -1,0 +1,14 @@
+meta {
+  name: List Referees
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/competitions/{{competitionId}}/referees
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

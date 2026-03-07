@@ -1,0 +1,14 @@
+meta {
+  name: My Competitions
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/competitions/my
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

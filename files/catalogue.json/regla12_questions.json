@@ -1,0 +1,251 @@
+[
+  {
+    "code": "12.1",
+    "text": "Mientras ejecuta un saque de portería, el portero BLANCO 1 toca la línea del área de portería con un pie. ¿Decisión correcta?",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Repetir el saque de portería, después de un toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco a favor del equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Permitir que el juego continúe sin interrupción"
+      }
+    ]
+  },
+  {
+    "code": "12.2",
+    "text": "Después del toque de silbato para la ejecución de un lanzamiento de 7 metros, el portero BLANCO 12 pisa con un pie la línea de restricción del portero. El lanzamiento de 7 metros se va por encima del larguero. ¿Decisión correcta?",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Repetición del lanzamiento de 7 metros, después del toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Dado que no fue gol, el juego continúa con un saque de portería"
+      },
+      {
+        "key": "c",
+        "text": "La posición del portero es correcta"
+      }
+    ]
+  },
+  {
+    "code": "12.3",
+    "text": "El portero BLANCO 1 detiene un lanzamiento y se lanza a por el balón que rueda hacia el área de juego. NEGRO 7 está solo y preparado para recoger el balón. En el último momento, BLANCO 1 usa sus manos para golpear el balón, que cruza la línea exterior de la portería, por fuera de la portería. ¿Decisión correcta?",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "12.4",
+    "text": "Cuando el portero BLANCO 12 está ejecutando un saque de portería deja caer el balón. El balón golpea su pie. Desde allí el balón cruza la línea del área de portería hacia el área de juego. BLANCO 12 corre tras el balón, lo recoge y vuelve con él a su área de portería, para repetir el saque de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Time-out"
+      },
+      {
+        "key": "d",
+        "text": "Corrección, saque de portería después de toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "12.5",
+    "text": "¿Cuándo se considera ejecutado un saque de portería de forma que el balón pueda ser jugado por un jugador de campo?",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Cuando el balón está todavía en el aire encima del área de portería"
+      },
+      {
+        "key": "b",
+        "text": "Cuando el balón ha dejado la mano del portero, ha rebasado la línea del área de portería y entrado en el área de juego"
+      },
+      {
+        "key": "c",
+        "text": "Cuando el balón ha abandonado la mano del portero"
+      },
+      {
+        "key": "d",
+        "text": "Cuando un compañero de equipo del portero ha tocado el balón"
+      }
+    ]
+  },
+  {
+    "code": "12.6",
+    "text": "El portero BLANCO 12 está ejecutando un saque de portería. NEGRO 10, que está situado fuera del área de portería, intenta legalmente ganar la posesión del balón. Lo consigue y marca un gol. ¿Decisión correcta?",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva contra NEGRO 10"
+      }
+    ]
+  },
+  {
+    "code": "12.7",
+    "text": "El portero BLANCO 12 detiene un lanzamiento despejando el balón por la línea de fondo fuera de la portería. ¿Que gestoforma(s) debería realizar el árbitro de portería si es necesario?",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Número 8: Saque de portería"
+      },
+      {
+        "key": "b",
+        "text": "Número 9: Golpe franco – dirección"
+      },
+      {
+        "key": "c",
+        "text": "Primero número 9: Golpe franco – dirección, luego número 8: Saque de portería"
+      },
+      {
+        "key": "d",
+        "text": "Primero número 8: Saque de portería, luego número 9: Golpe franco – dirección"
+      }
+    ]
+  },
+  {
+    "code": "12.8",
+    "text": "El portero BLANCO 1 pierde el balón mientras está ejecutando un saque de portería. El balón bota en dirección al terreno de juego donde NEGRO 6 está esperando por el balón. BLANCO 2 se lanza sobre el área de portería y empuja el balón, que está en el aire, hacia la línea de banda.",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO después del toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "12.9",
+    "text": "¿Qué afirmaciones son correctas respecto al saque de portería?",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El saque de portería se considera ejecutado cuando el balón ha salido de la mano del portero"
+      },
+      {
+        "key": "b",
+        "text": "Los jugadores contrarios deben mantenerse a una distancia de 3 metros"
+      },
+      {
+        "key": "c",
+        "text": "El saque de portería se considera ejecutado cuando el balón ha salido de la mano del portero y ha rebasado la línea del área de portería"
+      },
+      {
+        "key": "d",
+        "text": "Los jugadores contrarios están autorizados a permanecer inmediatamente fuera de la línea del área de portería"
+      }
+    ]
+  },
+  {
+    "code": "12.10",
+    "text": "Saque de portería a favor del equipo NEGRO. El portero NEGRO 1 tiene prisa porque su equipo va por detrás en el marcador. Cuando está ejecutando el saque de portería el balón se resbala de su mano y va hacia NEGRO 6, que está aún dentro del área de portería. NEGRO 6 devuelve el balón a NEGRO 1 con su pie. ¿Decisión correcta?",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo NEGRO después de toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco contra el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "12.11",
+    "text": "¿Cuáles de las siguientes afirmaciones con respecto a un saque de portería son correctas?",
+    "categoryName": "Regla 12",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Los jugadores del otro equipo deben permanecer fuera de la línea de golpe franco hasta que el balón esté en juego"
+      },
+      {
+        "key": "b",
+        "text": "Los jugadores del otro equipo deben permanecer fuera de la línea del área de portería, a 3 metros de distancia de la posición desde donde el portero ejecuta el saque de portería"
+      },
+      {
+        "key": "c",
+        "text": "A los jugadores del otro equipo se les permite tocar el balón antes de que éste cruce la línea del área de portería"
+      },
+      {
+        "key": "d",
+        "text": "El portero no puede marcar un gol en su propia portería cuando ejecuta un saque de portería"
+      },
+      {
+        "key": "e",
+        "text": "El portero no puede marcar directamente un gol directamente en la portería contraria con un saque de portería"
+      },
+      {
+        "key": "f",
+        "text": "Al portero no se le permite tocar la línea del área de portería cuando está ejecutando un saque de portería"
+      }
+    ]
+  }
+]

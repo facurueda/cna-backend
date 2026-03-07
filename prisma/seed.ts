@@ -10,6 +10,23 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
+  const clipCategories = [
+    "7 metros",
+    "Faltas tecnicas",
+    "Tiro Libre",
+    "Amarilla",
+    "2 minutos",
+    "Roja",
+    "Roja + Azul",
+    "Juego Pasivo",
+    "Especiales",
+  ];
+
+  await prisma.clipCategory.createMany({
+    data: clipCategories.map((name) => ({ name })),
+    skipDuplicates: true,
+  });
+
   const adminPassword = await bcrypt.hash("Admin123!", 10);
   const userPassword = await bcrypt.hash("User123!", 10);
 

@@ -1,0 +1,38 @@
+meta {
+  name: Bulk
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/questions/bulk
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "questions": [
+    {
+      "code": "SAR.1",
+      "text": "Texto de la pregunta",
+      "categoryName": "Reglas Generales",
+      "answers": [
+        { "key": "a", "text": "Respuesta A" },
+        { "key": "b", "text": "Respuesta B" }
+      ]
+    },
+    {
+      "code": "17.8",
+      "text": "Otra pregunta",
+      "categoryName": "Reglas Generales",
+      "answers": [
+        { "key": "a", "text": "Opcion A" },
+        { "key": "b", "text": "Opcion B" }
+      ]
+    }
+  ]
+}

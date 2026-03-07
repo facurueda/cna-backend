@@ -1,0 +1,371 @@
+[
+  {
+    "code": "13.1",
+    "text": "Golpe franco para el equipo BLANCO. Antes de que BLANCO 5 pueda recoger el balón, NEGRO 6 se anticipa, lo pone bajo su brazo y corre hacia su portería. Después de dar algunos pasos, hace rodar el balón hacia BLANCO 5. ¿Decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para NEGRO 6"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO después del toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Amonestación para NEGRO 6"
+      },
+      {
+        "key": "d",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "e",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "13.2",
+    "text": "NEGRO 7 está en posesión del balón e intenta iniciar un contraataque pero es retenido por BLANCO 17. El árbitro va a pitar cuando observa la posibilidad de aplicar la ley de la ventaja para el equipo NEGRO, porque NEGRO 8 ha recibido el balón y lanza a la portería del equipo BLANCO. El portero BLANCO 12 para el lanzamiento y quiere iniciar un contraataque. Ambos equipos ya tenían 3 amonestaciones. ¿Decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para BLANCO 17"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Time-out"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "13.3",
+    "text": "Golpe franco a favor del equipo BLANCO. NEGRO 6 tiene el balón y se lo lleva con él a 4 metros del lugar en que debe ejecutarse el golpe franco. ¿Decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Amonestación para NEGRO 6"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para NEGRO 6"
+      },
+      {
+        "key": "c",
+        "text": "Descalificación para NEGRO 6 (tarjeta roja mostrada por los árbitros)"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO, desde el lugar en se cometió la infracción que originó el golpe franco"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco a favor del equipo BLANCO, desde el lugar donde está el balón"
+      }
+    ]
+  },
+  {
+    "code": "13.4",
+    "text": "Se sanciona un golpe franco contra BLANCO 4, quien entonces coge el balón, cruza el área de portería y deja el balón en el suelo. ¿Decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para BLANCO 4"
+      },
+      {
+        "key": "b",
+        "text": "Amonestación para BLANCO 4"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "13.5",
+    "text": "BLANCO 5 está en posesión del balón, cuando el oficial B del equipo BLANCO protesta a los árbitros. Los árbitros pitan, ordenan un time-out y amonestan al oficial B del equipo BLANCO. ¿Cómo debe reanudarse el juego?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO junto a la zona de cambios del equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO junto a la zona de cambios del equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO, ejecutado desde el lugar donde el balón se encontraba cuando el juego fue interrumpido"
+      },
+      {
+        "key": "d",
+        "text": "Saque de banda para el equipo NEGRO junto a la zona de cambios del equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "13.6",
+    "text": "El árbitro central interrumpe el partido aunque no ha habido ninguna infracción a las reglas por ninguno de los equipos. No hay ningún Time-out solicitado. NEGRO 13 había lanzado el balón en dirección a la portería del equipo BLANCO inmediatamente antes de la interrupción. Después del toque de silbato el balón entra en la portería sin ninguna oportunidad del portero BLANCO 1 para evitarlo. ¿Cómo debería continuar el partido?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Gol para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "13.7",
+    "text": "BLANCO 7 está en un contraataque, con un jugador del equipo NEGRO entre él y el arquero, lanza a portería y golpea a NEGRO 12 en la cabeza con el balón, por lo que NEGRO 12 se derrumba. El balón rechazado de la cabeza del portero va a BLANCO 9 que está junto a la línea del área de portería. BLANCO 9 lanza el balón a la portería vacía. Justo antes de que el balón atraviese la línea de gol los árbitros pitan e interrumpen el juego. El portero NEGRO 12 necesita atención médica en la pista. ¿Decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO después del toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Time-out"
+      },
+      {
+        "key": "e",
+        "text": "NEGRO 12 debe de abandonar la pista y solo puede volver a entrar después del tercer ataque de su equipo"
+      }
+    ]
+  },
+  {
+    "code": "13.8",
+    "text": "NEGRO 9 recibe un golpe franco, pero BLANCO 5 está aún en posesión del balón. BLANCO 5 se dirige hacia el árbitro y le entrega amablemente el balón. ¿Decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Exclusión de 2’ para BLANCO 5 y golpe franco para el equipo NEGRO ejecutado desde el lugar donde se encuentra el balón"
+      },
+      {
+        "key": "b",
+        "text": "Amonestación para BLANCO 5 y golpe franco para el equipo NEGRO ejecutado desde el lugar donde se encuentra el balón"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para BLANCO 5 y golpe franco para el equipo NEGRO ejecutado desde el lugar donde se cometió la falta"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para BLANCO 5 y golpe franco para el equipo NEGRO ejecutado desde el lugar donde se cometió la falta"
+      }
+    ]
+  },
+  {
+    "code": "13.9",
+    "text": "Cambio antirreglamentario de BLANCO 5, justo después de que los árbitros hayan señalado un lanzamiento de 7 metros para el equipo BLANCO. ¿Decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco a favor del equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros a favor del equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para BLANCO 5"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para el oficial responsable del equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "13.10",
+    "text": "¿Cuáles de las siguientes afirmaciones sobre el lugar de ejecución de un golpe franco son correctas?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Si el balón no se coloca en el suelo inmediatamente después de una decisión de golpe franco, se permite a los contrarios ejecutar el golpe franco en el lugar donde se encuentre el balón"
+      },
+      {
+        "key": "b",
+        "text": "Tras un cambio antirreglamentario, el golpe franco puede ejecutarse donde está el balón, en vez de ejecutarlo desde la zona de cambios, si esto es más ventajoso para el equipo lanzador"
+      },
+      {
+        "key": "c",
+        "text": "Después de un juego pasivo, el golpe franco siempre se ejecuta desde el sitio donde se encontraba el balón en el momento de señalar el golpe franco"
+      },
+      {
+        "key": "d",
+        "text": "Para ejecutar un golpe franco desde la línea de centro, la tolerancia a ambos lados es la misma que en un saque de centro."
+      }
+    ]
+  },
+  {
+    "code": "13.11",
+    "text": "NEGRO 11 tiene el balón en ataque y trata de sobrepasar BLANCO 2. Debido a un toque de silbato desde la zona de espectadores, BLANCO 2 deja de defender. Entonces NEGRO 11 queda sólo para lanzar. ¿Decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Time–out; consulta con el cronometrador"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "13.12",
+    "text": "El equipo BLANCO tiene el balón junto a la línea de golpe franco del equipo NEGRO. El oficial A del equipo NEGRO protesta tan fuertemente una decisión de los árbitros que éstos interrumpen el partido. ¿Decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Sanción progresiva para el oficial A del equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco a favor del equipo BLANCO junto a la zona de cambios del equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco a favor del equipo BLANCO junto a la línea de golpe franco del equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "13.13",
+    "text": "Amonestación para NEGRO 6. En el momento del toque de silbato para la ejecución del golpe franco a favor del equipo BLANCO, el árbitro central no ve que BLANCO 11 se encuentra entre la línea del área de portería y la de golpe franco. BLANCO 11 recibe el balón y tiene una clara ocasión de gol. El árbitro de portería ha observado el problema. ¿Decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Repetición del golpe franco después de corrección y toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "El árbitro de portería decide un golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "El árbitro de portería ordena una amonestación para BLANCO 11"
+      },
+      {
+        "key": "e",
+        "text": "Time-out"
+      }
+    ]
+  },
+  {
+    "code": "13.14",
+    "text": "El equipo BLANCO está en posesión del balón. El equipo NEGRO ya se ha posicionado en defensa. BLANCO 8 está corriendo cerca de la línea lateral. BLANCO 4 pasa el balón a BLANCO 8. BLANCO 8 choca con un fotógrafo, que camina entre las gradas y el terreno de juego y toca la línea lateral. BLANCO 8 no logra atrapar el balón y pierde el control del cuerpo. Antes de que los árbitros interrumpan el juego, la pelota pasa la línea lateral. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego se reinicia con un saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "El juego se reinicia con un golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Time-out"
+      },
+      {
+        "key": "d",
+        "text": "Informe escrito"
+      }
+    ]
+  },
+  {
+    "code": "13.15",
+    "text": "El equipo NEGRO está atacando. Los árbitros otorgan un golpe franco a NEGRO 2. Antes de que NEGRO 2 pueda ejecutar el golpe franco, NEGRO 11 tira de BLANCO 8 hacia abajo. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 13",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO después de la señal del silbato"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO después de la señal del silbato"
+      },
+      {
+        "key": "c",
+        "text": "Time-out"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para NEGRO 11"
+      },
+      {
+        "key": "e",
+        "text": "Exclusión de 2’ para NEGRO 11"
+      },
+      {
+        "key": "f",
+        "text": "Descalificación para NEGRO 11 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  }
+]

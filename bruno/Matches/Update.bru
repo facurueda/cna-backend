@@ -1,0 +1,24 @@
+meta {
+  name: Update (Admin)
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/matches/{{matchId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  "teamA": "Argentina",
+  "teamB": "Brasil"
+}

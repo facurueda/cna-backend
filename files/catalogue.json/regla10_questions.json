@@ -1,0 +1,356 @@
+[
+  {
+    "code": "10.1",
+    "text": "El equipo BLANCO gana el sorteo y elige comenzar sacando. El representante del equipo NEGRO quiere cambiar de campo. ¿Decisión correcta?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Cambio de campo"
+      },
+      {
+        "key": "b",
+        "text": "Cambio de campo si el equipo BLANCO está de acuerdo"
+      },
+      {
+        "key": "c",
+        "text": "Repetir el sorteo"
+      },
+      {
+        "key": "d",
+        "text": "No cambiar de campo"
+      }
+    ]
+  },
+  {
+    "code": "10.2",
+    "text": "El equipo BLANCO gana el sorteo y elige cambiar de campo. El equipo NEGRO quiere que el equipo BLANCO ejecute el saque de centro. ¿Decisión correcta?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El equipo BLANCO realiza el saque de centro"
+      },
+      {
+        "key": "b",
+        "text": "Cambio de campo y el equipo NEGRO realiza el saque de centro"
+      },
+      {
+        "key": "c",
+        "text": "Repetir el sorteo"
+      },
+      {
+        "key": "d",
+        "text": "Los representantes de ambos equipos deben llegar a un acuerdo"
+      }
+    ]
+  },
+  {
+    "code": "10.3",
+    "text": "(Sin área de saque de centro). ¿Desde dónde se puede ejecutar el saque de centro?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Hasta 3 metros detrás de la línea central en su propia mitad del terreno"
+      },
+      {
+        "key": "b",
+        "text": "Hasta 3 metros de la línea central en la mitad del terreno de los contrarios"
+      },
+      {
+        "key": "c",
+        "text": "En el centro del terreno de juego con un pie en la línea central y el otro pie detrás de la línea con una tolerancia hacia ambos lados de aproximadamente 1’5 metros"
+      }
+    ]
+  },
+  {
+    "code": "10.4",
+    "text": "(Sin área de saque de centro). Con el marcador 15-15 y justo antes del final del partido, el equipo NEGRO marca el 15-16. El equipo BLANCO quiere ejecutar el saque de centro rápidamente. El jugador con el balón está en el centro del terreno de juego con un pie delante de la línea central y el otro detrás de la línea. ¿Decisión correcta?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Corrección; después, toque de silbato para volver a ejecutar el saque de centro"
+      },
+      {
+        "key": "b",
+        "text": "La posición es correcta; toque de silbato para ejecutar el saque de centro"
+      },
+      {
+        "key": "c",
+        "text": "Time-out; corrección; toque de silbato para ejecutar el saque de centro"
+      }
+    ]
+  },
+  {
+    "code": "10.5",
+    "text": "El equipo BLANCO está a punto de ejecutar un saque de centro. El portero NEGRO 1 no está todavía en su área de portería. El árbitro central pita para reanudar el partido y el jugador BLANCO 9 inmediatamente marca un gol. ¿Decisión correcta?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO desde la línea central"
+      },
+      {
+        "key": "b",
+        "text": "Repetir el saque de centro"
+      },
+      {
+        "key": "c",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "10.6",
+    "text": "(Sin área de saque de centro). ¿Qué afirmaciones sobre el saque de centro son correctas?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El saque de centro debe ser ejecutado dentro de los 3 segundos siguientes al toque de silbato, desde el centro del terreno y debe ser ejecutado hacia la mitad del terreno del equipo contrario"
+      },
+      {
+        "key": "b",
+        "text": "Un gol contra el equipo contrario puede ser marcado directamente por medio de un saque de centro"
+      },
+      {
+        "key": "c",
+        "text": "Las posiciones incorrectas de los defensores deben ser corregidas"
+      },
+      {
+        "key": "d",
+        "text": "Si el lanzador bota el balón después del toque de silbato para la ejecución, debe señalarse un golpe franco a favor de los oponentes"
+      },
+      {
+        "key": "e",
+        "text": "Los compañeros del lanzador están autorizados a cruzar la línea de centro, antes de que el saque haya sido ejecutado"
+      }
+    ]
+  },
+  {
+    "code": "10.7",
+    "text": "(Sin área de saque de centro). NEGRO 6 recibe el balón y está en el centro del terreno de juego con un pie sobre la línea central y el otro en su propia mitad del campo. Los árbitros pitan. Antes de que el balón haya salido de su mano, sobrepasa la línea central. En ese momento hay varios jugadores del equipo BLANCO en el campo del equipo NEGRO. ¿Qué se debería hacer?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Corrección de las posiciones del equipo BLANCO y repetición del saque de centro después del toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Corrección de la posición de NEGRO 6 y repetición del saque de centro después del toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "10.8",
+    "text": "(Con área de saque de centro). El equipo BLANCO marca un gol. El equipo NEGRO quiere ejecutar un saque de centro rápido. NEGRO 9 está en posición correcta dentro del área de saque de centro. Después de que los árbitros piten la ejecución, NEGRO 9 da 6 pasos con el balón dentro del área de saque de centro. En los 3 segundos siguientes a la señal del silbato para la ejecución del saque de centro, NEGRO 9 lanza el balón a la portería vacía del equipo BLANCO. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Corrección, y nuevo saque de centro después del toque de silbato de los árbitros"
+      }
+    ]
+  },
+  {
+    "code": "10.9",
+    "text": "(Con área de saque de centro). El equipo BLANCO marca un gol. El equipo NEGRO quiere ejecutar un saque de centro rápido. NEGRO 9 recibe el balón. Tiene el balón y un pie completamente dentro del área de saque de centro. El otro pie está fuera del área de saque de centro. Los árbitros pitan la ejecución del saque de centro. Antes de que NEGRO 9 mueva el otro pie dentro del área de saque de centro, lanza el balón a la portería vacía del equipo BLANCO. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Corrección, nuevo saque de centro para el equipo NEGRO después del toque de silbato de los árbitros"
+      },
+      {
+        "key": "d",
+        "text": "El lanzamiento se ejecuta correctamente ya que los árbitros han aprobado la posición del lanzador al dar la señal con el silbato para la ejecución."
+      },
+      {
+        "key": "e",
+        "text": "Los árbitros deberían haber esperado hasta que el lanzador estuviera dentro del área de saque con el balón y todo su cuerpo antes de dar el silbato para la ejecución del saque."
+      }
+    ]
+  },
+  {
+    "code": "10.10",
+    "text": "(Con área de saque de centro). El equipo NEGRO quiere ejecutar un saque de centro rápido desde el área de saque de centro. Al mismo tiempo que NEGRO 8 tiene un pie y el balón completamente dentro del área de saque de centro, BLANCO 7 también está dentro del área de saque de centro, corriendo en dirección a su propia portería. Sin compañeros en la dirección de BLANCO 7, NEGRO 8 lanza el balón a la espalda de BLANCO 7. BLANCO 7 está dentro del área de saque de centro cuando el balón le golpea. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para BLANCO 7"
+      },
+      {
+        "key": "e",
+        "text": "Sanción progresiva para NEGRO 8"
+      },
+      {
+        "key": "f",
+        "text": "Exclusión de 2’ para NEGRO 8"
+      }
+    ]
+  },
+  {
+    "code": "10.11",
+    "text": "(Con área de saque de centro). ¿Cuál de las siguientes afirmaciones sobre el área de saque de centro es incorrecta?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "La señal del silbato para la ejecución del saque de centro puede darse cuando el lanzador tiene una parte del cuerpo dentro del área de saque de centro"
+      },
+      {
+        "key": "b",
+        "text": "No existe ninguna restricción en cuanto a las posiciones de los compañeros del lanzador durante la ejecución de un saque de centro"
+      },
+      {
+        "key": "c",
+        "text": "El lanzador puede salirse del área de saque de centro durante la ejecución del saque"
+      },
+      {
+        "key": "d",
+        "text": "Se permite a un jugador del equipo defensor interceptar el balón después de la ejecución, incluso si el balón todavía se encuentra dentro del área de saque de centro"
+      },
+      {
+        "key": "e",
+        "text": "No se permite al ejecutor botar el balón después de la señal del silbato para la ejecución"
+      }
+    ]
+  },
+  {
+    "code": "10.12",
+    "text": "(Con área de saque de centro). El equipo BLANCO juega con 7 jugadores de pista y marca un gol. El equipo NEGRO quiere ejecutar un saque de centro rápido. NEGRO 6 tiene un pie y el balón dentro del área de saque de centro. Los árbitros pitan la ejecución. BLANCO 8 entra claramente en el área de saque de centro con los brazos activos intentando bloquear el balón e interfiere en la ejecución. Aun así, NEGRO 6, que tiene todo su cuerpo y el balón dentro del área de saque de centro, ejecuta el saque de centro como un tiro a portería vacía. El balón cruza la línea de portería exterior. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Nuevo saque de centro tras la señal del silbato"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Time-out"
+      },
+      {
+        "key": "f",
+        "text": "Sanción progresiva para BLANCO 8"
+      },
+      {
+        "key": "g",
+        "text": "Exclusión de 2’ para BLANCO 8"
+      },
+      {
+        "key": "h",
+        "text": "Descalificación para BLANCO 8 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "10.13",
+    "text": "(Con área de saque de centro). ¿Cuál de las siguientes afirmaciones sobre el área de saque de centro es correcta?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El saque de centro debe ejecutarse en los 3 segundos siguientes a la señal del silbato para la ejecución"
+      },
+      {
+        "key": "b",
+        "text": "Un saque de centro puede suponer un gol para el equipo ejecutor"
+      },
+      {
+        "key": "c",
+        "text": "En relación con el saque de centro, deben corregirse las posiciones incorrectas de los jugadores defensores"
+      },
+      {
+        "key": "d",
+        "text": "Si el ejecutor salta después de la señal del silbato para la ejecución del lanzamiento, la decisión correcta es golpe franco para los adversarios"
+      },
+      {
+        "key": "e",
+        "text": "Los compañeros del lanzador no pueden cruzar la línea central en ningún momento antes de la señal del silbato para la ejecución del lanzamiento"
+      }
+    ]
+  },
+  {
+    "code": "10.14",
+    "text": "(Con área de saque de centro). ¿Cuándo puede un árbitro pitar la ejecución de un saque de centro?",
+    "categoryName": "Regla 10",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Cuando el ejecutor del saque tiene al menos un pie y el balón dentro del área de saque de centro, y el otro pie no está fuera del área de saque de centro en la mitad del campo contrario"
+      },
+      {
+        "key": "b",
+        "text": "Cuando el ejecutor del saque tiene al menos un pie dentro del área de saque de centro, y el otro pie no está fuera del área de saque de centro en la mitad del campo contrario, pero el balón está todavía fuera del área de saque de centro"
+      },
+      {
+        "key": "c",
+        "text": "Cuando el ejecutor del saque tiene al menos un pie y el balón dentro del área de saque de centro, y el otro pie está fuera del área de saque de centro en la mitad del campo contrario"
+      },
+      {
+        "key": "d",
+        "text": "Cuando el ejecutor del saque tiene al menos un pie y el balón dentro del área de saque de centro, el otro pie no está fuera del área de saque de centro en la mitad del campo contrario, pero los compañeros del ejecutor del saque están dentro del área de saque de centro en la mitad del campo contrario"
+      },
+      {
+        "key": "e",
+        "text": "Cuando el lanzador se encuentra dentro del área de saque con todo su cuerpo y el balón."
+      }
+    ]
+  }
+]

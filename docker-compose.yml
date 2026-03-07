@@ -7,6 +7,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
     volumes:
       - vyro_pg:/var/lib/postgresql/data
     healthcheck:
@@ -29,16 +31,14 @@ services:
       NODE_ENV: ${NODE_ENV}
       PORT: ${PORT}
       DATABASE_URL: ${DATABASE_URL}
-
-      # Cognito (luego los llenamos)
-      COGNITO_USER_POOL_ID: ${COGNITO_USER_POOL_ID}
-      COGNITO_CLIENT_ID: ${COGNITO_CLIENT_ID}
-      COGNITO_REGION: ${COGNITO_REGION}
-
-      # S3 (luego los llenamos)
-      AWS_REGION: ${AWS_REGION}
-      S3_CLIPS_BUCKET: ${S3_CLIPS_BUCKET}
-      S3_BACKUPS_BUCKET: ${S3_BACKUPS_BUCKET}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      R2_ACCOUNT_ID: ${R2_ACCOUNT_ID}
+      R2_ACCESS_KEY_ID: ${R2_ACCESS_KEY_ID}
+      R2_SECRET_ACCESS_KEY: ${R2_SECRET_ACCESS_KEY}
+      R2_BUCKET: ${R2_BUCKET}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL}
+      R2_PRESIGN_EXPIRES_IN: ${R2_PRESIGN_EXPIRES_IN}
     depends_on:
       postgres:
         condition: service_healthy

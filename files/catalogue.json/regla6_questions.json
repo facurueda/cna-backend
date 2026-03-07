@@ -1,0 +1,597 @@
+[
+  {
+    "code": "6.1",
+    "text": "El balón está parado en la línea del área de portería. El atacante BLANCO 7 lo recoge e intenta marcar. BLANCO 7 tiene una clara oportunidad de gol, cuando es atacado ilegalmente. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco a favor del equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco a favor del equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros a favor del equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería a favor del equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "6.2",
+    "text": "El balón está rodando en el área de portería del equipo BLANCO. NEGRO 8 recoge el balón y marca un gol. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Gol"
+      },
+      {
+        "key": "d",
+        "text": "Saque de centro"
+      }
+    ]
+  },
+  {
+    "code": "6.3",
+    "text": "BLANCO 3 está con ambos pies en el área de juego y recoge un balón rechazado por su portero. Ante la defensa correcta de NEGRO 10, BLANCO 3 bota el balón varias veces en su propia área de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "6.4",
+    "text": "BLANCO 7 está fuera del área de portería del equipo NEGRO pero recoge el balón que está claramente en el aire encima del área de portería y marca un gol. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo NEGRO después de un toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "6.5",
+    "text": "El jugador BLANCO 8, que es correctamente defendido por varios contrarios, rueda intencionadamente el balón hacia su propia área de portería, donde el balón se detiene. El portero del equipo BLANCO no recoge el balón. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo BLANCO, después de un toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "6.6",
+    "text": "BLANCO 5 juega intencionadamente el balón hacia su propia área de portería. El balón da en el poste y rueda hacia el área de juego. El portero BLANCO 12 recoge el balón dentro de su área y lo pasa a BLANCO 7 que marca un gol. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Gol"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "6.7",
+    "text": "El equipo NEGRO ha marcado un gol y BLANCO 10 ejecuta el saque de centro correspondiente. No encuentra a ningún compañero desmarcado, así que sorprende a su portero BLANCO 12 jugando el balón hacia él, a pesar de que el portero está dentro de su área de portería. BLANCO 12 recepciona el balón y se lo pasa a BLANCO 9. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Repetición del saque de centro después de corregir la situación"
+      }
+    ]
+  },
+  {
+    "code": "6.8",
+    "text": "El defensor NEGRO 7 se da cuenta de que si el pívot BLANCO 9 recibiera el balón se encontraría solo ante el portero. NEGRO 7, habiendo realizado esta acción anteriormente, rodea a BLANCO 9 pasando a través del área de forma que él no puede recibir el pase. NEGRO 7 está ya fuera del área de portería cuando BLANCO 9 recibe el balón. BLANCO 9 gira y choca directamente con NEGRO 7. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para NEGRO 7"
+      }
+    ]
+  },
+  {
+    "code": "6.9",
+    "text": "El balón sale del rechace del portero del equipo NEGRO hacia el jugador atacante BLANCO 4, que lo está esperando justo fuera de la línea del área de portería. Para evitar una clara ocasión de gol, NEGRO 2 penetra en el área de portería y evita que BLANCO 4 coja el balón. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Sanción progresiva para NEGRO 2"
+      },
+      {
+        "key": "d",
+        "text": "Descalificación para NEGRO 2 (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "6.10",
+    "text": "BLANCO 10 pasa el balón hacia su propia área de portería. El portero BLANCO 1 salta y coge el balón en el aire. BLANCO 1 lo sujeta firmemente pero cae fuera del área de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "6.11",
+    "text": "BLANCO 11 pasa el balón hacia su propia área de portería, donde el portero BLANCO 1 salta y coge el balón en el aire. BLANCO 1 sujeta el balón firmemente y cae con un pie dentro del área de portería y el otro fuera. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "6.12",
+    "text": "BLANCO 7 del equipo atacante tiene el balón y pisa dentro del área de portería del equipo contrario. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo NEGRO después del toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO después del toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "6.13",
+    "text": "El balón está parado en el suelo del área de portería del equipo BLANCO. En este momento, el anotador pita y explica que BLANCO 5 ha hecho un cambio antirreglamentario. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para BLANCO 5"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO junto a la línea de golpe franco del equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO junto a la zona de cambios del equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "6.14",
+    "text": "¿En cuál(es) de los siguientes casos debe ordenarse un saque de portería?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Cuando un jugador del equipo atacante que tiene el balón toca el área de portería del equipo contrario"
+      },
+      {
+        "key": "b",
+        "text": "Cuando un jugador del equipo atacante sin balón toca el área de portería del equipo contrario y gana una ventaja al hacerlo"
+      },
+      {
+        "key": "c",
+        "text": "Cuando un jugador del equipo atacante envía el balón por encima de la línea exterior de portería del equipo contrario"
+      },
+      {
+        "key": "d",
+        "text": "Cuando un jugador con el balón toca el área de portería de su propio equipo"
+      }
+    ]
+  },
+  {
+    "code": "6.15",
+    "text": "El equipo BLANCO está atacando. NEGRO 4 está parado junto a la línea del área de portería. El balón está en el aire y NEGRO 4 lo alcanza y lo dirige hacia su propia área de portería. El balón es tocado por el portero NEGRO 1 y entonces cruza la línea exterior de portería fuera de la portería. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de banda para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Sanción progresiva para NEGRO 4"
+      }
+    ]
+  },
+  {
+    "code": "6.16",
+    "text": "El portero BLANCO 12 ha detenido un lanzamiento y tiene el balón bajo control en su área de portería. El portero aún tiene el balón en sus manos cuando el cronometrador pita por un cambio antirreglamentario del BLANCO 10. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO en la zona de cambios del equipo BLANCO."
+      },
+      {
+        "key": "b",
+        "text": "Time-out."
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 10"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo NEGRO en la línea de golpe franco del equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "6.17",
+    "text": "El portero BLANCO 12 salta en el área de juego justo fuera de su área de portería, recoge en el aire el balón que le pasó BLANCO 4 y lo lanza más allá de su línea exterior de portería. Después el portero cae dentro del área de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para BLANCO 12"
+      }
+    ]
+  },
+  {
+    "code": "6.18",
+    "text": "BLANCO 9 lanza hacia la portería del equipo NEGRO. El portero NEGRO 1 para el lanzamiento y el balón sale rodando hacia el área de juego donde un jugador del equipo NEGRO está preparado para recogerlo. Como el portero resultó lesionado al detener el lanzamiento, los árbitros interrumpen el partido cuando el balón aún estaba en el área de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "6.19",
+    "text": "El balón rueda en el suelo dentro del área de portería del equipo BLANCO. En este momento, el cronometrador toca el silbato y explica que BLANCO 5 ha cometido un cambio antirreglamentario. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Exclusión de 2’ para BLANCO 5"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco a favor del equipo NEGRO en la línea de golpe franco el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco a favor del equipo NEGRO en la zona de cambios del equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "6.20",
+    "text": "BLANCO 5 hace un lanzamiento a portería. El lanzamiento es rechazado por el portero NEGRO 12 y va en el aire sobre el área de portería en dirección al pivote BLANCO 11, que está de pie en la línea del área de portería con una clara ocasión de gol preparado para coger el balón. El defensor NEGRO 2 salta en dirección al balón, y mientras está en el aire sobre el área de portería, juega el balón en dirección a la línea lateral. Debido al pega en el balón, éste se detiene en el área de portería sin que el portero lo toque ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para NEGRO 2"
+      }
+    ]
+  },
+  {
+    "code": "6.21",
+    "text": "El portero NEGRO 1 ha parado un lanzamiento y quiere pasar el balón a NEGRO 6, que está preparado para un contraataque. Cuando NEGRO 1 hace el pase, toca la línea del área de portería. NEGRO 6 consigue el balón y marca un gol. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El gol es válido"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Corrección y repetición del saque de portería después del toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "El gol no es válido"
+      }
+    ]
+  },
+  {
+    "code": "6.22",
+    "text": "BLANCO 6 está en un contraataque. Salta, lanza a portería y aterriza en el área de portería del equipo NEGRO. El portero NEGRO 12 bloquea el lanzamiento, y el balón va a BLANCO 11, que marca un gol mientras BLANCO 6 está en el área de portería entre él y el portero NEGRO 12. ¿Decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "6.23",
+    "text": "El equipo BLANCO está atacando y juega con su portería vacía. BLANCO 11 lanza a portería. El portero NEGRO 1 para el lanzamiento. Ejecuta el saque de portería hacia la portería vacía. BLANCO 10 intenta parar el lanzamiento. Salta desde fuera de su propia área de portería y, mientras está en el aire sobre la zona de portería, toca el balón. La pelota cruza la línea de banda. Después de tocar el balón, BLANCO 10 cae dentro del área de portería. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Sanción progresiva para BLANCO 10"
+      }
+    ]
+  },
+  {
+    "code": "6.24",
+    "text": "El equipo BLANCO está atacando y juega con su portería vacía. BLANCO 11 lanza a portería. El portero NEGRO 1 para el lanzamiento. Ejecuta el saque de portería hacia la portería vacía. BLANCO 10 intenta parar el lanzamiento. Salta desde fuera de su propia área de portería y, mientras está en el aire sobre el área de portería, atrapa el balón y cae dentro del área de portería con el balón en sus manos. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO."
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO."
+      },
+      {
+        "key": "c",
+        "text": "Exclusión 2’ para BLANCO 10"
+      },
+      {
+        "key": "d",
+        "text": "Sin sanción"
+      }
+    ]
+  },
+  {
+    "code": "6.25",
+    "text": "NEGRO 5 lanza al arco. El portero BLANCO 12 ataja el balón. Durante la atajada, BLANCO 12 se golpea la cabeza contra el poste y cae al suelo lesionado. NEGRO 3 atrapa el rebote de la atajada del portero y tiene una clara ocasión de gol en la línea del área del equipo BLANCO. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 6",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Ventaja para NEGRO 3"
+      },
+      {
+        "key": "b",
+        "text": "Interrumpir el partido inmediatamente."
+      },
+      {
+        "key": "c",
+        "text": "El partido se reanuda con un lanzamiento de 7 metros para el equipo NEGRO."
+      },
+      {
+        "key": "d",
+        "text": "El partido se reanuda con un tiro libre para el equipo NEGRO."
+      },
+      {
+        "key": "e",
+        "text": "Time Out"
+      },
+      {
+        "key": "f",
+        "text": "Los árbitros podrán dar permiso a dos personas del equipo BLANCO para entrar a la cancha para brindar tratamiento médico a BLANCO 12"
+      },
+      {
+        "key": "g",
+        "text": "Después de recibir tratamiento médico, BLANCO 12 debe abandonar la cancha y solo puede reingresar después del tercer ataque de su equipo."
+      },
+      {
+        "key": "h",
+        "text": "Después de recibir tratamiento médico, BLANCO 12 puede continuar jugando sin abandonar la cancha."
+      }
+    ]
+  }
+]

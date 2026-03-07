@@ -1,0 +1,14 @@
+meta {
+  name: List By Match (Param)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/clips/match/{{matchId}}
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

@@ -1,0 +1,14 @@
+meta {
+  name: My Catalogs
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/final-exams/my
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

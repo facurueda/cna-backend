@@ -1,0 +1,278 @@
+[
+  {
+    "code": "5.1",
+    "text": "El portero NEGRO 1 para un lanzamiento a portería e inicia un contraataque. Al hacerlo sobrepasa la línea de área de portería con su pie izquierdo. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Sigue el juego"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Repetición del saque de portería después de toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "5.2",
+    "text": "El portero BLANCO 12 está en el terreno de juego fuera de su área de portería. Cuando recibe el balón de un compañero, el portero introduce uno de sus pies dentro del área de portería, mientras que el otro pie permanece fuera de ella. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para el portero BLANCO 12"
+      }
+    ]
+  },
+  {
+    "code": "5.3",
+    "text": "El portero BLANCO 12 para un lanzamiento y se lanza hacia el balón que se mueve en dirección al terreno de juego. BLANCO 12 alcanza el balón, se desliza y traspasa la línea del área de portería y pasa el balón a un compañero. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "El juego continua sin interrupción"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo BLANCO después de toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "5.4",
+    "text": "El portero NEGRO 1 para un lanzamiento y el balón rueda en dirección al terreno de juego. Para detener el balón antes que lo recoja BLANCO 15, que está esperando junto a la línea de área de portería, el portero golpea el balón con su pie justo antes de que lo recoja BLANCO 15 tal que el balón cruza la línea de fondo. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "El juego continua sin interrupción"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para NEGRO 1 por poner en peligro al contrario"
+      }
+    ]
+  },
+  {
+    "code": "5.5",
+    "text": "El portero BLANCO 12 no consigue controlar el balón. El balón atraviesa el área de portería en dirección a la línea de banda. El portero usa su pie para jugar el balón, que cruza la línea de fondo. ¿Decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Sanción progresiva para el portero"
+      }
+    ]
+  },
+  {
+    "code": "5.6",
+    "text": "El portero BLANCO 1 para un lanzamiento. El balón rueda en dirección hacia el terreno de juego donde NEGRO 6 está solo preparado para recogerlo. BLANCO 1 para el balón con su pie cuando éste se encuentra sobre la línea del área de portería. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO después de un toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Sanción progresiva para el BLANCO 1"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "5.7",
+    "text": "NEGRO 18 efectúa un lanzamiento a portería. El lanzamiento es bloqueado, de forma que el balón cambia de dirección y va claramente hacia la línea de fondo (dentro del área de portería). BLANCO 1 corre tras el balón y con la ayuda de su pie consigue enviarlo fuera de la línea de gol. ¿Decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para BLANCO 1"
+      }
+    ]
+  },
+  {
+    "code": "5.8",
+    "text": "El portero NEGRO 12 salta en su propia área de portería para recoger un pase largo de BLANCO 7. NEGRO 12 lo recoge mientras está en el aire y cae con un pie dentro de su área de portería y el otro pie fuera. En esta posición él juega el balón hacia NEGRO 3. ¿Decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "El juego continua sin interrupción"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Corrección y saque de portería después del toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "5.9",
+    "text": "El jugador BLANCO 9 pasa el balón a su portero BLANCO 1, que se encuentra en el área de juego. Como BLANCO 9 está presionado, lanza el balón demasiado alto, por lo que BLANCO 1 tiene que retroceder y entrar en el área de portería con un pie, inmediatamente después de haber recogido el balón. ¿Decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continua sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Time-out"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "5.10",
+    "text": "Los árbitros deciden dar un golpe franco para el equipo BLANCO junto a la línea del área de portería del equipo BLANCO. El portero BLANCO 1, está con un pie en el área de portería y el otro en el terreno de juego. Pasa el balón a BLANCO 8, quien marca un gol. ¿Decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Repetición del golpe franco fuera del área de portería del equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco a favor del equipo NEGRO junto a la línea de área de portería del equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "e",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "5.11",
+    "text": "El árbitro pita debido a que NEGRO 21 dio muchos pasos. NEGRO 21 deja el balón sobre la línea de área de portería del equipo BLANCO. El portero BLANCO 12 quiere ejecutar rápidamente el lanzamiento. Él se ayuda con una mano en el suelo en el área de juego y tiene un pie en el suelo en el área de portería. Desde esta posición, pasa el balón a BLANCO 3, que inicia un contraataque que termina con un gol para el equipo BLANCO. ¿Decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Repetición del golpe franco para el equipo BLANCO después de un toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO debido a la ejecución antirreglamentaria del golpe franco de BLANCO 12"
+      },
+      {
+        "key": "d",
+        "text": "Time–out"
+      }
+    ]
+  },
+  {
+    "code": "5.12",
+    "text": "El portero NEGRO 1 ha abandonado su área de portería. NEGRO 1 salta en el área de juego y recibe el pase de un compañero mientras está en el aire. Posteriormente cae con ambos pies dentro del área de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continua sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Lanzamiento de 7 metros para el equipo BLANCO"
+      },
+      {
+        "key": "e",
+        "text": "Time–out"
+      }
+    ]
+  }
+]

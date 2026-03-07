@@ -1,0 +1,631 @@
+[
+  {
+    "code": "15.1",
+    "text": "Mientras ejecuta un saque de portería, el portero BLANCO 13 mueve su brazo hacia atrás con el balón y éste va más allá de la línea de gol entre los postes de la portería. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continua sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Saque de portería para el equipo BLANCO después de toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "15.2",
+    "text": "20 segundos antes del final del partido el resultado es 20:19 para el equipo BLANCO. El portero BLANCO 12 tarda demasiado tiempo para ejecutar un saque de portería botando el balón hacia atrás y hacia delante en el área de portería. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time–out"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco contra el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Toque de silbato para ejecutar el saque de portería"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para BLANCO 12"
+      },
+      {
+        "key": "e",
+        "text": "Mostrar la señal de advertencia de juego pasivo"
+      }
+    ]
+  },
+  {
+    "code": "15.3",
+    "text": "Los árbitros han concedido un golpe franco a favor del equipo NEGRO junto a la línea de golpe franco del equipo BLANCO. Cuando todos los jugadores han ocupado las posiciones correctas, el árbitro pita. Antes de que el balón haya salido de la mano del lanzador, dos de sus compañeros cruzan la línea de golpe franco del equipo BLANCO. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Repetición del golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Con toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Sin toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "15.4",
+    "text": "El portero BLANCO 12 está en el área de portería con el balón en su mano, preparado para ejecutar un saque de portería. NEGRO 6 le quita el balón con la mano abierta. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Repetición del saque de portería después de un toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Exclusión de 2’ para NEGRO 6"
+      }
+    ]
+  },
+  {
+    "code": "15.5",
+    "text": "Se concede un saque de banda a favor del equipo BLANCO. BLANCO 8 ejecuta el saque de banda como un lanzamiento directo a portería. El balón golpea el poste, vuelve a BLANCO 8, quien coge el balón y lanza a portería consiguiendo un gol. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Se repite el saque de banda después de toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "15.6",
+    "text": "El portero NEGRO 12 ha parado un lanzamiento a portería. Quiere iniciar un contraataque inmediatamente pero el balón se le cae de tal forma que sobrepasa la línea de gol del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol"
+      },
+      {
+        "key": "b",
+        "text": "Repetir el saque de portería"
+      },
+      {
+        "key": "c",
+        "text": "Saque de banda para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "15.7",
+    "text": "BLANCO 6 ejecuta un saque de banda en dirección a su portero. El portero BLANCO 1 se da cuenta demasiado tarde y el balón entra en la portería. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Repetir el saque de banda para el equipo BLANCO después del toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "15.8",
+    "text": "Saque de banda para el equipo BLANCO. BLANCO 7 lanza el balón de forma que golpea al árbitro. BLANCO 7 recoge el balón de nuevo y lo lanza dentro de la portería del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Repetir el saque de banda después del toque de silbato"
+      },
+      {
+        "key": "e",
+        "text": "Golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "15.9",
+    "text": "Golpe franco para el equipo BLANCO. Cuando todos los jugadores están situados correctamente, BLANCO 10 pone el balón en el suelo para dar algunas instrucciones. NEGRO 7 se da cuenta de la situación, recoge el balón e inicia un contraataque. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Repetir el golpe franco para el equipo BLANCO después del toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO, amonestación para NEGRO 7"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO, exclusión de 2 minutos para NEGRO 7"
+      }
+    ]
+  },
+  {
+    "code": "15.10",
+    "text": "NEGRO 9 quiere ejecutar un golpe franco, sin embargo BLANCO 11 está solamente a 2 metros del balón intentando retrasar la ejecución. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Sanción progresiva para BLANCO 11, golpe franco para el equipo NEGRO después del toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO después del toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para BLANCO 11"
+      },
+      {
+        "key": "d",
+        "text": "Corregir la posición de BLANCO 11 y golpe franco después del toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "15.11",
+    "text": "Golpe franco para el equipo NEGRO junto a la línea de golpe franco del equipo BLANCO. El árbitro no advierte que el jugador NEGRO 8 está situado entre la línea de golpe franco y la línea del área de portería. NEGRO 8 recibe el balón y marca. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Repetir el golpe franco para el equipo NEGRO después del toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para NEGRO 8"
+      }
+    ]
+  },
+  {
+    "code": "15.12",
+    "text": "El portero NEGRO 12 ejecuta un saque de portería en dirección a la portería del equipo BLANCO. Ningún jugador de ambos equipos toca el balón y éste entra en la portería del equipo BLANCO. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Amonestación para NEGRO 12 por conducta antideportiva"
+      }
+    ]
+  },
+  {
+    "code": "15.13",
+    "text": "BLANCO 5 ya ha recibido una amonestación y dos exclusiones de 2’. Cuando el equipo NEGRO está ejecutando un golpe franco, el jugador BLANCO 5 no respeta la distancia, siendo la primera vez que lo hace. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Amonestación para BLANCO 5"
+      },
+      {
+        "key": "b",
+        "text": "Ninguna sanción"
+      },
+      {
+        "key": "c",
+        "text": "Tercera exclusión de 2’ para BLANCO y descalificación (tarjeta roja mostrada por los árbitros)"
+      }
+    ]
+  },
+  {
+    "code": "15.14",
+    "text": "Poco antes de finalizar el encuentro el resultado es de 24-23 a favor del equipo BLANCO. Se concede un golpe franco para el equipo BLANCO aproximadamente 1 metro fuera de la línea de golpe franco del equipo NEGRO. Todos los jugadores están en posición correcta y el árbitro pita para la ejecución del lanzamiento. BLANCO 10 está ejecutando el golpe franco, da un paso antes de que el balón haya abandonado su mano. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Time-out"
+      },
+      {
+        "key": "c",
+        "text": "Exclusión de 2’ para BLANCO 10"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "15.15",
+    "text": "BLANCO 14 quiere ejecutar un golpe franco sin toque de silbato en la línea de golpe franco del equipo NEGRO. Él y sus compañeros están en posición correcta. Antes que el balón salga de la mano de BLANCO 14, BLANCO 13 y BLANCO 15 cruzan la línea de golpe franco hacia la línea de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Corrección"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo BLANCO después del toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "15.16",
+    "text": "El portero NEGRO 1 está ejecutando un saque de portería. El balón golpea en el árbitro y vuelve NEGRO 1 quien, al mismo tiempo, ha salido del área de portería. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Repetición del saque de portería después de toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO después de toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "15.17",
+    "text": "Mientras ejecuta un tiro libre, NEGRO 11 balancea el brazo hacia atrás mientras mueve el balón completamente por encima de la línea lateral. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "El juego continúa sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Saque de banda para el equipo BLANCO"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo BLANCO, NEGRO 11 es advertido verbalmente"
+      }
+    ]
+  },
+  {
+    "code": "15.18",
+    "text": "El portero BLANCO 1 para el balón justo frente a la línea de gol. Cuando intenta pasar el balón a BLANCO 4, el balón se cae de sus manos y entra en su propia portería. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Repetición del saque de portería para el equipo BLANCO después de toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "15.19",
+    "text": "El equipo BLANCO tiene un saque de centro. El árbitro central toca el silbato para la ejecución. Entonces BLANCO 13 coge el balón de la mano de BLANCO 9 que estaba parado, listo para ejecutar el lanzamiento porque BLANCO 13 ve que BLANCO 7 y BLANCO 3 estaban corriendo hacia el campo de los contrarios y se encontraban en una posición favorable. BLANCO 13 pasa el balón a BLANCO 7 que marca un gol. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo BLANCO"
+      },
+      {
+        "key": "b",
+        "text": "Corrección; repetición del saque de centro para el equipo BLANCO"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "d",
+        "text": "Advertencia verbal para BLANCO 13"
+      },
+      {
+        "key": "e",
+        "text": "Advertencia verbal para BLANCO 7 y BLANCO 13"
+      }
+    ]
+  },
+  {
+    "code": "15.20",
+    "text": "(Sin área de saque de centro). El resultado es 30-30 justo 4 segundos antes del final. El equipo BLANCO consigue un gol, 31-30. El equipo NEGRO quiere realizar un saque de centro rápido. NEGRO 10 está con un pie detrás de la línea central y otro delante de ella. Sin toque de silbato, lanza el balón y éste entra en la portería del equipo BLANCO. Entonces suena la señal de final de partido. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Repetición del saque de centro para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Esperar al resultado del lanzamiento"
+      },
+      {
+        "key": "d",
+        "text": "Time-out"
+      },
+      {
+        "key": "e",
+        "text": "El partido ha finalizado; el gol no es válido"
+      }
+    ]
+  },
+  {
+    "code": "15.21",
+    "text": "Golpe franco para el equipo BLANCO junto a la línea de golpe franco del equipo NEGRO. BLANCO 7 que ejecuta el golpe franco, al igual que sus compañeros de equipo, está correctamente situado fuera de la línea de golpe franco. El golpe franco es rápidamente ejecutado sin toque de silbato, pero antes que el balón haya salido de la mano de BLANCO 7, ambos jugadores, BLANCO 9 y BLANCO 18, cruzan la línea de golpe franco. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Corrección"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO después del toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO; amonestación para BLANCO 9 y BLANCO 18"
+      }
+    ]
+  },
+  {
+    "code": "15.22",
+    "text": "¿En cuáles de los siguientes lanzamientos no es posible conseguir un gol en propia portería?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Saque de portería"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco"
+      },
+      {
+        "key": "c",
+        "text": "Saque de banda"
+      },
+      {
+        "key": "d",
+        "text": "Saque de centro"
+      }
+    ]
+  },
+  {
+    "code": "15.23",
+    "text": "NEGRO 4 está en la posición correcta para ejecutar un saque de banda concedido a su equipo. Como no encuentra un compañero a quien pasar el balón, él bota el balón una vez por dentro de la línea de banda. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo BLANCO sin toque de silbato"
+      },
+      {
+        "key": "b",
+        "text": "Saque de banda para el equipo BLANCO después de toque de silbato"
+      },
+      {
+        "key": "c",
+        "text": "Repetición del saque de banda para el equipo NEGRO después de toque de silbato"
+      },
+      {
+        "key": "d",
+        "text": "Golpe franco para el equipo NEGRO después de toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "15.24",
+    "text": "El equipo BLANCO recibe un golpe franco. BLANCO 9 ejecuta rápidamente el golpe franco sin señal de reanudación por parte del árbitro cuando está saltando. El balón va hacia BLANCO 4, que se encuentra completamente solo frente a la portería del equipo NEGRO. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Continúa el juego sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Repetición del golpe franco a favor del equipo BLANCO después de toque de silbato"
+      }
+    ]
+  },
+  {
+    "code": "15.25",
+    "text": "El equipo BLANCO recibe un golpe franco. BLANCO 5 ejecuta rápidamente el golpe franco sin señal de reanudación por parte del árbitro corriendo. BLANCO 5 intenta jugar el balón hacia BLANCO 4, pero NEGRO 3 lo intercepta y se queda totalmente solo frente a la portería del equipo BLANCO. ¿Decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Continúa el juego sin interrupción"
+      },
+      {
+        "key": "b",
+        "text": "Repetición del golpe franco después de la señal de reanudación"
+      },
+      {
+        "key": "c",
+        "text": "Repetición del golpe franco y sanción progresiva contra NEGRO"
+      }
+    ]
+  },
+  {
+    "code": "15.26",
+    "text": "El equipo NEGRO está preparado para ejecutar un golpe franco sin señal de silbato. NEGRO 8 ejecuta el lanzamiento con ambos pies y su mano izquierda en contacto con el suelo. NEGRO 6 recibe el balón y marca un gol. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Gol para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Corrección, repetición del golpe franco después de la señal de silbato de los árbitros"
+      },
+      {
+        "key": "c",
+        "text": "Golpe franco para el equipo BLANCO"
+      }
+    ]
+  },
+  {
+    "code": "15.27",
+    "text": "El equipo NEGRO marca un gol. Los árbitros pitan el saque inicial. Antes de que el balón salga de la mano del lanzador, el cronometrador da un toque de silbato. BLANCO 5 entra en la cancha antes de que BLANCO 6 la abandone. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 15",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Time-out."
+      },
+      {
+        "key": "b",
+        "text": "Suspensión de 2 minutos para BLANCO 5."
+      },
+      {
+        "key": "c",
+        "text": "Suspensión de 2 minutos para BLANCO 6."
+      },
+      {
+        "key": "d",
+        "text": "Dado que el balón estaba fuera de juego en el momento del silbato, el partido se reanuda con un saque de centro para el equipo BLANCO."
+      },
+      {
+        "key": "e",
+        "text": "El partido se reanuda con un tiro libre para el equipo NEGRO."
+      },
+      {
+        "key": "f",
+        "text": "El partido se reanuda con un tiro libre para el equipo BLANCO."
+      }
+    ]
+  }
+]
