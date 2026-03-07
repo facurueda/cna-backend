@@ -17,8 +17,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            export PATH="/root/.nvm/versions/node/v24.13.1/bin:$PATH"
             
             if [ "${{ github.ref_name }}" = "main" ]; then
               cd /var/www/acab/backend-prod
