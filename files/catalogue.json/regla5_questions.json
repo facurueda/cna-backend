@@ -274,5 +274,28 @@
         "text": "Time–out"
       }
     ]
+  },
+  {
+    "code": "5.13",
+    "text": "El balón está en el suelo fuera del área de portería del equipo BLANCO. El portero BLANCO 1 está parado dentro del área de portería y recoge el balón para evitar que lo haga un adversario. ¿Cuál es la decisión correcta?",
+    "categoryName": "Regla 5",
+    "answers": [
+      {
+        "key": "a",
+        "text": "Golpe franco para el equipo NEGRO"
+      },
+      {
+        "key": "b",
+        "text": "Lanzamiento de 7 metros para el equipo NEGRO"
+      },
+      {
+        "key": "c",
+        "text": "Sanción progresiva para BLANCO 1"
+      },
+      {
+        "key": "d",
+        "text": "Ninguna intervención, ya que esta acción está permitida"
+      }
+    ]
   }
 ]
