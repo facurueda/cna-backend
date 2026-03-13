@@ -289,6 +289,7 @@ model FinalExamCatalog {
   questionCount        Int
   isTimed              Boolean                @default(false)
   totalTimeSeconds     Int?
+  availableUntilDate   String?
   maxRetries           Int                    @default(0)
   shuffleOptions       Boolean                @default(true)
   passThresholdPercent Int                    @default(70)

@@ -7,6 +7,7 @@ import {
   IsIn,
   IsInt,
   IsOptional,
+  Matches,
   IsString,
   IsUUID,
   Max,
@@ -17,6 +18,13 @@ export class CreateFinalExamCatalogDto {
   @IsOptional()
   @IsString()
   title?: string;
+
+  @IsOptional()
+  @IsString()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/, {
+    message: 'availableUntilDate must use YYYY-MM-DD format',
+  })
+  availableUntilDate?: string;
 
   @Type(() => Number)
   @IsInt()

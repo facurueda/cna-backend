@@ -24,6 +24,10 @@ describe('FinalExamsService', () => {
     service = new FinalExamsService(prisma as never, examsService as never);
   });
 
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('uses "Examen" as default title when title is missing', async () => {
     prisma.category.findMany.mockResolvedValue([{ id: 'cat-1', name: 'Reglamento' }]);
     prisma.competition.findMany.mockResolvedValue([{ id: 'comp-1', name: 'Torneo' }]);
@@ -35,6 +39,7 @@ describe('FinalExamsService', () => {
       questionCount: 10,
       isTimed: false,
       totalTimeSeconds: null,
+      availableUntilDate: null,
       maxRetries: 0,
       shuffleOptions: true,
       passThresholdPercent: 70,
@@ -75,6 +80,7 @@ describe('FinalExamsService', () => {
       questionCount: 10,
       isTimed: false,
       totalTimeSeconds: null,
+      availableUntilDate: null,
       maxRetries: 0,
       shuffleOptions: true,
       passThresholdPercent: 70,
@@ -111,6 +117,7 @@ describe('FinalExamsService', () => {
       questionCount: 10,
       isTimed: false,
       totalTimeSeconds: null,
+      availableUntilDate: null,
       maxRetries: 2,
       passThresholdPercent: 70,
       categories: [{ categoryId: 'cat-1' }],
@@ -136,6 +143,7 @@ describe('FinalExamsService', () => {
       questionCount: 10,
       isTimed: false,
       totalTimeSeconds: null,
+      availableUntilDate: null,
       maxRetries: 2,
       passThresholdPercent: 70,
       categories: [{ categoryId: 'cat-1' }],
@@ -158,6 +166,7 @@ describe('FinalExamsService', () => {
       questionCount: 10,
       isTimed: false,
       totalTimeSeconds: null,
+      availableUntilDate: null,
       maxRetries: 1,
       passThresholdPercent: 70,
       categories: [{ categoryId: 'cat-1' }],
@@ -179,6 +188,7 @@ describe('FinalExamsService', () => {
       questionCount: 20,
       isTimed: true,
       totalTimeSeconds: 1200,
+      availableUntilDate: null,
       maxRetries: 2,
       passThresholdPercent: 75,
       categories: [{ categoryId: 'cat-1' }, { categoryId: 'cat-2' }],
@@ -217,6 +227,7 @@ describe('FinalExamsService', () => {
       questionCount: 10,
       isTimed: false,
       totalTimeSeconds: null,
+      availableUntilDate: null,
       maxRetries: 1,
       passThresholdPercent: 70,
       categories: [{ categoryId: 'cat-1' }],
@@ -237,6 +248,27 @@ describe('FinalExamsService', () => {
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 
+  it('throws conflict when final catalog is closed by availableUntilDate', async () => {
+    jest.useFakeTimers().setSystemTime(new Date('2026-03-16T03:00:00.000Z'));
+    prisma.finalExamCatalog.findUnique.mockResolvedValue({
+      id: 'catalog-1',
+      status: FinalExamCatalogStatus.PUBLISHED,
+      questionCount: 10,
+      isTimed: false,
+      totalTimeSeconds: null,
+      availableUntilDate: '2026-03-15',
+      maxRetries: 2,
+      passThresholdPercent: 70,
+      categories: [{ categoryId: 'cat-1' }],
+      competitions: [{ competitionId: 'comp-1' }],
+    });
+    prisma.competitionReferee.findFirst.mockResolvedValue({ competitionId: 'comp-1' });
+
+    await expect(
+      service.startAttempt('catalog-1', { id: 'user-1', role: Role.GENERAL }),
+    ).rejects.toBeInstanceOf(ConflictException);
+  });
+
   it('lists linked referees with their final exam progress', async () => {
     const createdAt = new Date('2026-02-12T10:00:00.000Z');
     const finishedAt = new Date('2026-03-03T10:00:00.000Z');
@@ -245,6 +277,7 @@ describe('FinalExamsService', () => {
       title: 'Final febrero',
       status: FinalExamCatalogStatus.PUBLISHED,
       questionCount: 20,
+      availableUntilDate: null,
       maxRetries: 2,
       createdAt,
       competitions: [
@@ -318,6 +351,8 @@ describe('FinalExamsService', () => {
       status: FinalExamCatalogStatus.PUBLISHED,
       createdAt,
       questionCount: 20,
+      availableUntilDate: null,
+      isClosed: false,
       maxRetries: 2,
       maxAttempts: 2,
       competitions: [

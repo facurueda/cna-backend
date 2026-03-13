@@ -203,6 +203,10 @@ Los reintentos aplican solo a exámenes finales de catálogo.
 
 `POST /final-exams` acepta `title` opcional. Si no llega, se usa `"Examen"`.
 
+`POST /final-exams` también acepta `availableUntilDate` opcional en formato `YYYY-MM-DD`.
+Si llega, el final queda habilitado hasta el fin de ese día calendario en zona
+horaria `America/Argentina/Cordoba` y se cierra al comenzar el día siguiente.
+
 Reglas de reintentos:
 
 - `maxRetries` define la cantidad total de intentos permitidos.
@@ -210,5 +214,7 @@ Reglas de reintentos:
 - Si existe intento `PENDING`, se reanuda ese intento.
 - Si el usuario ya aprobó el catálogo, no se habilitan más intentos.
 - Si `usedAttempts >= maxAttempts`, responde `409`.
+- Si `availableUntilDate` ya venció, el catálogo queda cerrado: no se puede iniciar,
+  reanudar, responder ni finalizar un intento pendiente.
 
 Nota: `POST /exams` ya no permite `examType=FINAL`; los finales se inician desde `/final-exams/:id/start`.

@@ -15,6 +15,10 @@ import {
 import { ExamsService } from '../exams/exams.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateFinalExamCatalogDto } from './dto/create-final-exam-catalog.dto';
+import {
+  isFinalExamCatalogClosed,
+  isValidFinalExamAvailableUntilDate,
+} from './final-exam-availability';
 
 type AuthUserPayload = {
   id: string;
@@ -30,6 +34,9 @@ export class FinalExamsService {
 
   async createCatalog(user: AuthUserPayload, dto: CreateFinalExamCatalogDto) {
     this.validateTimerFields(dto);
+    const availableUntilDate = this.normalizeAvailableUntilDate(
+      dto.availableUntilDate,
+    );
 
     const categoryIds = this.normalizeUniqueTextValues(dto.categoryIds);
     const competitionIds = this.normalizeUniqueTextValues(dto.competitionIds);
@@ -66,6 +73,7 @@ export class FinalExamsService {
         questionCount: dto.questionCount,
         isTimed: dto.isTimed,
         totalTimeSeconds: dto.isTimed ? dto.totalTimeSeconds ?? null : null,
+        availableUntilDate,
         maxRetries: dto.maxRetries ?? 0,
         shuffleOptions: dto.shuffleOptions ?? true,
         passThresholdPercent: dto.passThresholdPercent ?? 70,
@@ -106,6 +114,8 @@ export class FinalExamsService {
       questionCount: created.questionCount,
       isTimed: created.isTimed,
       totalTimeSeconds: created.totalTimeSeconds,
+      availableUntilDate: created.availableUntilDate,
+      isClosed: isFinalExamCatalogClosed(created.availableUntilDate),
       maxRetries: created.maxRetries,
       maxAttempts: this.toMaxAttempts(created.maxRetries),
       shuffleOptions: created.shuffleOptions,
@@ -188,6 +198,7 @@ export class FinalExamsService {
     return catalogs.map((catalog) => {
       const maxAttempts = this.toMaxAttempts(catalog.maxRetries);
       const usedAttempts = catalog.exams.length;
+      const isClosed = isFinalExamCatalogClosed(catalog.availableUntilDate);
       const hasPendingAttempt = catalog.exams.some(
         (exam) => exam.status === ExamStatus.PENDING,
       );
@@ -195,7 +206,7 @@ export class FinalExamsService {
         catalog.exams.find((exam) => exam.status === ExamStatus.PENDING)?.id ??
         null;
       const hasPassed = catalog.exams.some((exam) => exam.isPassed === true);
-      const remainingAttempts = hasPassed
+      const remainingAttempts = hasPassed || isClosed
         ? 0
         : Math.max(0, maxAttempts - usedAttempts);
       const lastFinished =
@@ -208,6 +219,8 @@ export class FinalExamsService {
         questionCount: catalog.questionCount,
         isTimed: catalog.isTimed,
         totalTimeSeconds: catalog.totalTimeSeconds,
+        availableUntilDate: catalog.availableUntilDate,
+        isClosed,
         maxRetries: catalog.maxRetries,
         maxAttempts,
         shuffleOptions: catalog.shuffleOptions,
@@ -237,6 +250,7 @@ export class FinalExamsService {
         title: true,
         status: true,
         questionCount: true,
+        availableUntilDate: true,
         maxRetries: true,
         createdAt: true,
         competitions: {
@@ -275,6 +289,8 @@ export class FinalExamsService {
         status: catalog.status,
         createdAt: catalog.createdAt,
         questionCount: catalog.questionCount,
+        availableUntilDate: catalog.availableUntilDate,
+        isClosed: isFinalExamCatalogClosed(catalog.availableUntilDate),
         maxRetries: catalog.maxRetries,
         maxAttempts,
         competitions,
@@ -354,12 +370,13 @@ export class FinalExamsService {
     const referees = users.map((user) => {
       const userExams = examsByUser.get(user.id) ?? [];
       const usedAttempts = userExams.length;
+      const isClosed = isFinalExamCatalogClosed(catalog.availableUntilDate);
       const pendingAttempt =
         userExams.find((exam) => exam.status === ExamStatus.PENDING) ?? null;
       const hasPassed = userExams.some((exam) => exam.isPassed === true);
       const lastFinished =
         userExams.find((exam) => exam.status === ExamStatus.FINISHED) ?? null;
-      const remainingAttempts = hasPassed
+      const remainingAttempts = hasPassed || isClosed
         ? 0
         : Math.max(0, maxAttempts - usedAttempts);
 
@@ -377,7 +394,9 @@ export class FinalExamsService {
         },
         status: hasPassed
           ? 'APPROVED'
-          : pendingAttempt || usedAttempts < maxAttempts
+          : isClosed
+            ? 'FAILED'
+            : pendingAttempt || usedAttempts < maxAttempts
             ? 'PENDING'
             : 'FAILED',
       };
@@ -408,6 +427,8 @@ export class FinalExamsService {
       status: catalog.status,
       createdAt: catalog.createdAt,
       questionCount: catalog.questionCount,
+      availableUntilDate: catalog.availableUntilDate,
+      isClosed: isFinalExamCatalogClosed(catalog.availableUntilDate),
       maxRetries: catalog.maxRetries,
       maxAttempts,
       competitions,
@@ -465,6 +486,8 @@ export class FinalExamsService {
         );
       }
     }
+
+    this.ensureCatalogIsOpen(catalog.availableUntilDate);
 
     const pendingAttempt = await this.prisma.exam.findFirst({
       where: {
@@ -555,6 +578,8 @@ export class FinalExamsService {
       questionCount: catalog.questionCount,
       isTimed: catalog.isTimed,
       totalTimeSeconds: catalog.totalTimeSeconds,
+      availableUntilDate: catalog.availableUntilDate,
+      isClosed: isFinalExamCatalogClosed(catalog.availableUntilDate),
       maxRetries: catalog.maxRetries,
       maxAttempts: this.toMaxAttempts(catalog.maxRetries),
       shuffleOptions: catalog.shuffleOptions,
@@ -582,6 +607,28 @@ export class FinalExamsService {
       .map((value) => value.trim())
       .filter((value) => value.length > 0);
     return Array.from(new Set(normalized));
+  }
+
+  private normalizeAvailableUntilDate(value?: string | null) {
+    if (value == null) return null;
+
+    const normalized = value.trim();
+    if (!normalized) {
+      throw new BadRequestException('availableUntilDate cannot be empty');
+    }
+    if (!isValidFinalExamAvailableUntilDate(normalized)) {
+      throw new BadRequestException(
+        'availableUntilDate must be a valid calendar date in YYYY-MM-DD format',
+      );
+    }
+
+    return normalized;
+  }
+
+  private ensureCatalogIsOpen(availableUntilDate?: string | null) {
+    if (isFinalExamCatalogClosed(availableUntilDate)) {
+      throw new ConflictException('Final exam catalog is closed');
+    }
   }
 
   private toMaxAttempts(maxRetries: number) {

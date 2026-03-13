@@ -10,6 +10,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { AnswerExamQuestionDto } from './dto/answer-exam-question.dto';
 import { UserStatsService } from '../users/user-stats.service';
+import { isFinalExamCatalogClosed } from '../final-exams/final-exam-availability';
 
 type AuthUserPayload = {
   id: string;
@@ -180,6 +181,9 @@ export class ExamsService {
     const exam = await this.prisma.exam.findUnique({
       where: { id },
       include: {
+        finalExamCatalog: {
+          select: { availableUntilDate: true },
+        },
         questions: {
           orderBy: [{ position: 'asc' }, { id: 'asc' }],
           include: {
@@ -198,6 +202,11 @@ export class ExamsService {
 
     if (!exam) throw new NotFoundException('Exam not found');
     this.ensureExamAccess(exam.userId, user);
+    this.ensurePendingFinalExamIsOpen(
+      exam.examType,
+      exam.status,
+      exam.finalExamCatalog?.availableUntilDate,
+    );
 
     return {
       id: exam.id,
@@ -305,11 +314,24 @@ export class ExamsService {
   async answer(id: string, user: AuthUserPayload, dto: AnswerExamQuestionDto) {
     const exam = await this.prisma.exam.findUnique({
       where: { id },
-      select: { id: true, userId: true, status: true },
+      select: {
+        id: true,
+        userId: true,
+        status: true,
+        examType: true,
+        finalExamCatalog: {
+          select: { availableUntilDate: true },
+        },
+      },
     });
 
     if (!exam) throw new NotFoundException('Exam not found');
     this.ensureExamAccess(exam.userId, user);
+    this.ensurePendingFinalExamIsOpen(
+      exam.examType,
+      exam.status,
+      exam.finalExamCatalog?.availableUntilDate,
+    );
 
     if (exam.status !== ExamStatus.PENDING) {
       throw new BadRequestException('Exam is already finished');
@@ -361,6 +383,9 @@ export class ExamsService {
     const exam = await this.prisma.exam.findUnique({
       where: { id },
       include: {
+        finalExamCatalog: {
+          select: { availableUntilDate: true },
+        },
         questions: {
           include: {
             correctKeys: { select: { key: true } },
@@ -372,6 +397,11 @@ export class ExamsService {
 
     if (!exam) throw new NotFoundException('Exam not found');
     this.ensureExamAccess(exam.userId, user);
+    this.ensurePendingFinalExamIsOpen(
+      exam.examType,
+      exam.status,
+      exam.finalExamCatalog?.availableUntilDate,
+    );
 
     if (exam.status !== ExamStatus.PENDING) {
       throw new BadRequestException('Exam is already finished');
@@ -493,6 +523,17 @@ export class ExamsService {
     if (user.role === Role.ADMIN) return;
     if (examUserId !== user.id) {
       throw new ForbiddenException('You do not have access to this exam');
+    }
+  }
+
+  private ensurePendingFinalExamIsOpen(
+    examType: ExamType,
+    status: ExamStatus,
+    availableUntilDate?: string | null,
+  ) {
+    if (examType !== ExamType.FINAL || status !== ExamStatus.PENDING) return;
+    if (isFinalExamCatalogClosed(availableUntilDate)) {
+      throw new ConflictException('Final exam is closed');
     }
   }
 
