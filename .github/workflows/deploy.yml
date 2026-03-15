@@ -23,12 +23,16 @@ jobs:
               cd /var/www/acab/backend-prod
               git pull origin main
               yarn install
+              npx prisma migrate deploy
+              npx prisma generate
               yarn build
               pm2 restart acab-backend-prod
             else
               cd /var/www/acab/backend-staging
               git pull origin develop
               yarn install
+              npx prisma migrate deploy
+              npx prisma generate
               yarn build
               pm2 restart acab-backend-staging
             fi
