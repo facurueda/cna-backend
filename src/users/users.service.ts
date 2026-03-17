@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { ExamStatus, ExamType, Role } from "@prisma/client";
+import { ExamStatus, ExamType } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 
 type RefereeStats = {
@@ -96,9 +96,7 @@ export class UsersService {
   async getDashboardSummary() {
     const [refereesCount, practiceTestsCount, finalExamAvg, clipsUploadedCount] =
       await Promise.all([
-        this.prisma.user.count({
-          where: { role: { not: Role.ADMIN } },
-        }),
+        this.prisma.user.count(),
         this.prisma.exam.count({
           where: {
             status: ExamStatus.FINISHED,
