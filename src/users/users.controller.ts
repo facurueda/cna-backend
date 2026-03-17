@@ -10,7 +10,7 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 export class UsersController {
   constructor(private readonly users: UsersService) {}
 
-  // Trae todos los usuarios que no son admin (referees/members)
+  // Trae usuarios asignables a competencia, incluyendo admins
   @Get("referees")
   listReferees(@Query("competitionId") competitionId?: string) {
     const normalized = competitionId?.trim();

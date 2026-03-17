@@ -58,7 +58,6 @@ export class UsersService {
 
     const referees = await this.prisma.user.findMany({
       where: {
-        role: { not: Role.ADMIN },
         ...(competitionId
           ? { competitionsAsReferee: { none: { competitionId } } }
           : {}),

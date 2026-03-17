@@ -110,6 +110,68 @@ describe('FinalExamsService', () => {
     );
   });
 
+  it('lists only assigned published catalogs for admins in my catalogs', async () => {
+    const createdAt = new Date('2026-03-03T12:00:00.000Z');
+    prisma.finalExamCatalog.findMany.mockResolvedValue([
+      {
+        id: 'catalog-1',
+        title: 'Final marzo',
+        status: FinalExamCatalogStatus.PUBLISHED,
+        questionCount: 10,
+        isTimed: false,
+        totalTimeSeconds: null,
+        availableUntilDate: null,
+        maxRetries: 1,
+        shuffleOptions: true,
+        passThresholdPercent: 70,
+        publishedAt: createdAt,
+        createdAt,
+        categories: [{ category: { id: 'cat-1', name: 'Reglamento' } }],
+        competitions: [{ competition: { id: 'comp-1', name: 'Inicial' } }],
+        exams: [],
+      },
+    ]);
+
+    const result = await service.listMyCatalogs({
+      id: 'admin-1',
+      role: Role.ADMIN,
+    });
+
+    expect(prisma.finalExamCatalog.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          status: FinalExamCatalogStatus.PUBLISHED,
+          competitions: {
+            some: {
+              competition: {
+                referees: {
+                  some: { userId: 'admin-1' },
+                },
+              },
+            },
+          },
+        },
+      }),
+    );
+    expect(result).toEqual([
+      expect.objectContaining({
+        id: 'catalog-1',
+        title: 'Final marzo',
+      }),
+    ]);
+  });
+
+  it('does not list non assigned catalogs for admins in my catalogs', async () => {
+    prisma.finalExamCatalog.findMany.mockResolvedValue([]);
+
+    const result = await service.listMyCatalogs({
+      id: 'admin-1',
+      role: Role.ADMIN,
+    });
+
+    expect(result).toEqual([]);
+  });
+
   it('returns existing pending attempt when present', async () => {
     prisma.finalExamCatalog.findUnique.mockResolvedValue({
       id: 'catalog-1',
@@ -220,6 +282,40 @@ describe('FinalExamsService', () => {
     );
   });
 
+  it('creates a new attempt when assigned admin is eligible and has attempts left', async () => {
+    prisma.finalExamCatalog.findUnique.mockResolvedValue({
+      id: 'catalog-1',
+      status: FinalExamCatalogStatus.PUBLISHED,
+      questionCount: 20,
+      isTimed: false,
+      totalTimeSeconds: null,
+      availableUntilDate: null,
+      maxRetries: 2,
+      passThresholdPercent: 75,
+      categories: [{ categoryId: 'cat-1' }],
+      competitions: [{ competitionId: 'comp-1' }],
+    });
+    prisma.competitionReferee.findFirst.mockResolvedValue({ competitionId: 'comp-1' });
+    prisma.exam.findFirst.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
+    prisma.exam.count.mockResolvedValue(0);
+    examsService.createGeneratedExam.mockResolvedValue({ id: 'admin-exam' });
+
+    const result = await service.startAttempt(
+      'catalog-1',
+      { id: 'admin-1', role: Role.ADMIN },
+    );
+
+    expect(result).toEqual({ id: 'admin-exam' });
+    expect(examsService.createGeneratedExam).toHaveBeenCalledWith(
+      { id: 'admin-1', role: Role.ADMIN },
+      expect.objectContaining({
+        examType: 'FINAL',
+        finalExamCatalogId: 'catalog-1',
+        attemptNumber: 1,
+      }),
+    );
+  });
+
   it('throws forbidden for non assigned referee', async () => {
     prisma.finalExamCatalog.findUnique.mockResolvedValue({
       id: 'catalog-1',
@@ -237,6 +333,26 @@ describe('FinalExamsService', () => {
 
     await expect(
       service.startAttempt('catalog-1', { id: 'user-1', role: Role.GENERAL }),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+  });
+
+  it('throws forbidden for non assigned admin', async () => {
+    prisma.finalExamCatalog.findUnique.mockResolvedValue({
+      id: 'catalog-1',
+      status: FinalExamCatalogStatus.PUBLISHED,
+      questionCount: 10,
+      isTimed: false,
+      totalTimeSeconds: null,
+      availableUntilDate: null,
+      maxRetries: 1,
+      passThresholdPercent: 70,
+      categories: [{ categoryId: 'cat-1' }],
+      competitions: [{ competitionId: 'comp-1' }],
+    });
+    prisma.competitionReferee.findFirst.mockResolvedValue(null);
+
+    await expect(
+      service.startAttempt('catalog-1', { id: 'admin-1', role: Role.ADMIN }),
     ).rejects.toBeInstanceOf(ForbiddenException);
   });
 
@@ -311,6 +427,15 @@ describe('FinalExamsService', () => {
         },
       },
       {
+        userId: 'admin-1',
+        user: {
+          id: 'admin-1',
+          firstName: 'Ana',
+          lastName: 'Admin',
+          email: 'admin@example.com',
+        },
+      },
+      {
         userId: 'user-1',
         user: {
           id: 'user-1',
@@ -360,12 +485,24 @@ describe('FinalExamsService', () => {
         { id: 'comp-2', name: 'Liga Nacional' },
       ],
       summary: {
-        resolutions: { resolved: 1, total: 2 },
+        resolutions: { resolved: 1, total: 3 },
         averageScoreOnTen: 8,
         approved: { count: 1, totalResolved: 1 },
-        pending: 1,
+        pending: 2,
       },
       referees: [
+        {
+          user: {
+            id: 'admin-1',
+            firstName: 'Ana',
+            lastName: 'Admin',
+            email: 'admin@example.com',
+          },
+          date: null,
+          result: { scorePercent: null, scoreOnTen: null },
+          retries: { used: 0, max: 2, remaining: 2 },
+          status: 'PENDING',
+        },
         {
           user: {
             id: 'user-1',
