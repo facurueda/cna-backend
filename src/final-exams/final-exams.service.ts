@@ -156,21 +156,18 @@ export class FinalExamsService {
 
   async listMyCatalogs(user: AuthUserPayload) {
     const catalogs = await this.prisma.finalExamCatalog.findMany({
-      where:
-        user.role === Role.ADMIN
-          ? undefined
-          : {
-              status: FinalExamCatalogStatus.PUBLISHED,
-              competitions: {
-                some: {
-                  competition: {
-                    referees: {
-                      some: { userId: user.id },
-                    },
-                  },
-                },
+      where: {
+        status: FinalExamCatalogStatus.PUBLISHED,
+        competitions: {
+          some: {
+            competition: {
+              referees: {
+                some: { userId: user.id },
               },
             },
+          },
+        },
+      },
       orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
       include: {
         categories: {
@@ -307,7 +304,6 @@ export class FinalExamsService {
     const links = await this.prisma.competitionReferee.findMany({
       where: {
         competitionId: { in: competitionIds },
-        user: { role: { not: Role.ADMIN } },
       },
       select: {
         userId: true,
@@ -466,25 +462,23 @@ export class FinalExamsService {
       throw new BadRequestException('Final exam catalog has no categories');
     }
 
-    if (catalog.status !== FinalExamCatalogStatus.PUBLISHED && user.role !== Role.ADMIN) {
+    if (catalog.status !== FinalExamCatalogStatus.PUBLISHED) {
       throw new ForbiddenException('Final exam catalog is not published');
     }
 
-    if (user.role !== Role.ADMIN) {
-      const competitionIds = catalog.competitions.map((item) => item.competitionId);
-      const assignment = await this.prisma.competitionReferee.findFirst({
-        where: {
-          userId: user.id,
-          competitionId: { in: competitionIds },
-        },
-        select: { competitionId: true },
-      });
+    const competitionIds = catalog.competitions.map((item) => item.competitionId);
+    const assignment = await this.prisma.competitionReferee.findFirst({
+      where: {
+        userId: user.id,
+        competitionId: { in: competitionIds },
+      },
+      select: { competitionId: true },
+    });
 
-      if (!assignment) {
-        throw new ForbiddenException(
-          'You do not have access to this final exam catalog',
-        );
-      }
+    if (!assignment) {
+      throw new ForbiddenException(
+        'You do not have access to this final exam catalog',
+      );
     }
 
     this.ensureCatalogIsOpen(catalog.availableUntilDate);

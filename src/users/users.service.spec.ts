@@ -31,7 +31,7 @@ describe("UsersService", () => {
     );
   });
 
-  it("returns referees with persisted stats and zero fallback", async () => {
+  it("returns assignable users with persisted stats and zero fallback", async () => {
     prisma.competition.findUnique.mockResolvedValue({ id: "competition-1" });
     prisma.user.findMany.mockResolvedValue([
       {
@@ -57,6 +57,22 @@ describe("UsersService", () => {
         lastName: "Two",
         role: "GENERAL",
         stats: null,
+      },
+      {
+        id: "admin-1",
+        email: "admin@test.com",
+        firstName: "Admin",
+        lastName: "User",
+        role: "ADMIN",
+        stats: {
+          practiceTestsCount: 1,
+          practiceAverage: 6.5,
+          finalTestsPassedCount: 1,
+          finalTestsTotalCount: 1,
+          finalAverage: 9.2,
+          clipsCount: 4,
+          commentsCount: 7,
+        },
       },
     ]);
 
@@ -91,7 +107,34 @@ describe("UsersService", () => {
         clipsCount: 0,
         commentsCount: 0,
       },
+      {
+        id: "admin-1",
+        email: "admin@test.com",
+        firstName: "Admin",
+        lastName: "User",
+        role: "ADMIN",
+        practiceTestsCount: 1,
+        practiceAverage: 6.5,
+        finalTestsPassedCount: 1,
+        finalTestsTotalCount: 1,
+        finalAverage: 9.2,
+        clipsCount: 4,
+        commentsCount: 7,
+      },
     ]);
+  });
+
+  it("includes admins when listing users available for assignment", async () => {
+    prisma.user.findMany.mockResolvedValue([]);
+
+    await service.listReferees();
+
+    expect(prisma.user.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {},
+        orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
+      }),
+    );
   });
 
   it("returns dashboard summary cards", async () => {

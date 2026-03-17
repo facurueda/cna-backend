@@ -143,6 +143,9 @@ Nota: `GET /exams/:examId` (quiz) no expone respuestas correctas.
 
 `GET /users/referees?competitionId=<id>`
 
+Devuelve usuarios asignables a competencias, incluyendo `ADMIN` y `GENERAL`.
+Si se envía `competitionId`, excluye a los usuarios ya vinculados a esa competencia.
+
 Además de los campos base del usuario, la respuesta ahora incluye estadísticas agregadas:
 
 - `practiceTestsCount`
@@ -197,9 +200,9 @@ Los reintentos aplican solo a exámenes finales de catálogo.
 
 - `POST /final-exams` (`ADMIN`): crea catálogo final.
 - `POST /final-exams/:id/publish` (`ADMIN`): publica catálogo.
-- `GET /final-exams/my` (autenticado): lista catálogos disponibles + estado de intentos del usuario.
-- `GET /final-exams/:id/referees` (`ADMIN`): lista árbitros vinculados al catálogo, metadata del examen (fecha/competencias/preguntas/reintentos) y resumen (resoluciones/promedio/aprobados/pendientes).
-- `POST /final-exams/:id/start` (autenticado): inicia o reanuda intento.
+- `GET /final-exams/my` (autenticado): lista catálogos publicados disponibles para el usuario según sus competencias + estado de intentos.
+- `GET /final-exams/:id/referees` (`ADMIN`): lista usuarios vinculados al catálogo por sus competencias, metadata del examen (fecha/competencias/preguntas/reintentos) y resumen (resoluciones/promedio/aprobados/pendientes).
+- `POST /final-exams/:id/start` (autenticado): inicia o reanuda intento solo si el usuario pertenece al menos a una competencia del catálogo.
 
 `POST /final-exams` acepta `title` opcional. Si no llega, se usa `"Examen"`.
 
