@@ -99,7 +99,10 @@ export class ExamsService {
       );
     }
 
-    const selectedQuestions = this.pickRandomQuestions(pool, input.questionCount);
+    const selectedQuestions = this.pickRandomQuestions(
+      pool,
+      input.questionCount,
+    );
 
     const examId = await this.prisma.$transaction(async (tx) => {
       const created = await tx.exam.create({
@@ -109,7 +112,9 @@ export class ExamsService {
           attemptNumber: input.attemptNumber,
           questionCount: input.questionCount,
           isTimed: input.isTimed,
-          totalTimeSeconds: input.isTimed ? input.totalTimeSeconds ?? null : null,
+          totalTimeSeconds: input.isTimed
+            ? (input.totalTimeSeconds ?? null)
+            : null,
           examType: input.examType,
           status: ExamStatus.PENDING,
           passThresholdPercent:
@@ -153,28 +158,20 @@ export class ExamsService {
   }
 
   async findMyExams(user: AuthUserPayload) {
-    return this.prisma.exam.findMany({
-      where: { userId: user.id },
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      select: {
-        id: true,
-        userId: true,
-        finalExamCatalogId: true,
-        attemptNumber: true,
-        questionCount: true,
-        isTimed: true,
-        totalTimeSeconds: true,
-        status: true,
-        examType: true,
-        passThresholdPercent: true,
-        correctCount: true,
-        wrongCount: true,
-        scorePercent: true,
-        isPassed: true,
-        createdAt: true,
-        finishedAt: true,
-      },
+    return this.findExamsByUserId(user.id);
+  }
+
+  async findUserExams(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true },
     });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return this.findExamsByUserId(userId);
   }
 
   async findOne(id: string, user: AuthUserPayload) {
@@ -288,7 +285,9 @@ export class ExamsService {
       isPassed,
       examQuestions: exam.questions.map((question) => {
         const correctKeySet = new Set(
-          this.normalizeUniqueKeys(question.correctKeys.map((item) => item.key)),
+          this.normalizeUniqueKeys(
+            question.correctKeys.map((item) => item.key),
+          ),
         );
 
         return {
@@ -488,7 +487,10 @@ export class ExamsService {
 
       const questionPoints = Math.max(
         0,
-        Math.min(questionMaxPoints, selectedCorrectCount - selectedIncorrectCount),
+        Math.min(
+          questionMaxPoints,
+          selectedCorrectCount - selectedIncorrectCount,
+        ),
       );
       earnedPoints += questionPoints;
     }
@@ -535,6 +537,58 @@ export class ExamsService {
     if (isFinalExamCatalogClosed(availableUntilDate)) {
       throw new ConflictException('Final exam is closed');
     }
+  }
+
+  private findExamsByUserId(userId: string) {
+    return this.prisma.exam
+      .findMany({
+        where: { userId },
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        select: {
+          id: true,
+          userId: true,
+          finalExamCatalogId: true,
+          attemptNumber: true,
+          questionCount: true,
+          isTimed: true,
+          totalTimeSeconds: true,
+          status: true,
+          examType: true,
+          passThresholdPercent: true,
+          correctCount: true,
+          wrongCount: true,
+          scorePercent: true,
+          isPassed: true,
+          createdAt: true,
+          finishedAt: true,
+          finalExamCatalog: {
+            select: {
+              title: true,
+            },
+          },
+        },
+      })
+      .then((exams) =>
+        exams.map((exam) => ({
+          id: exam.id,
+          userId: exam.userId,
+          finalExamCatalogId: exam.finalExamCatalogId,
+          attemptNumber: exam.attemptNumber,
+          questionCount: exam.questionCount,
+          isTimed: exam.isTimed,
+          totalTimeSeconds: exam.totalTimeSeconds,
+          status: exam.status,
+          examType: exam.examType,
+          passThresholdPercent: exam.passThresholdPercent,
+          correctCount: exam.correctCount,
+          wrongCount: exam.wrongCount,
+          scorePercent: exam.scorePercent,
+          isPassed: exam.isPassed,
+          createdAt: exam.createdAt,
+          finishedAt: exam.finishedAt,
+          title: exam.finalExamCatalog?.title ?? null,
+        })),
+      );
   }
 
   private pickRandomQuestions<
