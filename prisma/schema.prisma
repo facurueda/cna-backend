@@ -44,6 +44,7 @@ model User {
   email            String  @unique
   password         String
   refreshTokenHash String?
+  requiresPasswordChange Boolean @default(false)
   role             Role    @default(GENERAL)
 
   createdAt DateTime @default(now())

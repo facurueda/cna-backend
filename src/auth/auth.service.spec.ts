@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { Role, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
@@ -37,6 +37,7 @@ describe('AuthService', () => {
     password: 'password-hash',
     role: Role.GENERAL,
     refreshTokenHash: null,
+    requiresPasswordChange: false,
     createdAt: new Date('2026-02-17T00:00:00.000Z'),
     updatedAt: new Date('2026-02-17T00:00:00.000Z'),
   };
@@ -58,7 +59,19 @@ describe('AuthService', () => {
     jwt.sign
       .mockReturnValueOnce('access-token')
       .mockReturnValueOnce('refresh-token');
-    jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
+    jest
+      .spyOn(bcrypt, 'compare')
+      .mockImplementation(async (plain: string, hashed: string) => {
+        if (plain === 'User123!' && hashed === baseUser.password) {
+          return true as never;
+        }
+
+        if (plain === '123456' && hashed === baseUser.password) {
+          return false as never;
+        }
+
+        return false as never;
+      });
     jest.spyOn(bcrypt, 'hash').mockResolvedValue('refresh-token-hash' as never);
 
     const result = await service.login({
@@ -76,11 +89,47 @@ describe('AuthService', () => {
         firstName: baseUser.firstName,
         lastName: baseUser.lastName,
         role: baseUser.role,
+        requiresPasswordChange: false,
       },
     });
     expect(prisma.user.update).toHaveBeenCalledWith({
       where: { id: baseUser.id },
       data: { refreshTokenHash: 'refresh-token-hash' },
+    });
+  });
+
+  it('returns requiresPasswordChange true for legacy users still on the temporary password', async () => {
+    prisma.user.findUnique.mockResolvedValue(baseUser);
+    prisma.user.update.mockResolvedValue({
+      ...baseUser,
+      requiresPasswordChange: true,
+    });
+    jwt.sign
+      .mockReturnValueOnce('access-token')
+      .mockReturnValueOnce('refresh-token');
+    jest
+      .spyOn(bcrypt, 'compare')
+      .mockImplementation(async (plain: string, hashed: string) => {
+        if (plain === '123456' && hashed === baseUser.password) {
+          return true as never;
+        }
+
+        return false as never;
+      });
+    jest.spyOn(bcrypt, 'hash').mockResolvedValue('refresh-token-hash' as never);
+
+    const result = await service.login({
+      email: baseUser.email,
+      password: '123456',
+    });
+
+    expect(result.user.requiresPasswordChange).toBe(true);
+    expect(prisma.user.update).toHaveBeenCalledWith({
+      where: { id: baseUser.id },
+      data: {
+        refreshTokenHash: 'refresh-token-hash',
+        requiresPasswordChange: true,
+      },
     });
   });
 
@@ -96,7 +145,22 @@ describe('AuthService', () => {
     jwt.sign
       .mockReturnValueOnce('new-access-token')
       .mockReturnValueOnce('new-refresh-token');
-    jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
+    jest
+      .spyOn(bcrypt, 'compare')
+      .mockImplementation(async (plain: string, hashed: string) => {
+        if (
+          plain === 'valid-refresh-token' &&
+          hashed === userWithRefresh.refreshTokenHash
+        ) {
+          return true as never;
+        }
+
+        if (plain === '123456' && hashed === userWithRefresh.password) {
+          return false as never;
+        }
+
+        return false as never;
+      });
     jest.spyOn(bcrypt, 'hash').mockResolvedValue('new-refresh-hash' as never);
 
     const result = await service.refresh({
@@ -128,5 +192,43 @@ describe('AuthService', () => {
     await expect(
       service.refresh({ refreshToken: 'valid-refresh-token' }),
     ).rejects.toBeInstanceOf(UnauthorizedException);
+  });
+
+  it('changes password and clears requiresPasswordChange', async () => {
+    jest.spyOn(bcrypt, 'hash').mockResolvedValue('new-password-hash' as never);
+    prisma.user.update.mockResolvedValue({
+      ...baseUser,
+      password: 'new-password-hash',
+      requiresPasswordChange: false,
+    });
+
+    const result = await service.changePassword(baseUser.id, {
+      newPassword: 'NewPass123!',
+    });
+
+    expect(prisma.user.update).toHaveBeenCalledWith({
+      where: { id: baseUser.id },
+      data: {
+        password: 'new-password-hash',
+        requiresPasswordChange: false,
+      },
+    });
+    expect(result).toEqual({
+      user: {
+        id: baseUser.id,
+        email: baseUser.email,
+        firstName: baseUser.firstName,
+        lastName: baseUser.lastName,
+        role: baseUser.role,
+        requiresPasswordChange: false,
+      },
+    });
+  });
+
+  it('rejects using the temporary password as the new password', async () => {
+    await expect(
+      service.changePassword(baseUser.id, { newPassword: '123456' }),
+    ).rejects.toBeInstanceOf(BadRequestException);
+    expect(prisma.user.update).not.toHaveBeenCalled();
   });
 });
