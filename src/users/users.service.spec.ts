@@ -145,6 +145,7 @@ describe("UsersService", () => {
 
     const result = await service.getDashboardSummary();
 
+    expect(prisma.user.count).toHaveBeenCalledWith();
     expect(result).toEqual({
       refereesCount: 128,
       practiceTestsCount: 450,
