@@ -5,6 +5,7 @@ import { RolesGuard } from './roles/roles.guard';
 import { AuthUser } from './decorators/auth-user.decorator';
 import { Role } from '@prisma/client';
 import { AuthService } from './auth.service';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { RegisterDto } from './dto/register.dto';
@@ -27,6 +28,12 @@ export class AuthController {
   @Post('refresh')
   refresh(@Body() dto: RefreshTokenDto) {
     return this.auth.refresh(dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('change-password')
+  changePassword(@AuthUser() user, @Body() dto: ChangePasswordDto) {
+    return this.auth.changePassword(user.id, dto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

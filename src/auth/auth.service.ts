@@ -7,12 +7,15 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import type { StringValue } from 'ms';
 import { PrismaService } from '../prisma/prisma.service';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { RegisterDto } from './dto/register.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Prisma, Role, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+
+const TEMPORARY_PASSWORD = '123456';
 
 @Injectable()
 export class AuthService {
@@ -22,14 +25,25 @@ export class AuthService {
     private readonly config: ConfigService,
   ) {}
 
-  private sanitizeUser(user: User) {
+  private toPublicUser(
+    user: Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'role'>,
+    requiresPasswordChange: boolean,
+  ) {
     return {
       id: user.id,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role,
+      requiresPasswordChange,
     };
+  }
+
+  private async resolveRequiresPasswordChange(
+    user: Pick<User, 'password' | 'requiresPasswordChange'>,
+  ) {
+    if (user.requiresPasswordChange) return true;
+    return bcrypt.compare(TEMPORARY_PASSWORD, user.password);
   }
 
   private resolveExpiresIn(
@@ -62,6 +76,9 @@ export class AuthService {
   }
 
   private async issueAuthTokens(user: User) {
+    const requiresPasswordChange =
+      await this.resolveRequiresPasswordChange(user);
+
     const accessToken = this.jwt.sign({
       sub: user.id,
       role: user.role,
@@ -80,17 +97,22 @@ export class AuthService {
     );
 
     const refreshTokenHash = await bcrypt.hash(refreshToken, 10);
+    const updateData: Prisma.UserUpdateInput = { refreshTokenHash };
+
+    if (requiresPasswordChange && !user.requiresPasswordChange) {
+      updateData.requiresPasswordChange = true;
+    }
 
     await this.prisma.user.update({
       where: { id: user.id },
-      data: { refreshTokenHash },
+      data: updateData,
     });
 
     return {
       accessToken,
       refreshToken,
       tokenType: 'Bearer',
-      user: this.sanitizeUser(user),
+      user: this.toPublicUser(user, requiresPasswordChange),
     };
   }
 
@@ -114,6 +136,7 @@ export class AuthService {
           firstName,
           lastName,
           role: Role.GENERAL,
+          requiresPasswordChange: dto.password === TEMPORARY_PASSWORD,
         },
       });
     } catch (error) {
@@ -186,6 +209,30 @@ export class AuthService {
       data: { role },
     });
 
-    return { ok: true, user: this.sanitizeUser(user) };
+    return {
+      ok: true,
+      user: this.toPublicUser(user, user.requiresPasswordChange),
+    };
+  }
+
+  async changePassword(userId: string, dto: ChangePasswordDto) {
+    if (dto.newPassword === TEMPORARY_PASSWORD) {
+      throw new BadRequestException(
+        'New password cannot be the temporary password',
+      );
+    }
+
+    const passwordHash = await bcrypt.hash(dto.newPassword, 10);
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        password: passwordHash,
+        requiresPasswordChange: false,
+      },
+    });
+
+    return {
+      user: this.toPublicUser(user, false),
+    };
   }
 }
