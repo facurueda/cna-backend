@@ -89,7 +89,9 @@ describe('ExamsController review endpoint', () => {
   });
 
   it('returns 401 when request is not authenticated', async () => {
-    await request(app.getHttpServer()).get('/exams/exam-123/review').expect(401);
+    await request(app.getHttpServer())
+      .get('/exams/exam-123/review')
+      .expect(401);
     expect(prisma.exam.findUnique).not.toHaveBeenCalled();
   });
 
@@ -159,8 +161,8 @@ describe('ExamsController review endpoint', () => {
           position: 1,
           questionText: 'Texto de la pregunta 1',
           options: [
-            { key: 'a', text: 'Opcion A' },
             { key: 'b', text: 'Opcion B' },
+            { key: 'a', text: 'Opcion A' },
           ],
           correctKeys: [{ key: 'b' }],
           responses: [{ key: 'a' }],
@@ -198,8 +200,8 @@ describe('ExamsController review endpoint', () => {
           order: 1,
           prompt: 'Texto de la pregunta 1',
           options: [
-            { key: 'a', text: 'Opcion A', isCorrect: false },
             { key: 'b', text: 'Opcion B', isCorrect: true },
+            { key: 'a', text: 'Opcion A', isCorrect: false },
           ],
         },
         {
@@ -217,6 +219,20 @@ describe('ExamsController review endpoint', () => {
         { examQuestionId: 'eq-2', selectedKeys: ['a'] },
       ],
     });
+
+    expect(prisma.exam.findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({
+        include: expect.objectContaining({
+          questions: expect.objectContaining({
+            include: expect.objectContaining({
+              options: expect.objectContaining({
+                orderBy: [{ position: 'asc' }, { id: 'asc' }],
+              }),
+            }),
+          }),
+        }),
+      }),
+    );
   });
 
   it('returns review payload for a passed exam', async () => {
@@ -291,8 +307,8 @@ describe('ExamsController review endpoint', () => {
           questionText: 'Pregunta de quiz',
           categoryName: 'Regla 1',
           options: [
-            { id: 'opt-1', key: 'a', text: 'Opcion A' },
             { id: 'opt-2', key: 'b', text: 'Opcion B' },
+            { id: 'opt-1', key: 'a', text: 'Opcion A' },
           ],
           responses: [{ key: 'a' }],
         },
@@ -304,7 +320,27 @@ describe('ExamsController review endpoint', () => {
       .set('x-user-id', 'user-1')
       .expect(200);
 
-    expect(response.body.questions[0].options[0]).not.toHaveProperty('isCorrect');
-    expect(response.body.questions[0].options[1]).not.toHaveProperty('isCorrect');
+    expect(response.body.questions[0].options[0]).not.toHaveProperty(
+      'isCorrect',
+    );
+    expect(response.body.questions[0].options[1]).not.toHaveProperty(
+      'isCorrect',
+    );
+    expect(
+      response.body.questions[0].options.map((option) => option.key),
+    ).toEqual(['b', 'a']);
+    expect(prisma.exam.findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({
+        include: expect.objectContaining({
+          questions: expect.objectContaining({
+            include: expect.objectContaining({
+              options: expect.objectContaining({
+                orderBy: [{ position: 'asc' }, { id: 'asc' }],
+              }),
+            }),
+          }),
+        }),
+      }),
+    );
   });
 });

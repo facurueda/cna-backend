@@ -60,7 +60,9 @@ export class FinalExamsService {
     }
 
     if (competitions.length !== competitionIds.length) {
-      const existing = new Set(competitions.map((competition) => competition.id));
+      const existing = new Set(
+        competitions.map((competition) => competition.id),
+      );
       const missing = competitionIds.filter((id) => !existing.has(id));
       throw new NotFoundException(
         `Competition not found for final exam catalog: ${missing.join(', ')}`,
@@ -72,7 +74,7 @@ export class FinalExamsService {
         title: dto.title?.trim() || 'Examen',
         questionCount: dto.questionCount,
         isTimed: dto.isTimed,
-        totalTimeSeconds: dto.isTimed ? dto.totalTimeSeconds ?? null : null,
+        totalTimeSeconds: dto.isTimed ? (dto.totalTimeSeconds ?? null) : null,
         availableUntilDate,
         maxRetries: dto.maxRetries ?? 0,
         shuffleOptions: dto.shuffleOptions ?? true,
@@ -203,11 +205,11 @@ export class FinalExamsService {
         catalog.exams.find((exam) => exam.status === ExamStatus.PENDING)?.id ??
         null;
       const hasPassed = catalog.exams.some((exam) => exam.isPassed === true);
-      const remainingAttempts = hasPassed || isClosed
-        ? 0
-        : Math.max(0, maxAttempts - usedAttempts);
+      const remainingAttempts =
+        hasPassed || isClosed ? 0 : Math.max(0, maxAttempts - usedAttempts);
       const lastFinished =
-        catalog.exams.find((exam) => exam.status === ExamStatus.FINISHED) ?? null;
+        catalog.exams.find((exam) => exam.status === ExamStatus.FINISHED) ??
+        null;
 
       return {
         id: catalog.id,
@@ -372,9 +374,8 @@ export class FinalExamsService {
       const hasPassed = userExams.some((exam) => exam.isPassed === true);
       const lastFinished =
         userExams.find((exam) => exam.status === ExamStatus.FINISHED) ?? null;
-      const remainingAttempts = hasPassed || isClosed
-        ? 0
-        : Math.max(0, maxAttempts - usedAttempts);
+      const remainingAttempts =
+        hasPassed || isClosed ? 0 : Math.max(0, maxAttempts - usedAttempts);
 
       return {
         user,
@@ -393,12 +394,14 @@ export class FinalExamsService {
           : isClosed
             ? 'FAILED'
             : pendingAttempt || usedAttempts < maxAttempts
-            ? 'PENDING'
-            : 'FAILED',
+              ? 'PENDING'
+              : 'FAILED',
       };
     });
 
-    const resolvedReferees = referees.filter((referee) => referee.status !== 'PENDING');
+    const resolvedReferees = referees.filter(
+      (referee) => referee.status !== 'PENDING',
+    );
     const approvedCount = referees.filter(
       (referee) => referee.status === 'APPROVED',
     ).length;
@@ -466,7 +469,9 @@ export class FinalExamsService {
       throw new ForbiddenException('Final exam catalog is not published');
     }
 
-    const competitionIds = catalog.competitions.map((item) => item.competitionId);
+    const competitionIds = catalog.competitions.map(
+      (item) => item.competitionId,
+    );
     const assignment = await this.prisma.competitionReferee.findFirst({
       where: {
         userId: user.id,
@@ -529,6 +534,7 @@ export class FinalExamsService {
         categoryIds: catalog.categories.map((item) => item.categoryId),
         isTimed: catalog.isTimed,
         totalTimeSeconds: catalog.totalTimeSeconds,
+        shuffleOptions: catalog.shuffleOptions ?? true,
         passThresholdPercent: catalog.passThresholdPercent,
         finalExamCatalogId: catalog.id,
         attemptNumber: usedAttempts + 1,

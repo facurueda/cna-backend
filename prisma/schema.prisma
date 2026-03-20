@@ -235,6 +235,7 @@ model ExamQuestion {
 model ExamQuestionOption {
   id             String @id @default(uuid()) @db.Uuid
   examQuestionId String @db.Uuid
+  position       Int
   key            String
   text           String
 
@@ -242,6 +243,7 @@ model ExamQuestionOption {
 
   @@unique([examQuestionId, key])
   @@index([examQuestionId])
+  @@index([examQuestionId, position])
 }
 
 model ExamQuestionCorrectKey {

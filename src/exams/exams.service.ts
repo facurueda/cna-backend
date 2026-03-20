@@ -26,6 +26,7 @@ type CreateGeneratedExamInput = {
   passThresholdPercent?: number;
   finalExamCatalogId?: string;
   attemptNumber?: number;
+  shuffleOptions?: boolean;
 };
 
 const DEFAULT_PASS_THRESHOLD = 70;
@@ -129,6 +130,9 @@ export class ExamsService {
 
       for (let index = 0; index < selectedQuestions.length; index += 1) {
         const question = selectedQuestions[index];
+        const orderedAnswers = input.shuffleOptions
+          ? this.shuffleArray(question.answers)
+          : question.answers;
         await tx.examQuestion.create({
           data: {
             examId: created.id,
@@ -137,7 +141,8 @@ export class ExamsService {
             questionText: question.text,
             categoryName: question.category?.name,
             options: {
-              create: question.answers.map((answer) => ({
+              create: orderedAnswers.map((answer, optionIndex) => ({
+                position: optionIndex + 1,
                 key: answer.key,
                 text: answer.text,
               })),
@@ -185,7 +190,7 @@ export class ExamsService {
           orderBy: [{ position: 'asc' }, { id: 'asc' }],
           include: {
             options: {
-              orderBy: [{ key: 'asc' }, { id: 'asc' }],
+              orderBy: [{ position: 'asc' }, { id: 'asc' }],
               select: { id: true, key: true, text: true },
             },
             responses: {
@@ -242,7 +247,7 @@ export class ExamsService {
           orderBy: [{ position: 'asc' }, { id: 'asc' }],
           include: {
             options: {
-              orderBy: [{ key: 'asc' }, { id: 'asc' }],
+              orderBy: [{ position: 'asc' }, { id: 'asc' }],
               select: { key: true, text: true },
             },
             correctKeys: {
@@ -600,7 +605,12 @@ export class ExamsService {
       correctAnswerKeys: { key: string }[];
     },
   >(questions: T[], count: number): T[] {
-    const shuffled = [...questions];
+    const shuffled = this.shuffleArray(questions);
+    return shuffled.slice(0, count);
+  }
+
+  private shuffleArray<T>(values: T[]): T[] {
+    const shuffled = [...values];
     for (let index = shuffled.length - 1; index > 0; index -= 1) {
       const swapIndex = Math.floor(Math.random() * (index + 1));
       [shuffled[index], shuffled[swapIndex]] = [
@@ -608,7 +618,7 @@ export class ExamsService {
         shuffled[index],
       ];
     }
-    return shuffled.slice(0, count);
+    return shuffled;
   }
 
   private normalizeUniqueKeys(values: string[]): string[] {
