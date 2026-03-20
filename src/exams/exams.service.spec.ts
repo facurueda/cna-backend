@@ -28,6 +28,7 @@ describe('ExamsService', () => {
       findMany: jest.fn(),
     },
     exam: {
+      create: jest.fn(),
       findUnique: jest.fn(),
       findMany: jest.fn(),
     },
@@ -112,8 +113,7 @@ describe('ExamsService', () => {
         correctAnswerKeys: [{ key: 'b' }],
       },
     ]);
-    tx.exam.create.mockResolvedValue({ id: 'exam-1' });
-    tx.examQuestion.create.mockResolvedValue({ id: 'exam-question-1' });
+    prisma.exam.create.mockResolvedValue({ id: 'exam-1' });
     jest.spyOn(service, 'findOne').mockResolvedValue({ id: 'exam-1' } as never);
     jest.spyOn(Math, 'random').mockReturnValueOnce(0).mockReturnValueOnce(0);
 
@@ -128,16 +128,23 @@ describe('ExamsService', () => {
       },
     );
 
-    expect(tx.examQuestion.create).toHaveBeenCalledWith({
+    expect(prisma.exam.create).toHaveBeenCalledWith({
       data: expect.objectContaining({
-        options: {
+        questions: {
           create: [
-            { position: 1, key: 'b', text: 'Opcion B' },
-            { position: 2, key: 'c', text: 'Opcion C' },
-            { position: 3, key: 'a', text: 'Opcion A' },
+            expect.objectContaining({
+              options: {
+                create: [
+                  { position: 1, key: 'b', text: 'Opcion B' },
+                  { position: 2, key: 'c', text: 'Opcion C' },
+                  { position: 3, key: 'a', text: 'Opcion A' },
+                ],
+              },
+            }),
           ],
         },
       }),
+      select: { id: true },
     });
   });
 
@@ -158,8 +165,7 @@ describe('ExamsService', () => {
         correctAnswerKeys: [{ key: 'b' }],
       },
     ]);
-    tx.exam.create.mockResolvedValue({ id: 'exam-1' });
-    tx.examQuestion.create.mockResolvedValue({ id: 'exam-question-1' });
+    prisma.exam.create.mockResolvedValue({ id: 'exam-1' });
     jest.spyOn(service, 'findOne').mockResolvedValue({ id: 'exam-1' } as never);
 
     await service.createGeneratedExam(
@@ -173,16 +179,23 @@ describe('ExamsService', () => {
       },
     );
 
-    expect(tx.examQuestion.create).toHaveBeenCalledWith({
+    expect(prisma.exam.create).toHaveBeenCalledWith({
       data: expect.objectContaining({
-        options: {
+        questions: {
           create: [
-            { position: 1, key: 'a', text: 'Opcion A' },
-            { position: 2, key: 'b', text: 'Opcion B' },
-            { position: 3, key: 'c', text: 'Opcion C' },
+            expect.objectContaining({
+              options: {
+                create: [
+                  { position: 1, key: 'a', text: 'Opcion A' },
+                  { position: 2, key: 'b', text: 'Opcion B' },
+                  { position: 3, key: 'c', text: 'Opcion C' },
+                ],
+              },
+            }),
           ],
         },
       }),
+      select: { id: true },
     });
   });
 

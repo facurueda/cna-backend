@@ -105,61 +105,59 @@ export class ExamsService {
       input.questionCount,
     );
 
-    const examId = await this.prisma.$transaction(async (tx) => {
-      const created = await tx.exam.create({
-        data: {
-          userId: user.id,
-          finalExamCatalogId: input.finalExamCatalogId,
-          attemptNumber: input.attemptNumber,
-          questionCount: input.questionCount,
-          isTimed: input.isTimed,
-          totalTimeSeconds: input.isTimed
-            ? (input.totalTimeSeconds ?? null)
-            : null,
-          examType: input.examType,
-          status: ExamStatus.PENDING,
-          passThresholdPercent:
-            input.passThresholdPercent ?? DEFAULT_PASS_THRESHOLD,
-          correctCount: null,
-          wrongCount: null,
-          scorePercent: null,
-          isPassed: null,
+    const examQuestions = selectedQuestions.map((question, index) => {
+      const orderedAnswers = input.shuffleOptions
+        ? this.shuffleArray(question.answers)
+        : question.answers;
+
+      return {
+        position: index + 1,
+        questionCode: question.code,
+        questionText: question.text,
+        categoryName: question.category?.name,
+        options: {
+          create: orderedAnswers.map((answer, optionIndex) => ({
+            position: optionIndex + 1,
+            key: answer.key,
+            text: answer.text,
+          })),
         },
-        select: { id: true },
-      });
-
-      for (let index = 0; index < selectedQuestions.length; index += 1) {
-        const question = selectedQuestions[index];
-        const orderedAnswers = input.shuffleOptions
-          ? this.shuffleArray(question.answers)
-          : question.answers;
-        await tx.examQuestion.create({
-          data: {
-            examId: created.id,
-            position: index + 1,
-            questionCode: question.code,
-            questionText: question.text,
-            categoryName: question.category?.name,
-            options: {
-              create: orderedAnswers.map((answer, optionIndex) => ({
-                position: optionIndex + 1,
-                key: answer.key,
-                text: answer.text,
-              })),
-            },
-            correctKeys: {
-              create: this.normalizeUniqueKeys(
-                question.correctAnswerKeys.map((item) => item.key),
-              ).map((key) => ({ key })),
-            },
-          },
-        });
-      }
-
-      return created.id;
+        correctKeys: {
+          create: this.normalizeUniqueKeys(
+            question.correctAnswerKeys.map((item) => item.key),
+          ).map((key) => ({ key })),
+        },
+      };
     });
 
-    return this.findOne(examId, user);
+    const created = await this.prisma.exam.create({
+      data: {
+        userId: user.id,
+        finalExamCatalogId: input.finalExamCatalogId,
+        attemptNumber: input.attemptNumber,
+        questionCount: input.questionCount,
+        isTimed: input.isTimed,
+        totalTimeSeconds: input.isTimed ? (input.totalTimeSeconds ?? null) : null,
+        examType: input.examType,
+        status: ExamStatus.PENDING,
+        passThresholdPercent:
+          input.passThresholdPercent ?? DEFAULT_PASS_THRESHOLD,
+        correctCount: null,
+        wrongCount: null,
+        scorePercent: null,
+        isPassed: null,
+        ...(examQuestions.length > 0
+          ? {
+              questions: {
+                create: examQuestions,
+              },
+            }
+          : {}),
+      },
+      select: { id: true },
+    });
+
+    return this.findOne(created.id, user);
   }
 
   async findMyExams(user: AuthUserPayload) {
