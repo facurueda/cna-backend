@@ -1,4 +1,8 @@
-import { ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ExamStatus, FinalExamCatalogStatus, Role } from '@prisma/client';
 import { ExamsService } from '../exams/exams.service';
 import { FinalExamsService } from './final-exams.service';
@@ -8,7 +12,12 @@ describe('FinalExamsService', () => {
     category: { findMany: jest.fn() },
     competition: { findMany: jest.fn() },
     competitionReferee: { findFirst: jest.fn(), findMany: jest.fn() },
-    finalExamCatalog: { create: jest.fn(), findUnique: jest.fn(), findMany: jest.fn(), update: jest.fn() },
+    finalExamCatalog: {
+      create: jest.fn(),
+      findUnique: jest.fn(),
+      findMany: jest.fn(),
+      update: jest.fn(),
+    },
     exam: { findFirst: jest.fn(), findMany: jest.fn(), count: jest.fn() },
   };
 
@@ -29,8 +38,12 @@ describe('FinalExamsService', () => {
   });
 
   it('uses "Examen" as default title when title is missing', async () => {
-    prisma.category.findMany.mockResolvedValue([{ id: 'cat-1', name: 'Reglamento' }]);
-    prisma.competition.findMany.mockResolvedValue([{ id: 'comp-1', name: 'Torneo' }]);
+    prisma.category.findMany.mockResolvedValue([
+      { id: 'cat-1', name: 'Reglamento' },
+    ]);
+    prisma.competition.findMany.mockResolvedValue([
+      { id: 'comp-1', name: 'Torneo' },
+    ]);
     const createdAt = new Date('2026-03-03T12:00:00.000Z');
     prisma.finalExamCatalog.create.mockResolvedValue({
       id: 'catalog-1',
@@ -70,8 +83,12 @@ describe('FinalExamsService', () => {
   });
 
   it('trims title when provided', async () => {
-    prisma.category.findMany.mockResolvedValue([{ id: 'cat-1', name: 'Reglamento' }]);
-    prisma.competition.findMany.mockResolvedValue([{ id: 'comp-1', name: 'Torneo' }]);
+    prisma.category.findMany.mockResolvedValue([
+      { id: 'cat-1', name: 'Reglamento' },
+    ]);
+    prisma.competition.findMany.mockResolvedValue([
+      { id: 'comp-1', name: 'Torneo' },
+    ]);
     const createdAt = new Date('2026-03-03T12:00:00.000Z');
     prisma.finalExamCatalog.create.mockResolvedValue({
       id: 'catalog-1',
@@ -185,14 +202,16 @@ describe('FinalExamsService', () => {
       categories: [{ categoryId: 'cat-1' }],
       competitions: [{ competitionId: 'comp-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({ competitionId: 'comp-1' });
+    prisma.competitionReferee.findFirst.mockResolvedValue({
+      competitionId: 'comp-1',
+    });
     prisma.exam.findFirst.mockResolvedValueOnce({ id: 'pending-exam' });
     examsService.findOne.mockResolvedValue({ id: 'pending-exam' });
 
-    const result = await service.startAttempt(
-      'catalog-1',
-      { id: 'user-1', role: Role.GENERAL },
-    );
+    const result = await service.startAttempt('catalog-1', {
+      id: 'user-1',
+      role: Role.GENERAL,
+    });
 
     expect(result).toEqual({ id: 'pending-exam' });
     expect(examsService.createGeneratedExam).not.toHaveBeenCalled();
@@ -211,7 +230,9 @@ describe('FinalExamsService', () => {
       categories: [{ categoryId: 'cat-1' }],
       competitions: [{ competitionId: 'comp-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({ competitionId: 'comp-1' });
+    prisma.competitionReferee.findFirst.mockResolvedValue({
+      competitionId: 'comp-1',
+    });
     prisma.exam.findFirst
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce({ id: 'finished-pass' });
@@ -234,8 +255,12 @@ describe('FinalExamsService', () => {
       categories: [{ categoryId: 'cat-1' }],
       competitions: [{ competitionId: 'comp-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({ competitionId: 'comp-1' });
-    prisma.exam.findFirst.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
+    prisma.competitionReferee.findFirst.mockResolvedValue({
+      competitionId: 'comp-1',
+    });
+    prisma.exam.findFirst
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(null);
     prisma.exam.count.mockResolvedValue(2);
 
     await expect(
@@ -252,19 +277,24 @@ describe('FinalExamsService', () => {
       totalTimeSeconds: 1200,
       availableUntilDate: null,
       maxRetries: 2,
+      shuffleOptions: true,
       passThresholdPercent: 75,
       categories: [{ categoryId: 'cat-1' }, { categoryId: 'cat-2' }],
       competitions: [{ competitionId: 'comp-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({ competitionId: 'comp-1' });
-    prisma.exam.findFirst.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
+    prisma.competitionReferee.findFirst.mockResolvedValue({
+      competitionId: 'comp-1',
+    });
+    prisma.exam.findFirst
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(null);
     prisma.exam.count.mockResolvedValue(1);
     examsService.createGeneratedExam.mockResolvedValue({ id: 'new-exam' });
 
-    const result = await service.startAttempt(
-      'catalog-1',
-      { id: 'user-1', role: Role.GENERAL },
-    );
+    const result = await service.startAttempt('catalog-1', {
+      id: 'user-1',
+      role: Role.GENERAL,
+    });
 
     expect(result).toEqual({ id: 'new-exam' });
     expect(examsService.createGeneratedExam).toHaveBeenCalledWith(
@@ -275,6 +305,7 @@ describe('FinalExamsService', () => {
         categoryIds: ['cat-1', 'cat-2'],
         isTimed: true,
         totalTimeSeconds: 1200,
+        shuffleOptions: true,
         passThresholdPercent: 75,
         finalExamCatalogId: 'catalog-1',
         attemptNumber: 2,
@@ -291,19 +322,24 @@ describe('FinalExamsService', () => {
       totalTimeSeconds: null,
       availableUntilDate: null,
       maxRetries: 2,
+      shuffleOptions: false,
       passThresholdPercent: 75,
       categories: [{ categoryId: 'cat-1' }],
       competitions: [{ competitionId: 'comp-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({ competitionId: 'comp-1' });
-    prisma.exam.findFirst.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
+    prisma.competitionReferee.findFirst.mockResolvedValue({
+      competitionId: 'comp-1',
+    });
+    prisma.exam.findFirst
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(null);
     prisma.exam.count.mockResolvedValue(0);
     examsService.createGeneratedExam.mockResolvedValue({ id: 'admin-exam' });
 
-    const result = await service.startAttempt(
-      'catalog-1',
-      { id: 'admin-1', role: Role.ADMIN },
-    );
+    const result = await service.startAttempt('catalog-1', {
+      id: 'admin-1',
+      role: Role.ADMIN,
+    });
 
     expect(result).toEqual({ id: 'admin-exam' });
     expect(examsService.createGeneratedExam).toHaveBeenCalledWith(
@@ -312,6 +348,7 @@ describe('FinalExamsService', () => {
         examType: 'FINAL',
         finalExamCatalogId: 'catalog-1',
         attemptNumber: 1,
+        shuffleOptions: false,
       }),
     );
   });
@@ -378,7 +415,9 @@ describe('FinalExamsService', () => {
       categories: [{ categoryId: 'cat-1' }],
       competitions: [{ competitionId: 'comp-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({ competitionId: 'comp-1' });
+    prisma.competitionReferee.findFirst.mockResolvedValue({
+      competitionId: 'comp-1',
+    });
 
     await expect(
       service.startAttempt('catalog-1', { id: 'user-1', role: Role.GENERAL }),

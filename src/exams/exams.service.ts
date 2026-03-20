@@ -26,6 +26,7 @@ type CreateGeneratedExamInput = {
   passThresholdPercent?: number;
   finalExamCatalogId?: string;
   attemptNumber?: number;
+  shuffleOptions?: boolean;
 };
 
 const DEFAULT_PASS_THRESHOLD = 70;
@@ -104,57 +105,59 @@ export class ExamsService {
       input.questionCount,
     );
 
-    const examId = await this.prisma.$transaction(async (tx) => {
-      const created = await tx.exam.create({
-        data: {
-          userId: user.id,
-          finalExamCatalogId: input.finalExamCatalogId,
-          attemptNumber: input.attemptNumber,
-          questionCount: input.questionCount,
-          isTimed: input.isTimed,
-          totalTimeSeconds: input.isTimed
-            ? (input.totalTimeSeconds ?? null)
-            : null,
-          examType: input.examType,
-          status: ExamStatus.PENDING,
-          passThresholdPercent:
-            input.passThresholdPercent ?? DEFAULT_PASS_THRESHOLD,
-          correctCount: null,
-          wrongCount: null,
-          scorePercent: null,
-          isPassed: null,
+    const examQuestions = selectedQuestions.map((question, index) => {
+      const orderedAnswers = input.shuffleOptions
+        ? this.shuffleArray(question.answers)
+        : question.answers;
+
+      return {
+        position: index + 1,
+        questionCode: question.code,
+        questionText: question.text,
+        categoryName: question.category?.name,
+        options: {
+          create: orderedAnswers.map((answer, optionIndex) => ({
+            position: optionIndex + 1,
+            key: answer.key,
+            text: answer.text,
+          })),
         },
-        select: { id: true },
-      });
-
-      for (let index = 0; index < selectedQuestions.length; index += 1) {
-        const question = selectedQuestions[index];
-        await tx.examQuestion.create({
-          data: {
-            examId: created.id,
-            position: index + 1,
-            questionCode: question.code,
-            questionText: question.text,
-            categoryName: question.category?.name,
-            options: {
-              create: question.answers.map((answer) => ({
-                key: answer.key,
-                text: answer.text,
-              })),
-            },
-            correctKeys: {
-              create: this.normalizeUniqueKeys(
-                question.correctAnswerKeys.map((item) => item.key),
-              ).map((key) => ({ key })),
-            },
-          },
-        });
-      }
-
-      return created.id;
+        correctKeys: {
+          create: this.normalizeUniqueKeys(
+            question.correctAnswerKeys.map((item) => item.key),
+          ).map((key) => ({ key })),
+        },
+      };
     });
 
-    return this.findOne(examId, user);
+    const created = await this.prisma.exam.create({
+      data: {
+        userId: user.id,
+        finalExamCatalogId: input.finalExamCatalogId,
+        attemptNumber: input.attemptNumber,
+        questionCount: input.questionCount,
+        isTimed: input.isTimed,
+        totalTimeSeconds: input.isTimed ? (input.totalTimeSeconds ?? null) : null,
+        examType: input.examType,
+        status: ExamStatus.PENDING,
+        passThresholdPercent:
+          input.passThresholdPercent ?? DEFAULT_PASS_THRESHOLD,
+        correctCount: null,
+        wrongCount: null,
+        scorePercent: null,
+        isPassed: null,
+        ...(examQuestions.length > 0
+          ? {
+              questions: {
+                create: examQuestions,
+              },
+            }
+          : {}),
+      },
+      select: { id: true },
+    });
+
+    return this.findOne(created.id, user);
   }
 
   async findMyExams(user: AuthUserPayload) {
@@ -185,7 +188,7 @@ export class ExamsService {
           orderBy: [{ position: 'asc' }, { id: 'asc' }],
           include: {
             options: {
-              orderBy: [{ key: 'asc' }, { id: 'asc' }],
+              orderBy: [{ position: 'asc' }, { id: 'asc' }],
               select: { id: true, key: true, text: true },
             },
             responses: {
@@ -242,7 +245,7 @@ export class ExamsService {
           orderBy: [{ position: 'asc' }, { id: 'asc' }],
           include: {
             options: {
-              orderBy: [{ key: 'asc' }, { id: 'asc' }],
+              orderBy: [{ position: 'asc' }, { id: 'asc' }],
               select: { key: true, text: true },
             },
             correctKeys: {
@@ -600,7 +603,12 @@ export class ExamsService {
       correctAnswerKeys: { key: string }[];
     },
   >(questions: T[], count: number): T[] {
-    const shuffled = [...questions];
+    const shuffled = this.shuffleArray(questions);
+    return shuffled.slice(0, count);
+  }
+
+  private shuffleArray<T>(values: T[]): T[] {
+    const shuffled = [...values];
     for (let index = shuffled.length - 1; index > 0; index -= 1) {
       const swapIndex = Math.floor(Math.random() * (index + 1));
       [shuffled[index], shuffled[swapIndex]] = [
@@ -608,7 +616,7 @@ export class ExamsService {
         shuffled[index],
       ];
     }
-    return shuffled.slice(0, count);
+    return shuffled;
   }
 
   private normalizeUniqueKeys(values: string[]): string[] {
