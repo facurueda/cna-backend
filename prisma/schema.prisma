@@ -38,14 +38,14 @@ enum FinalExamCatalogStatus {
 }
 
 model User {
-  id               String  @id @default(uuid())
-  firstName        String
-  lastName         String
-  email            String  @unique
-  password         String
-  refreshTokenHash String?
+  id                     String  @id @default(uuid())
+  firstName              String
+  lastName               String
+  email                  String  @unique
+  password               String
+  refreshTokenHash       String?
   requiresPasswordChange Boolean @default(false)
-  role             Role    @default(GENERAL)
+  role                   Role    @default(GENERAL)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -58,6 +58,7 @@ model User {
   exams                    Exam[]
   stats                    UserStats?
   finalExamCatalogsCreated FinalExamCatalog[]   @relation("FinalExamCatalogCreator")
+  userEvents               UserEvent[]
 }
 
 model Competition {
@@ -375,4 +376,42 @@ model QuestionCorrectAnswerKey {
 
   @@unique([questionId, key])
   @@index([questionId])
+}
+
+model UserEvent {
+  id        String   @id @default(uuid())
+  userId    String
+  eventName String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items UserEventItem[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("eventos")
+}
+
+model UserEventItem {
+  id          String   @id @default(uuid())
+  eventId     String
+  position    Int
+  category    String
+  createdAt   DateTime
+  endTime     String
+  endTimeMs   Int
+  eventTimeMs Int
+  incrementId Int
+  startTime   String
+  startTimeMs Int
+  tileId      String
+  title       String
+
+  event UserEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, position])
+  @@index([eventId])
+  @@index([tileId])
+  @@map("evento_items")
 }
