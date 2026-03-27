@@ -59,6 +59,7 @@ model User {
   stats                    UserStats?
   finalExamCatalogsCreated FinalExamCatalog[]   @relation("FinalExamCatalogCreator")
   userEvents               UserEvent[]
+  buttonLayouts            ButtonLayout[]
 }
 
 model Competition {
@@ -391,6 +392,35 @@ model UserEvent {
   @@index([userId])
   @@index([createdAt])
   @@map("eventos")
+}
+
+model ButtonLayout {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tiles ButtonLayoutTile[]
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model ButtonLayoutTile {
+  id             String @id @default(uuid())
+  buttonLayoutId String
+  position       Int
+  label          String
+  colSpan        Int
+  rowSpan        Int
+  tone           String
+
+  buttonLayout ButtonLayout @relation(fields: [buttonLayoutId], references: [id], onDelete: Cascade)
+
+  @@unique([buttonLayoutId, position])
+  @@index([buttonLayoutId])
 }
 
 model UserEventItem {
