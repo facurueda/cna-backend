@@ -14,6 +14,8 @@ import { QuestionsModule } from './questions/questions.module';
 import { CorrectAnswersModule } from './correct-answers/correct-answers.module';
 import { ExamsModule } from './exams/exams.module';
 import { FinalExamsModule } from './final-exams/final-exams.module';
+import { EventsModule } from './events/events.module';
+import { ButtonLayoutsModule } from './button-layouts/button-layouts.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { FinalExamsModule } from './final-exams/final-exams.module';
     CorrectAnswersModule,
     ExamsModule,
     FinalExamsModule,
+    EventsModule,
+    ButtonLayoutsModule,
   ],
 })
 export class AppModule {}
