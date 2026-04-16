@@ -47,7 +47,6 @@ describe("UsersService", () => {
           finalTestsTotalCount: 6,
           finalAverage: 8.4,
           clipsCount: 12,
-          commentsCount: 34,
         },
       },
       {
@@ -71,7 +70,6 @@ describe("UsersService", () => {
           finalTestsTotalCount: 1,
           finalAverage: 9.2,
           clipsCount: 4,
-          commentsCount: 7,
         },
       },
     ]);
@@ -91,7 +89,6 @@ describe("UsersService", () => {
         finalTestsTotalCount: 6,
         finalAverage: 8.4,
         clipsCount: 12,
-        commentsCount: 34,
       },
       {
         id: "u-2",
@@ -105,7 +102,6 @@ describe("UsersService", () => {
         finalTestsTotalCount: 0,
         finalAverage: 0,
         clipsCount: 0,
-        commentsCount: 0,
       },
       {
         id: "admin-1",
@@ -119,7 +115,6 @@ describe("UsersService", () => {
         finalTestsTotalCount: 1,
         finalAverage: 9.2,
         clipsCount: 4,
-        commentsCount: 7,
       },
     ]);
   });

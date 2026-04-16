@@ -102,11 +102,10 @@ describe('UserStatsService', () => {
     });
   });
 
-  it('increments clip and comment counters', async () => {
+  it('increments clip counter', async () => {
     await service.incrementClips('user-1', 3);
-    await service.incrementComments('user-1', 2);
 
-    expect(tx.userStats.upsert).toHaveBeenNthCalledWith(1, {
+    expect(tx.userStats.upsert).toHaveBeenCalledWith({
       where: { userId: 'user-1' },
       create: {
         userId: 'user-1',
@@ -114,17 +113,6 @@ describe('UserStatsService', () => {
       },
       update: {
         clipsCount: { increment: 3 },
-      },
-    });
-
-    expect(tx.userStats.upsert).toHaveBeenNthCalledWith(2, {
-      where: { userId: 'user-1' },
-      create: {
-        userId: 'user-1',
-        commentsCount: 2,
-      },
-      update: {
-        commentsCount: { increment: 2 },
       },
     });
   });

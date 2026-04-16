@@ -1,21 +1,22 @@
 import { Type } from 'class-transformer';
 import {
-  ArrayMinSize,
+  ArrayNotEmpty,
   IsArray,
   IsInt,
+  IsNotEmpty,
   IsOptional,
   IsString,
-  IsUUID,
   Min,
   ValidateNested,
-  ArrayUnique,
 } from 'class-validator';
 
-class BatchClipItemDto {
+export class BatchClipItemDto {
   @IsString()
+  @IsNotEmpty()
   title!: string;
 
   @IsString()
+  @IsNotEmpty()
   videoUrl!: string;
 
   @IsOptional()
@@ -30,22 +31,17 @@ class BatchClipItemDto {
 
   @IsOptional()
   @IsArray()
-  @ArrayUnique()
   @IsString({ each: true })
   categoryIds?: string[];
-
-  @IsOptional()
-  @IsArray()
-  @IsUUID('4', { each: true })
-  refereeIds?: string[];
 }
 
-export class CreateClipBatchDto {
-  @IsUUID()
-  matchId!: string;
+export class BatchCreateClipsDto {
+  @IsOptional()
+  @IsString()
+  collectionId?: string;
 
   @IsArray()
-  @ArrayMinSize(1)
+  @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => BatchClipItemDto)
   clips!: BatchClipItemDto[];

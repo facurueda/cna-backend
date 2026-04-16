@@ -1,17 +1,17 @@
 meta {
   name: Create
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
-  url: {{baseUrl}}/comments
+  url: {{baseUrl}}/clip-collections
   body: json
   auth: bearer
 }
 
 auth:bearer {
-  token: {{token}}
+  token: {{adminToken}}
 }
 
 headers {
@@ -19,6 +19,6 @@ headers {
 }
 
 body:json {
-  "clipId": "{{clipId}}",
-  "content": "Para mí es 2 minutos por impacto en la cara."
+  "name": "Oficial",
+  "description": "Colección principal de clips formativos."
 }
