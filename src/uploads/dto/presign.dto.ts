@@ -11,11 +11,7 @@ import {
 export class PresignDto {
   @IsString()
   @IsNotEmpty()
-  competitionId!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  matchId!: string;
+  collectionId!: string;
 
   @IsString()
   @IsNotEmpty()
@@ -29,8 +25,9 @@ export class PresignDto {
   @IsIn(['video', 'image'])
   assetType?: 'video' | 'image';
 
+  @IsOptional()
   @Type(() => Number)
   @IsNumber()
   @Min(1)
-  size!: number; // bytes
+  size?: number; // bytes
 }

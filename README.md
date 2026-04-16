@@ -96,6 +96,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
 # vyro-api
 
 ## Exams review endpoint
@@ -154,13 +155,11 @@ Además de los campos base del usuario, la respuesta ahora incluye estadísticas
 - `finalTestsTotalCount`
 - `finalAverage` (escala 0-10)
 - `clipsCount`
-- `commentsCount`
 
 Estas métricas se persisten en `UserStats` (1:1 con `User`) y se actualizan en tiempo real cuando:
 
 - se finaliza un examen de práctica/final
 - se crea un clip
-- se crea un comentario
 
 ## Admin dashboard summary
 
@@ -218,6 +217,45 @@ Reglas de reintentos:
 - Si el usuario ya aprobó el catálogo, no se habilitan más intentos.
 - Si `usedAttempts >= maxAttempts`, responde `409`.
 - Si `availableUntilDate` ya venció, el catálogo queda cerrado: no se puede iniciar,
+
+## Clips library
+
+El dominio de clips ahora funciona como biblioteca de videos formativos:
+
+- solo `ADMIN` puede crear, editar, borrar y publicar clips
+- los clips nuevos nacen en `PRIVATE`
+- usuarios `GENERAL` solo pueden listar y ver clips `PUBLIC`
+- cada clip pertenece obligatoriamente a una colección (`ClipCollection`)
+- cada clip tiene una sola categoría (`ClipCategory`)
+- cada clip tiene un campo `description` para la bajada de línea o explicación administrativa
+
+Endpoints principales:
+
+- `GET /clip-collections`
+- `POST /clip-collections` (`ADMIN`)
+- `PATCH /clip-collections/:id` (`ADMIN`)
+- `DELETE /clip-collections/:id` (`ADMIN`, solo sin clips asociados)
+- `GET /clips`
+- `GET /clips/:id`
+- `POST /clips` (`ADMIN`)
+- `PATCH /clips/:id` (`ADMIN`)
+- `DELETE /clips/:id` (`ADMIN`)
+- `POST /clips/:id/publish` (`ADMIN`)
+- `POST /clips/:id/unpublish` (`ADMIN`)
+
+`GET /clips` acepta filtros opcionales:
+
+- `collectionId`
+- `categoryId`
+- `search`
+- `take`
+- `skip`
+- `visibility` (`ADMIN` solamente)
+
+Upload de assets:
+
+- `POST /uploads/presign` (`ADMIN`) ahora recibe `collectionId`
+- `POST /uploads/read` sigue devolviendo URL de lectura para la key subida
   reanudar, responder ni finalizar un intento pendiente.
 
 Nota: `POST /exams` ya no permite `examType=FINAL`; los finales se inician desde `/final-exams/:id/start`.

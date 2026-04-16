@@ -31,8 +31,8 @@ export class UploadsService {
     const extension = this.resolveExtension(dto.fileName, contentType);
     const key =
       assetType === 'image'
-        ? `${dto.competitionId}/${dto.matchId}/thumbnails/${randomUUID()}${extension}`
-        : `${dto.competitionId}/${dto.matchId}/${randomUUID()}${extension}`;
+        ? `collections/${dto.collectionId}/thumbnails/${randomUUID()}${extension}`
+        : `collections/${dto.collectionId}/${randomUUID()}${extension}`;
 
     const client = this.getClient();
     const bucket =

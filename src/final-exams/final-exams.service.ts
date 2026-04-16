@@ -399,8 +399,13 @@ export class FinalExamsService {
       };
     });
 
-    const resolvedReferees = referees.filter(
-      (referee) => referee.status !== 'PENDING',
+    const completedRefereeUserIds = new Set(
+      exams
+        .filter((exam) => exam.status === ExamStatus.FINISHED)
+        .map((exam) => exam.userId),
+    );
+    const completedReferees = referees.filter((referee) =>
+      completedRefereeUserIds.has(referee.user.id),
     );
     const approvedCount = referees.filter(
       (referee) => referee.status === 'APPROVED',
@@ -409,13 +414,13 @@ export class FinalExamsService {
       (referee) => referee.status === 'PENDING',
     ).length;
     const averageScoreOnTen =
-      resolvedReferees.length > 0
+      completedReferees.length > 0
         ? Number(
             (
-              resolvedReferees.reduce(
+              completedReferees.reduce(
                 (sum, referee) => sum + (referee.result.scoreOnTen ?? 0),
                 0,
-              ) / resolvedReferees.length
+              ) / completedReferees.length
             ).toFixed(2),
           )
         : null;
@@ -433,13 +438,13 @@ export class FinalExamsService {
       competitions,
       summary: {
         resolutions: {
-          resolved: resolvedReferees.length,
+          resolved: completedReferees.length,
           total: referees.length,
         },
         averageScoreOnTen,
         approved: {
           count: approvedCount,
-          totalResolved: resolvedReferees.length,
+          totalResolved: completedReferees.length,
         },
         pending: pendingCount,
       },

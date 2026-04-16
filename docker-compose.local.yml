@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: acab_postgres_local
+    environment:
+      POSTGRES_USER: acab
+      POSTGRES_PASSWORD: acab
+      POSTGRES_DB: acab_local
+    ports:
+      - "5432:5432"
+    volumes:
+      - acab_pg_local:/var/lib/postgresql/data
+
+volumes:
+  acab_pg_local:

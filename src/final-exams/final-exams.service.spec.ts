@@ -570,6 +570,117 @@ describe('FinalExamsService', () => {
     });
   });
 
+  it('counts only finished exams in summary metrics when catalog is closed', async () => {
+    jest.useFakeTimers().setSystemTime(new Date('2026-03-16T03:00:00.000Z'));
+
+    const createdAt = new Date('2026-02-12T10:00:00.000Z');
+    const approvedFinishedAt = new Date('2026-03-03T10:00:00.000Z');
+    const failedFinishedAt = new Date('2026-03-05T10:00:00.000Z');
+
+    prisma.finalExamCatalog.findUnique.mockResolvedValue({
+      id: 'catalog-1',
+      title: 'Final febrero',
+      status: FinalExamCatalogStatus.PUBLISHED,
+      questionCount: 20,
+      availableUntilDate: '2026-03-15',
+      maxRetries: 2,
+      createdAt,
+      competitions: [
+        {
+          competitionId: 'comp-1',
+          competition: { id: 'comp-1', name: 'Liga Prof.' },
+        },
+      ],
+    });
+    prisma.competitionReferee.findMany.mockResolvedValue([
+      {
+        userId: 'user-1',
+        user: {
+          id: 'user-1',
+          firstName: 'Juan',
+          lastName: 'González',
+          email: 'juan@example.com',
+        },
+      },
+      {
+        userId: 'user-2',
+        user: {
+          id: 'user-2',
+          firstName: 'María',
+          lastName: 'Rodríguez',
+          email: 'maria@example.com',
+        },
+      },
+      {
+        userId: 'user-3',
+        user: {
+          id: 'user-3',
+          firstName: 'Pedro',
+          lastName: 'Suárez',
+          email: 'pedro@example.com',
+        },
+      },
+    ]);
+    prisma.exam.findMany.mockResolvedValue([
+      {
+        id: 'exam-3',
+        userId: 'user-3',
+        status: ExamStatus.PENDING,
+        isPassed: null,
+        scorePercent: null,
+        attemptNumber: 1,
+        createdAt: new Date('2026-03-10T10:00:00.000Z'),
+        finishedAt: null,
+      },
+      {
+        id: 'exam-2',
+        userId: 'user-2',
+        status: ExamStatus.FINISHED,
+        isPassed: false,
+        scorePercent: 40,
+        attemptNumber: 1,
+        createdAt: failedFinishedAt,
+        finishedAt: failedFinishedAt,
+      },
+      {
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.FINISHED,
+        isPassed: true,
+        scorePercent: 80,
+        attemptNumber: 1,
+        createdAt: approvedFinishedAt,
+        finishedAt: approvedFinishedAt,
+      },
+    ]);
+
+    const result = await service.listCatalogReferees('catalog-1');
+
+    expect(result.summary).toEqual({
+      resolutions: { resolved: 2, total: 3 },
+      averageScoreOnTen: 6,
+      approved: { count: 1, totalResolved: 2 },
+      pending: 0,
+    });
+    expect(result.referees).toEqual([
+      expect.objectContaining({
+        user: expect.objectContaining({ id: 'user-1' }),
+        status: 'APPROVED',
+        result: { scorePercent: 80, scoreOnTen: 8 },
+      }),
+      expect.objectContaining({
+        user: expect.objectContaining({ id: 'user-2' }),
+        status: 'FAILED',
+        result: { scorePercent: 40, scoreOnTen: 4 },
+      }),
+      expect.objectContaining({
+        user: expect.objectContaining({ id: 'user-3' }),
+        status: 'FAILED',
+        result: { scorePercent: null, scoreOnTen: null },
+      }),
+    ]);
+  });
+
   it('throws not found when listing referees for missing catalog', async () => {
     prisma.finalExamCatalog.findUnique.mockResolvedValue(null);
 

@@ -38,8 +38,7 @@ describe('UploadsService', () => {
 
   it('uses thumbnails bucket and public URL for image presign', async () => {
     const result = await service.presign({
-      competitionId: 'comp-1',
-      matchId: 'match-1',
+      collectionId: 'collection-1',
       fileName: 'thumb.webp',
       contentType: 'image/webp',
       assetType: 'image',
@@ -57,8 +56,7 @@ describe('UploadsService', () => {
 
   it('uses videos bucket for video presign', async () => {
     const result = await service.presign({
-      competitionId: 'comp-1',
-      matchId: 'match-1',
+      collectionId: 'collection-1',
       fileName: 'clip.mp4',
       contentType: 'video/mp4',
       assetType: 'video',
@@ -74,8 +72,7 @@ describe('UploadsService', () => {
 
   it('defaults assetType to video when omitted', async () => {
     const result = await service.presign({
-      competitionId: 'comp-1',
-      matchId: 'match-1',
+      collectionId: 'collection-1',
       fileName: 'clip.mp4',
       contentType: 'video/mp4',
       size: 9999,
@@ -90,8 +87,7 @@ describe('UploadsService', () => {
   it('validates contentType for image assetType', async () => {
     await expect(
       service.presign({
-        competitionId: 'comp-1',
-        matchId: 'match-1',
+        collectionId: 'collection-1',
         fileName: 'wrong.mp4',
         contentType: 'video/mp4',
         assetType: 'image',
@@ -103,8 +99,7 @@ describe('UploadsService', () => {
   it('validates contentType for video assetType', async () => {
     await expect(
       service.presign({
-        competitionId: 'comp-1',
-        matchId: 'match-1',
+        collectionId: 'collection-1',
         fileName: 'wrong.webp',
         contentType: 'image/webp',
         assetType: 'video',
@@ -114,7 +109,7 @@ describe('UploadsService', () => {
   });
 
   it('returns direct public URL for thumbnail keys on read', async () => {
-    const key = 'comp-1/match-1/thumbnails/thumb.webp';
+    const key = 'collections/collection-1/thumbnails/thumb.webp';
     const result = await service.presignRead({ key });
 
     expect(result).toEqual({
@@ -126,7 +121,7 @@ describe('UploadsService', () => {
   });
 
   it('keeps signed read URLs for video keys', async () => {
-    const key = 'comp-1/match-1/clip.mp4';
+    const key = 'collections/collection-1/clip.mp4';
     const result = await service.presignRead({ key });
 
     const getCommand = mockedGetSignedUrl.mock.calls[0][1] as GetObjectCommand;

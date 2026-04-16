@@ -8,12 +8,16 @@ import { JwtService } from '@nestjs/jwt';
 import type { StringValue } from 'ms';
 import { PrismaService } from '../prisma/prisma.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { AppLoginDto } from './dto/app-login.dto';
+import { CreateAppCredentialDto } from './dto/create-app-credential.dto';
 import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { RegisterDto } from './dto/register.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Prisma, Role, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { AppCredentialsService } from './app-credentials.service';
+import { EVENTS_APP_CREDENTIAL_SCOPES } from './app-credentials.constants';
 
 const TEMPORARY_PASSWORD = '123456';
 
@@ -23,6 +27,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
+    private readonly appCredentials: AppCredentialsService,
   ) {}
 
   private toPublicUser(
@@ -152,15 +157,64 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
-    const email = dto.email.toLowerCase().trim();
-
-    const user = await this.prisma.user.findUnique({ where: { email } });
-    if (!user) throw new UnauthorizedException('Invalid credentials');
-
-    const ok = await bcrypt.compare(dto.password, user.password);
-    if (!ok) throw new UnauthorizedException('Invalid credentials');
-
+    const user = await this.validateUserCredentials(dto.email, dto.password);
     return this.issueAuthTokens(user);
+  }
+
+  async createAppCredential(userId: string, dto: CreateAppCredentialDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        requiresPasswordChange: true,
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    return {
+      ...(await this.appCredentials.issueForUser(
+        user,
+        dto,
+        EVENTS_APP_CREDENTIAL_SCOPES,
+      )),
+      user: this.toPublicUser(user, user.requiresPasswordChange),
+    };
+  }
+
+  async appLogin(dto: AppLoginDto) {
+    const user = await this.validateUserCredentials(dto.email, dto.password);
+    const requiresPasswordChange =
+      await this.resolveRequiresPasswordChange(user);
+
+    if (requiresPasswordChange) {
+      throw new BadRequestException(
+        'Password change required before creating an app credential',
+      );
+    }
+
+    return {
+      ...(await this.appCredentials.issueForUser(
+        user,
+        dto,
+        EVENTS_APP_CREDENTIAL_SCOPES,
+      )),
+      user: this.toPublicUser(user, false),
+    };
+  }
+
+  listAppCredentials(userId: string) {
+    return this.appCredentials.listForUser(userId);
+  }
+
+  revokeAppCredential(userId: string, credentialId: string) {
+    return this.appCredentials.revokeForUser(userId, credentialId);
   }
 
   async refresh(dto: RefreshTokenDto) {
@@ -234,5 +288,17 @@ export class AuthService {
     return {
       user: this.toPublicUser(user, false),
     };
+  }
+
+  private async validateUserCredentials(emailRaw: string, password: string) {
+    const email = emailRaw.toLowerCase().trim();
+
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    if (!user) throw new UnauthorizedException('Invalid credentials');
+
+    const ok = await bcrypt.compare(password, user.password);
+    if (!ok) throw new UnauthorizedException('Invalid credentials');
+
+    return user;
   }
 }
