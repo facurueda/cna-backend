@@ -9,7 +9,6 @@ type RefereeStats = {
   finalTestsTotalCount: number;
   finalAverage: number;
   clipsCount: number;
-  commentsCount: number;
 };
 
 const EMPTY_STATS: RefereeStats = {
@@ -19,7 +18,6 @@ const EMPTY_STATS: RefereeStats = {
   finalTestsTotalCount: 0,
   finalAverage: 0,
   clipsCount: 0,
-  commentsCount: 0,
 };
 
 const MONTH_LABELS = [
@@ -77,7 +75,6 @@ export class UsersService {
             finalTestsTotalCount: true,
             finalAverage: true,
             clipsCount: true,
-            commentsCount: true,
           },
         },
       },

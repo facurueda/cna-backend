@@ -1,5 +1,5 @@
 import { BadRequestException, UnauthorizedException } from '@nestjs/common';
-import { Role, User } from '@prisma/client';
+import { AppCredentialPlatform, Role, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
 
@@ -29,6 +29,12 @@ describe('AuthService', () => {
     }),
   };
 
+  const appCredentials = {
+    issueForUser: jest.fn(),
+    listForUser: jest.fn(),
+    revokeForUser: jest.fn(),
+  };
+
   const baseUser: User = {
     id: 'user-1',
     email: 'user@test.com',
@@ -46,7 +52,12 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    service = new AuthService(prisma as never, jwt as never, config as never);
+    service = new AuthService(
+      prisma as never,
+      jwt as never,
+      config as never,
+      appCredentials as never,
+    );
   });
 
   afterEach(() => {
@@ -230,5 +241,107 @@ describe('AuthService', () => {
       service.changePassword(baseUser.id, { newPassword: '123456' }),
     ).rejects.toBeInstanceOf(BadRequestException);
     expect(prisma.user.update).not.toHaveBeenCalled();
+  });
+
+  it('creates an app credential for valid app login', async () => {
+    prisma.user.findUnique.mockResolvedValue(baseUser);
+    appCredentials.issueForUser.mockResolvedValue({
+      appToken: 'vyroapp_device.secret',
+      tokenType: 'Bearer',
+      scopes: ['events:read', 'events:write'],
+      credential: {
+        id: 'cred-1',
+        platform: AppCredentialPlatform.ANDROID,
+        name: 'Tablet cancha',
+        scopes: ['events:read', 'events:write'],
+        lastUsedAt: null,
+        revokedAt: null,
+        createdAt: new Date('2026-04-15T12:00:00.000Z'),
+        updatedAt: new Date('2026-04-15T12:00:00.000Z'),
+      },
+    });
+    jest
+      .spyOn(bcrypt, 'compare')
+      .mockImplementation(async (plain: string, hashed: string) => {
+        if (plain === 'User123!' && hashed === baseUser.password) {
+          return true as never;
+        }
+
+        if (plain === '123456' && hashed === baseUser.password) {
+          return false as never;
+        }
+
+        return false as never;
+      });
+
+    const result = await service.appLogin({
+      email: baseUser.email,
+      password: 'User123!',
+      platform: AppCredentialPlatform.ANDROID,
+      name: 'Tablet cancha',
+    });
+
+    expect(appCredentials.issueForUser).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: baseUser.id,
+        email: baseUser.email,
+      }),
+      {
+        platform: AppCredentialPlatform.ANDROID,
+        name: 'Tablet cancha',
+        email: baseUser.email,
+        password: 'User123!',
+      },
+      ['events:read', 'events:write'],
+    );
+    expect(result).toEqual({
+      appToken: 'vyroapp_device.secret',
+      tokenType: 'Bearer',
+      scopes: ['events:read', 'events:write'],
+      credential: {
+        id: 'cred-1',
+        platform: AppCredentialPlatform.ANDROID,
+        name: 'Tablet cancha',
+        scopes: ['events:read', 'events:write'],
+        lastUsedAt: null,
+        revokedAt: null,
+        createdAt: new Date('2026-04-15T12:00:00.000Z'),
+        updatedAt: new Date('2026-04-15T12:00:00.000Z'),
+      },
+      user: {
+        id: baseUser.id,
+        email: baseUser.email,
+        firstName: baseUser.firstName,
+        lastName: baseUser.lastName,
+        role: baseUser.role,
+        requiresPasswordChange: false,
+      },
+    });
+  });
+
+  it('rejects app login while the user still requires a password change', async () => {
+    prisma.user.findUnique.mockResolvedValue({
+      ...baseUser,
+      requiresPasswordChange: true,
+    });
+    jest
+      .spyOn(bcrypt, 'compare')
+      .mockImplementation(async (plain: string, hashed: string) => {
+        if (plain === 'User123!' && hashed === baseUser.password) {
+          return true as never;
+        }
+
+        return false as never;
+      });
+
+    await expect(
+      service.appLogin({
+        email: baseUser.email,
+        password: 'User123!',
+        platform: AppCredentialPlatform.WINDOWS,
+        name: 'PC de cabina',
+      }),
+    ).rejects.toBeInstanceOf(BadRequestException);
+    expect(appCredentials.issueForUser).not.toHaveBeenCalled();
   });
 });

@@ -63,7 +63,6 @@ describe('ExamsController review endpoint', () => {
           useValue: {
             registerFinishedExam: jest.fn(),
             incrementClips: jest.fn(),
-            incrementComments: jest.fn(),
           },
         },
         {

@@ -1,17 +1,29 @@
 import {
-  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ClipStatus, MatchStatus, Role } from '@prisma/client';
+import { ClipVisibility, Prisma, Role } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateClipDto } from './dto/create-clip.dto';
-import { UpdateClipDto } from './dto/update-clip.dto';
-import { CreateClipBatchDto } from './dto/create-clip-batch.dto';
 import { UserStatsService } from '../users/user-stats.service';
+import { BatchCreateClipsDto } from './dto/batch-create-clips.dto';
+import { CreateClipDto } from './dto/create-clip.dto';
+import { ListClipsQueryDto } from './dto/list-clips.query.dto';
+import { UpdateClipDto } from './dto/update-clip.dto';
 
 type AuthUser = { id: string; role: Role };
+
+const clipInclude = {
+  collection: {
+    select: { id: true, name: true, description: true },
+  },
+  category: {
+    select: { id: true, name: true },
+  },
+  createdBy: {
+    select: { id: true, firstName: true, lastName: true, role: true },
+  },
+} as const;
 
 @Injectable()
 export class ClipsService {
@@ -20,151 +32,102 @@ export class ClipsService {
     private readonly userStatsService: UserStatsService,
   ) {}
 
-  private async assertCanAccessMatchOrAdmin(matchId: string, user: AuthUser) {
-    if (user.role === Role.ADMIN) return;
-
-    const match = await this.prisma.match.findUnique({
-      where: { id: matchId },
-      select: { id: true, competitionId: true },
-    });
-    if (!match) throw new NotFoundException('Match no encontrado');
-
-    const isCompetitionReferee =
-      await this.prisma.competitionReferee.findUnique({
-        where: {
-          competitionId_userId: {
-            competitionId: match.competitionId,
-            userId: user.id,
-          },
-        },
-        select: { competitionId: true },
-      });
-
-    if (!isCompetitionReferee) {
-      throw new ForbiddenException('No sos árbitro asignado a este torneo');
-    }
-  }
-
-  private async assertMatchOpen(matchId: string) {
-    const match = await this.prisma.match.findUnique({
-      where: { id: matchId },
-      select: { id: true, status: true },
-    });
-
-    if (!match) throw new NotFoundException('Match no encontrado');
-    if (match.status !== MatchStatus.OPEN) {
-      throw new ForbiddenException('El partido está cerrado');
-    }
-
-    return match;
-  }
-
-  private async validateRefereeIdsBelongToMatch(
-    matchId: string,
-    refereeIds: string[],
-  ) {
-    if (!refereeIds.length) return;
-
-    const refs = await this.prisma.matchReferee.findMany({
-      where: { matchId, userId: { in: refereeIds } },
-      select: { userId: true },
-    });
-
-    const validIds = new Set(refs.map((r) => r.userId));
-    const invalid = refereeIds.filter((id) => !validIds.has(id));
-
-    if (invalid.length) {
-      throw new ForbiddenException(
-        'Hay refereeIds que no pertenecen al partido',
-      );
-    }
-  }
-
-  async findMyClips(userId: string, scope: 'created' | 'as_referee' | 'all') {
-    const where =
-      scope === 'created'
-        ? { createdById: userId }
-        : scope === 'as_referee'
-          ? { match: { competition: { referees: { some: { userId } } } } }
-          : {
-              OR: [
-                { createdById: userId },
-                { match: { competition: { referees: { some: { userId } } } } },
-              ],
-            };
-
+  async list(query: ListClipsQueryDto, user: AuthUser) {
     return this.prisma.clip.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      include: {
-        match: {
-          include: {
-            competition: { select: { id: true, name: true } },
-          },
-        },
-        createdBy: {
-          select: { id: true, firstName: true, lastName: true, role: true },
-        },
-        categories: {
-          include: {
-            category: { select: { id: true, name: true } },
-          },
-        },
-        _count: { select: { comments: true } },
-      },
+      where: this.buildListWhere(query, user),
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+      skip: this.normalizeSkip(query.skip),
+      take: this.normalizeTake(query.take),
+      include: clipInclude,
     });
+  }
+
+  async createBatch(dto: BatchCreateClipsDto, user: AuthUser) {
+    const created: {
+      id: string;
+      title: string;
+      thumbnailUrl: string | null;
+      status: string;
+      createdAt: Date;
+    }[] = [];
+    const failed: { index: number; reason: string }[] = [];
+
+    for (let i = 0; i < dto.clips.length; i++) {
+      const item = dto.clips[i];
+      try {
+        if (!dto.collectionId) {
+          throw new Error('collectionId es requerido');
+        }
+
+        const categoryId = item.categoryIds?.[0];
+        if (!categoryId) {
+          throw new Error('categoryIds debe tener al menos un elemento');
+        }
+
+        await this.assertCollectionExists(dto.collectionId);
+        await this.assertCategoryExists(categoryId);
+
+        const collectionId = dto.collectionId;
+
+        const clip = await this.prisma.$transaction(async (tx) => {
+          const newClip = await tx.clip.create({
+            data: {
+              collectionId,
+              categoryId,
+              title: item.title.trim(),
+              description: '',
+              videoUrl: item.videoUrl.trim(),
+              thumbnailUrl: item.thumbnailUrl?.trim(),
+              duration: item.duration,
+              createdById: user.id,
+            },
+            select: {
+              id: true,
+              title: true,
+              thumbnailUrl: true,
+              visibility: true,
+              createdAt: true,
+            },
+          });
+
+          await this.userStatsService.incrementClips(user.id, 1, tx);
+          return newClip;
+        });
+
+        created.push({
+          id: clip.id,
+          title: clip.title,
+          thumbnailUrl: clip.thumbnailUrl,
+          status: clip.visibility,
+          createdAt: clip.createdAt,
+        });
+      } catch (err: unknown) {
+        const reason =
+          err instanceof Error ? err.message : 'Error desconocido';
+        failed.push({ index: i, reason });
+      }
+    }
+
+    return { created, failed };
   }
 
   async create(dto: CreateClipDto, user: AuthUser) {
-    await this.assertMatchOpen(dto.matchId);
-    await this.assertCanAccessMatchOrAdmin(dto.matchId, user);
-
-    if (dto.refereeIds?.length) {
-      await this.validateRefereeIdsBelongToMatch(dto.matchId, dto.refereeIds);
-    }
+    await this.assertCollectionExists(dto.collectionId);
+    await this.assertCategoryExists(dto.categoryId);
 
     return this.prisma.$transaction(async (tx) => {
       const createdClip = await tx.clip.create({
         data: {
-          matchId: dto.matchId,
+          collectionId: dto.collectionId,
+          categoryId: dto.categoryId,
           title: dto.title.trim(),
+          description: dto.description.trim(),
           videoUrl: dto.videoUrl.trim(),
           thumbnailUrl: dto.thumbnailUrl?.trim(),
           duration: dto.duration,
-          categories: dto.categoryIds?.length
-            ? {
-                createMany: {
-                  data: dto.categoryIds.map((categoryId) => ({ categoryId })),
-                  skipDuplicates: true,
-                },
-              }
-            : undefined,
           createdById: user.id,
-          referees: dto.refereeIds?.length
-            ? {
-                createMany: {
-                  data: dto.refereeIds.map((userId) => ({ userId })),
-                },
-              }
-            : undefined,
         },
-        include: {
-          createdBy: {
-            select: { id: true, firstName: true, lastName: true, role: true },
-          },
-          referees: {
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  firstName: true,
-                  lastName: true,
-                  role: true,
-                },
-              },
-            },
-          },
-        },
+        include: clipInclude,
       });
 
       await this.userStatsService.incrementClips(user.id, 1, tx);
@@ -172,286 +135,45 @@ export class ClipsService {
     });
   }
 
-  async createBatch(dto: CreateClipBatchDto, user: AuthUser) {
-    // Valida una sola vez por match
-    await this.assertMatchOpen(dto.matchId);
-    await this.assertCanAccessMatchOrAdmin(dto.matchId, user);
-
-    const created: Array<{
-      id: string;
-      title: string;
-      thumbnailUrl: string | null;
-      status: ClipStatus;
-      createdAt: Date;
-    }> = [];
-    const failed: Array<{ index: number; reason: string }> = [];
-
-    return this.prisma.$transaction(async (tx) => {
-      for (let i = 0; i < dto.clips.length; i++) {
-        const item = dto.clips[i];
-
-        if (!item.title?.trim()) {
-          failed.push({ index: i, reason: 'Missing title' });
-          continue;
-        }
-        if (!item.videoUrl?.trim()) {
-          failed.push({ index: i, reason: 'Missing videoUrl' });
-          continue;
-        }
-
-        if (item.refereeIds?.length) {
-          const refs = await tx.matchReferee.findMany({
-            where: { matchId: dto.matchId, userId: { in: item.refereeIds } },
-            select: { userId: true },
-          });
-          const validIds = new Set(refs.map((r) => r.userId));
-          const invalid = item.refereeIds.filter((id) => !validIds.has(id));
-          if (invalid.length) {
-            failed.push({ index: i, reason: 'Invalid refereeIds for match' });
-            continue;
-          }
-        }
-
-        const clip = await tx.clip.create({
-          data: {
-            matchId: dto.matchId,
-            title: item.title.trim(),
-            videoUrl: item.videoUrl.trim(),
-            thumbnailUrl: item.thumbnailUrl?.trim(),
-            duration: item.duration,
-            categories: item.categoryIds?.length
-              ? {
-                  createMany: {
-                    data: item.categoryIds.map((categoryId) => ({
-                      categoryId,
-                    })),
-                    skipDuplicates: true,
-                  },
-                }
-              : undefined,
-            createdById: user.id,
-            referees: item.refereeIds?.length
-              ? {
-                  createMany: {
-                    data: item.refereeIds.map((userId) => ({ userId })),
-                  },
-                }
-              : undefined,
-          },
-          select: {
-            id: true,
-            title: true,
-            thumbnailUrl: true,
-            status: true,
-            createdAt: true,
-          },
-        });
-
-        created.push(clip);
-      }
-
-      if (created.length > 0) {
-        await this.userStatsService.incrementClips(user.id, created.length, tx);
-      }
-
-      return { created, failed };
-    });
-  }
-
-  async list(matchId: string | undefined, user: AuthUser) {
-    if (matchId) {
-      return this.listByMatch(matchId, user);
-    }
-
-    if (user.role !== Role.ADMIN) {
-      throw new BadRequestException('matchId is required for non-admin users');
-    }
-
-    return this.prisma.clip.findMany({
-      orderBy: { createdAt: 'desc' },
-      include: {
-        match: {
-          include: {
-            competition: { select: { id: true, name: true } },
-          },
-        },
-        createdBy: {
-          select: { id: true, firstName: true, lastName: true, role: true },
-        },
-        categories: {
-          include: {
-            category: { select: { id: true, name: true } },
-          },
-        },
-        _count: { select: { comments: true } },
-      },
-    });
-  }
-
-  async listByMatch(matchId: string, user: AuthUser) {
-    const match = await this.prisma.match.findUnique({
-      where: { id: matchId },
-      select: { id: true },
-    });
-    if (!match) throw new NotFoundException('Match no encontrado');
-
-    await this.assertCanAccessMatchOrAdmin(matchId, user);
-
-    return this.prisma.clip.findMany({
-      where: { matchId },
-      orderBy: { createdAt: 'desc' },
-      include: {
-        createdBy: {
-          select: { id: true, firstName: true, lastName: true, role: true },
-        },
-        categories: {
-          include: {
-            category: { select: { id: true, name: true } },
-          },
-        },
-      },
-    });
-  }
-
   async getById(id: string, user: AuthUser) {
     const clip = await this.prisma.clip.findUnique({
       where: { id },
-      select: {
-        id: true,
-        matchId: true,
-        title: true,
-        videoUrl: true,
-        thumbnailUrl: true,
-        duration: true,
-        status: true,
-        createdAt: true,
-        updatedAt: true,
-
-        // ✅ clave para ordenar decisión final arriba
-        finalDecisionCommentId: true,
-
-        match: {
-          select: {
-            id: true,
-            competitionId: true,
-            status: true,
-            teamA: true,
-            teamB: true,
-            category: true,
-            date: true,
-          },
-        },
-        createdBy: {
-          select: { id: true, firstName: true, lastName: true, role: true },
-        },
-        referees: {
-          include: {
-            user: {
-              select: { id: true, firstName: true, lastName: true, role: true },
-            },
-          },
-        },
-        comments: {
-          orderBy: { createdAt: 'asc' },
-          include: {
-            user: {
-              select: { id: true, firstName: true, lastName: true, role: true },
-            },
-          },
-        },
-        categories: {
-          include: {
-            category: { select: { id: true, name: true } },
-          },
-        },
-      },
+      include: clipInclude,
     });
 
     if (!clip) throw new NotFoundException('Clip no encontrado');
-
-    await this.assertCanAccessMatchOrAdmin(clip.matchId, user);
-
-    if (clip.finalDecisionCommentId) {
-      const idx = clip.comments.findIndex(
-        (c) => c.id === clip.finalDecisionCommentId,
-      );
-
-      if (idx !== -1) {
-        const [finalComment] = clip.comments.splice(idx, 1);
-        clip.comments = [finalComment, ...clip.comments];
-      }
-    }
+    this.assertCanAccessClip(clip.visibility, user);
 
     return clip;
   }
 
   async update(id: string, dto: UpdateClipDto, user: AuthUser) {
-    const clip = await this.prisma.clip.findUnique({
+    if (user.role !== Role.ADMIN) {
+      throw new ForbiddenException('Solo admin puede editar clips');
+    }
+
+    await this.assertClipExists(id);
+
+    if (dto.collectionId) {
+      await this.assertCollectionExists(dto.collectionId);
+    }
+
+    if (dto.categoryId) {
+      await this.assertCategoryExists(dto.categoryId);
+    }
+
+    return this.prisma.clip.update({
       where: { id },
-      select: { id: true, status: true, createdById: true, matchId: true },
-    });
-    if (!clip) throw new NotFoundException('Clip no encontrado');
-
-    if (clip.createdById !== user.id) {
-      throw new ForbiddenException('Solo podés editar tus clips');
-    }
-    if (clip.status !== ClipStatus.OPEN) {
-      throw new ForbiddenException('El clip está cerrado');
-    }
-
-    if (dto.refereeIds?.length) {
-      await this.validateRefereeIdsBelongToMatch(clip.matchId, dto.refereeIds);
-    }
-
-    return this.prisma.$transaction(async (tx) => {
-      if (dto.refereeIds) {
-        await tx.clipReferee.deleteMany({ where: { clipId: id } });
-        if (dto.refereeIds.length) {
-          await tx.clipReferee.createMany({
-            data: dto.refereeIds.map((userId) => ({ clipId: id, userId })),
-          });
-        }
-      }
-
-      if (dto.categoryIds) {
-        await tx.clipCategoryOnClip.deleteMany({ where: { clipId: id } });
-        if (dto.categoryIds.length) {
-          await tx.clipCategoryOnClip.createMany({
-            data: dto.categoryIds.map((categoryId) => ({
-              clipId: id,
-              categoryId,
-            })),
-            skipDuplicates: true,
-          });
-        }
-      }
-
-      return tx.clip.update({
-        where: { id },
-        data: {
-          title: dto.title?.trim(),
-          videoUrl: dto.videoUrl?.trim(),
-          thumbnailUrl: dto.thumbnailUrl?.trim(),
-          duration: dto.duration,
-        },
-        include: {
-          createdBy: {
-            select: { id: true, firstName: true, lastName: true, role: true },
-          },
-          referees: {
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  firstName: true,
-                  lastName: true,
-                  role: true,
-                },
-              },
-            },
-          },
-        },
-      });
+      data: {
+        collectionId: dto.collectionId,
+        categoryId: dto.categoryId,
+        title: dto.title?.trim(),
+        description: dto.description?.trim(),
+        videoUrl: dto.videoUrl?.trim(),
+        thumbnailUrl: dto.thumbnailUrl?.trim(),
+        duration: dto.duration,
+      },
+      include: clipInclude,
     });
   }
 
@@ -460,35 +182,101 @@ export class ClipsService {
       throw new ForbiddenException('Solo admin puede borrar clips');
     }
 
-    const clip = await this.prisma.clip.findUnique({
-      where: { id },
-      select: { id: true },
-    });
-    if (!clip) throw new NotFoundException('Clip no encontrado');
-
+    await this.assertClipExists(id);
     await this.prisma.clip.delete({ where: { id } });
     return { ok: true };
   }
 
-  async close(id: string, user: AuthUser) {
+  async setVisibility(id: string, visibility: ClipVisibility, user: AuthUser) {
     if (user.role !== Role.ADMIN) {
-      throw new ForbiddenException('Solo admin puede cerrar clips');
+      throw new ForbiddenException('Solo admin puede cambiar visibilidad');
     }
+
+    await this.assertClipExists(id);
 
     return this.prisma.clip.update({
       where: { id },
-      data: { status: ClipStatus.CLOSED },
+      data: {
+        visibility,
+        publishedAt: visibility === ClipVisibility.PUBLIC ? new Date() : null,
+      },
+      include: clipInclude,
     });
   }
 
-  async open(id: string, user: AuthUser) {
-    if (user.role !== Role.ADMIN) {
-      throw new ForbiddenException('Solo admin puede reabrir clips');
+  private buildListWhere(
+    query: ListClipsQueryDto,
+    user: AuthUser,
+  ): Prisma.ClipWhereInput {
+    const where: Prisma.ClipWhereInput = {};
+
+    if (query.collectionId?.trim()) {
+      where.collectionId = query.collectionId.trim();
     }
 
-    return this.prisma.clip.update({
+    if (query.categoryId?.trim()) {
+      where.categoryId = query.categoryId.trim();
+    }
+
+    if (query.search?.trim()) {
+      where.title = {
+        contains: query.search.trim(),
+        mode: 'insensitive',
+      };
+    }
+
+    if (user.role === Role.ADMIN) {
+      if (query.visibility) {
+        where.visibility = query.visibility;
+      }
+      return where;
+    }
+
+    where.visibility = ClipVisibility.PUBLIC;
+    return where;
+  }
+
+  private normalizeSkip(value?: number) {
+    if (value == null || !Number.isFinite(value)) return 0;
+    return Math.max(0, Math.trunc(value));
+  }
+
+  private normalizeTake(value?: number) {
+    if (value == null || !Number.isFinite(value)) return 20;
+    return Math.min(100, Math.max(1, Math.trunc(value)));
+  }
+
+  private assertCanAccessClip(visibility: ClipVisibility, user: AuthUser) {
+    if (user.role === Role.ADMIN) return;
+    if (visibility === ClipVisibility.PUBLIC) return;
+    throw new ForbiddenException('No tenés acceso a este clip');
+  }
+
+  private async assertClipExists(id: string) {
+    const clip = await this.prisma.clip.findUnique({
       where: { id },
-      data: { status: ClipStatus.OPEN },
+      select: { id: true },
     });
+
+    if (!clip) throw new NotFoundException('Clip no encontrado');
+    return clip;
+  }
+
+  private async assertCollectionExists(collectionId: string) {
+    const collection = await this.prisma.clipCollection.findUnique({
+      where: { id: collectionId },
+      select: { id: true },
+    });
+
+    if (!collection) throw new NotFoundException('Colección no encontrada');
+  }
+
+  private async assertCategoryExists(categoryId: string) {
+    const category = await this.prisma.clipCategory.findUnique({
+      where: { id: categoryId },
+      select: { id: true },
+    });
+
+    if (!category) throw new NotFoundException('Categoría no encontrada');
   }
 }

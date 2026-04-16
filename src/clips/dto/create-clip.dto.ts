@@ -1,22 +1,25 @@
 import { Type } from 'class-transformer';
-import {
-  ArrayUnique,
-  IsArray,
-  IsInt,
-  IsOptional,
-  IsString,
-  IsUUID,
-  Min,
-} from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 
 export class CreateClipDto {
-  @IsUUID()
-  matchId!: string;
+  @IsString()
+  @IsNotEmpty()
+  collectionId!: string;
 
   @IsString()
+  @IsNotEmpty()
+  categoryId!: string;
+
+  @IsString()
+  @IsNotEmpty()
   title!: string;
 
   @IsString()
+  @IsNotEmpty()
+  description!: string;
+
+  @IsString()
+  @IsNotEmpty()
   videoUrl!: string;
 
   @IsOptional()
@@ -28,16 +31,4 @@ export class CreateClipDto {
   @IsInt()
   @Min(1)
   duration?: number;
-
-  @IsOptional()
-  @IsArray()
-  @ArrayUnique()
-  @IsString({ each: true })
-  categoryIds?: string[];
-
-  @IsOptional()
-  @IsArray()
-  @ArrayUnique()
-  @IsUUID('4', { each: true })
-  refereeIds?: string[];
 }

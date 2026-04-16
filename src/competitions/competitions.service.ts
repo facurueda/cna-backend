@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCompetitionDto } from './dto/create-competition.dto';
 import { UpdateCompetitionDto } from './dto/update-competition.dto';
-import { Role } from '@prisma/client';
+import { MatchStatus, Role } from '@prisma/client';
 
 @Injectable()
 export class CompetitionsService {
@@ -167,51 +167,40 @@ export class CompetitionsService {
       where: { competitionId },
       include: {
         user: {
-          select: { id: true, firstName: true, lastName: true, email: true, role: true },
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            role: true,
+          },
         },
       },
-      orderBy: { user: { lastName: "asc" } },
+      orderBy: { user: { lastName: 'asc' } },
     });
 
     return refs.map((ref) => ref.user);
   }
 
   private async computeMatchStats(competitionIds: string[]) {
-    if (!competitionIds.length) return new Map<string, { total: number; closed: number }>();
+    if (!competitionIds.length)
+      return new Map<string, { total: number; closed: number }>();
 
-    const matches = await this.prisma.match.findMany({
+    const grouped = await this.prisma.match.groupBy({
+      by: ['competitionId', 'status'],
       where: { competitionId: { in: competitionIds } },
-      select: { id: true, competitionId: true },
+      _count: { _all: true },
     });
-
-    const matchIds = matches.map((match) => match.id);
-    const clipStats = new Map<string, { total: number; closed: number }>();
-
-    if (matchIds.length) {
-      const grouped = await this.prisma.clip.groupBy({
-        by: ['matchId', 'status'],
-        where: { matchId: { in: matchIds } },
-        _count: { _all: true },
-      });
-
-      for (const row of grouped) {
-        const entry = clipStats.get(row.matchId) ?? { total: 0, closed: 0 };
-        entry.total += row._count._all;
-        if (row.status === 'CLOSED') entry.closed += row._count._all;
-        clipStats.set(row.matchId, entry);
-      }
-    }
 
     const counts = new Map<string, { total: number; closed: number }>();
 
-    for (const match of matches) {
-      const entry = counts.get(match.competitionId) ?? { total: 0, closed: 0 };
-      entry.total += 1;
-      const stats = clipStats.get(match.id);
-      if (stats && stats.total > 0 && stats.closed === stats.total) {
-        entry.closed += 1;
+    for (const row of grouped) {
+      const entry = counts.get(row.competitionId) ?? { total: 0, closed: 0 };
+      entry.total += row._count._all;
+      if (row.status === MatchStatus.CLOSED) {
+        entry.closed += row._count._all;
       }
-      counts.set(match.competitionId, entry);
+      counts.set(row.competitionId, entry);
     }
 
     return counts;
