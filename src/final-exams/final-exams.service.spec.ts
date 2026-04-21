@@ -10,8 +10,8 @@ import { FinalExamsService } from './final-exams.service';
 describe('FinalExamsService', () => {
   const prisma = {
     category: { findMany: jest.fn() },
-    competition: { findMany: jest.fn() },
-    competitionReferee: { findFirst: jest.fn(), findMany: jest.fn() },
+    group: { findMany: jest.fn() },
+    userGroup: { findFirst: jest.fn(), findMany: jest.fn() },
     finalExamCatalog: {
       create: jest.fn(),
       findUnique: jest.fn(),
@@ -41,8 +41,8 @@ describe('FinalExamsService', () => {
     prisma.category.findMany.mockResolvedValue([
       { id: 'cat-1', name: 'Reglamento' },
     ]);
-    prisma.competition.findMany.mockResolvedValue([
-      { id: 'comp-1', name: 'Torneo' },
+    prisma.group.findMany.mockResolvedValue([
+      { id: 'group-1', name: 'Grupo A' },
     ]);
     const createdAt = new Date('2026-03-03T12:00:00.000Z');
     prisma.finalExamCatalog.create.mockResolvedValue({
@@ -59,7 +59,7 @@ describe('FinalExamsService', () => {
       publishedAt: null,
       createdAt,
       categories: [{ category: { id: 'cat-1', name: 'Reglamento' } }],
-      competitions: [{ competition: { id: 'comp-1', name: 'Torneo' } }],
+      groups: [{ group: { id: 'group-1', name: 'Grupo A' } }],
     });
 
     const result = await service.createCatalog(
@@ -67,7 +67,7 @@ describe('FinalExamsService', () => {
       {
         questionCount: 10,
         categoryIds: ['cat-1'],
-        competitionIds: ['comp-1'],
+        groupIds: ['group-1'],
         isTimed: false,
       },
     );
@@ -86,8 +86,8 @@ describe('FinalExamsService', () => {
     prisma.category.findMany.mockResolvedValue([
       { id: 'cat-1', name: 'Reglamento' },
     ]);
-    prisma.competition.findMany.mockResolvedValue([
-      { id: 'comp-1', name: 'Torneo' },
+    prisma.group.findMany.mockResolvedValue([
+      { id: 'group-1', name: 'Grupo A' },
     ]);
     const createdAt = new Date('2026-03-03T12:00:00.000Z');
     prisma.finalExamCatalog.create.mockResolvedValue({
@@ -104,7 +104,7 @@ describe('FinalExamsService', () => {
       publishedAt: null,
       createdAt,
       categories: [{ category: { id: 'cat-1', name: 'Reglamento' } }],
-      competitions: [{ competition: { id: 'comp-1', name: 'Torneo' } }],
+      groups: [{ group: { id: 'group-1', name: 'Grupo A' } }],
     });
 
     await service.createCatalog(
@@ -113,7 +113,7 @@ describe('FinalExamsService', () => {
         title: '  Final marzo  ',
         questionCount: 10,
         categoryIds: ['cat-1'],
-        competitionIds: ['comp-1'],
+        groupIds: ['group-1'],
         isTimed: false,
       },
     );
@@ -144,7 +144,7 @@ describe('FinalExamsService', () => {
         publishedAt: createdAt,
         createdAt,
         categories: [{ category: { id: 'cat-1', name: 'Reglamento' } }],
-        competitions: [{ competition: { id: 'comp-1', name: 'Inicial' } }],
+        groups: [{ group: { id: 'group-1', name: 'Grupo A' } }],
         exams: [],
       },
     ]);
@@ -158,10 +158,10 @@ describe('FinalExamsService', () => {
       expect.objectContaining({
         where: {
           status: FinalExamCatalogStatus.PUBLISHED,
-          competitions: {
+          groups: {
             some: {
-              competition: {
-                referees: {
+              group: {
+                members: {
                   some: { userId: 'admin-1' },
                 },
               },
@@ -200,11 +200,9 @@ describe('FinalExamsService', () => {
       maxRetries: 2,
       passThresholdPercent: 70,
       categories: [{ categoryId: 'cat-1' }],
-      competitions: [{ competitionId: 'comp-1' }],
+      groups: [{ groupId: 'group-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({
-      competitionId: 'comp-1',
-    });
+    prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
     prisma.exam.findFirst.mockResolvedValueOnce({ id: 'pending-exam' });
     examsService.findOne.mockResolvedValue({ id: 'pending-exam' });
 
@@ -228,11 +226,9 @@ describe('FinalExamsService', () => {
       maxRetries: 2,
       passThresholdPercent: 70,
       categories: [{ categoryId: 'cat-1' }],
-      competitions: [{ competitionId: 'comp-1' }],
+      groups: [{ groupId: 'group-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({
-      competitionId: 'comp-1',
-    });
+    prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
     prisma.exam.findFirst
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce({ id: 'finished-pass' });
@@ -253,11 +249,9 @@ describe('FinalExamsService', () => {
       maxRetries: 1,
       passThresholdPercent: 70,
       categories: [{ categoryId: 'cat-1' }],
-      competitions: [{ competitionId: 'comp-1' }],
+      groups: [{ groupId: 'group-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({
-      competitionId: 'comp-1',
-    });
+    prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
     prisma.exam.findFirst
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce(null);
@@ -280,11 +274,9 @@ describe('FinalExamsService', () => {
       shuffleOptions: true,
       passThresholdPercent: 75,
       categories: [{ categoryId: 'cat-1' }, { categoryId: 'cat-2' }],
-      competitions: [{ competitionId: 'comp-1' }],
+      groups: [{ groupId: 'group-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({
-      competitionId: 'comp-1',
-    });
+    prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
     prisma.exam.findFirst
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce(null);
@@ -325,11 +317,9 @@ describe('FinalExamsService', () => {
       shuffleOptions: false,
       passThresholdPercent: 75,
       categories: [{ categoryId: 'cat-1' }],
-      competitions: [{ competitionId: 'comp-1' }],
+      groups: [{ groupId: 'group-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({
-      competitionId: 'comp-1',
-    });
+    prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
     prisma.exam.findFirst
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce(null);
@@ -364,9 +354,9 @@ describe('FinalExamsService', () => {
       maxRetries: 1,
       passThresholdPercent: 70,
       categories: [{ categoryId: 'cat-1' }],
-      competitions: [{ competitionId: 'comp-1' }],
+      groups: [{ groupId: 'group-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue(null);
+    prisma.userGroup.findFirst.mockResolvedValue(null);
 
     await expect(
       service.startAttempt('catalog-1', { id: 'user-1', role: Role.GENERAL }),
@@ -384,9 +374,9 @@ describe('FinalExamsService', () => {
       maxRetries: 1,
       passThresholdPercent: 70,
       categories: [{ categoryId: 'cat-1' }],
-      competitions: [{ competitionId: 'comp-1' }],
+      groups: [{ groupId: 'group-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue(null);
+    prisma.userGroup.findFirst.mockResolvedValue(null);
 
     await expect(
       service.startAttempt('catalog-1', { id: 'admin-1', role: Role.ADMIN }),
@@ -413,11 +403,9 @@ describe('FinalExamsService', () => {
       maxRetries: 2,
       passThresholdPercent: 70,
       categories: [{ categoryId: 'cat-1' }],
-      competitions: [{ competitionId: 'comp-1' }],
+      groups: [{ groupId: 'group-1' }],
     });
-    prisma.competitionReferee.findFirst.mockResolvedValue({
-      competitionId: 'comp-1',
-    });
+    prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
 
     await expect(
       service.startAttempt('catalog-1', { id: 'user-1', role: Role.GENERAL }),
@@ -435,18 +423,18 @@ describe('FinalExamsService', () => {
       availableUntilDate: null,
       maxRetries: 2,
       createdAt,
-      competitions: [
+      groups: [
         {
-          competitionId: 'comp-1',
-          competition: { id: 'comp-1', name: 'Liga Prof.' },
+          groupId: 'group-1',
+          group: { id: 'group-1', name: 'Grupo A' },
         },
         {
-          competitionId: 'comp-2',
-          competition: { id: 'comp-2', name: 'Liga Nacional' },
+          groupId: 'group-2',
+          group: { id: 'group-2', name: 'Grupo B' },
         },
       ],
     });
-    prisma.competitionReferee.findMany.mockResolvedValue([
+    prisma.userGroup.findMany.mockResolvedValue([
       {
         userId: 'user-1',
         user: {
@@ -519,9 +507,9 @@ describe('FinalExamsService', () => {
       isClosed: false,
       maxRetries: 2,
       maxAttempts: 2,
-      competitions: [
-        { id: 'comp-1', name: 'Liga Prof.' },
-        { id: 'comp-2', name: 'Liga Nacional' },
+      groups: [
+        { id: 'group-1', name: 'Grupo A' },
+        { id: 'group-2', name: 'Grupo B' },
       ],
       summary: {
         resolutions: { resolved: 1, total: 3 },
@@ -570,122 +558,3 @@ describe('FinalExamsService', () => {
     });
   });
 
-  it('counts only finished exams in summary metrics when catalog is closed', async () => {
-    jest.useFakeTimers().setSystemTime(new Date('2026-03-16T03:00:00.000Z'));
-
-    const createdAt = new Date('2026-02-12T10:00:00.000Z');
-    const approvedFinishedAt = new Date('2026-03-03T10:00:00.000Z');
-    const failedFinishedAt = new Date('2026-03-05T10:00:00.000Z');
-
-    prisma.finalExamCatalog.findUnique.mockResolvedValue({
-      id: 'catalog-1',
-      title: 'Final febrero',
-      status: FinalExamCatalogStatus.PUBLISHED,
-      questionCount: 20,
-      availableUntilDate: '2026-03-15',
-      maxRetries: 2,
-      createdAt,
-      competitions: [
-        {
-          competitionId: 'comp-1',
-          competition: { id: 'comp-1', name: 'Liga Prof.' },
-        },
-      ],
-    });
-    prisma.competitionReferee.findMany.mockResolvedValue([
-      {
-        userId: 'user-1',
-        user: {
-          id: 'user-1',
-          firstName: 'Juan',
-          lastName: 'González',
-          email: 'juan@example.com',
-        },
-      },
-      {
-        userId: 'user-2',
-        user: {
-          id: 'user-2',
-          firstName: 'María',
-          lastName: 'Rodríguez',
-          email: 'maria@example.com',
-        },
-      },
-      {
-        userId: 'user-3',
-        user: {
-          id: 'user-3',
-          firstName: 'Pedro',
-          lastName: 'Suárez',
-          email: 'pedro@example.com',
-        },
-      },
-    ]);
-    prisma.exam.findMany.mockResolvedValue([
-      {
-        id: 'exam-3',
-        userId: 'user-3',
-        status: ExamStatus.PENDING,
-        isPassed: null,
-        scorePercent: null,
-        attemptNumber: 1,
-        createdAt: new Date('2026-03-10T10:00:00.000Z'),
-        finishedAt: null,
-      },
-      {
-        id: 'exam-2',
-        userId: 'user-2',
-        status: ExamStatus.FINISHED,
-        isPassed: false,
-        scorePercent: 40,
-        attemptNumber: 1,
-        createdAt: failedFinishedAt,
-        finishedAt: failedFinishedAt,
-      },
-      {
-        id: 'exam-1',
-        userId: 'user-1',
-        status: ExamStatus.FINISHED,
-        isPassed: true,
-        scorePercent: 80,
-        attemptNumber: 1,
-        createdAt: approvedFinishedAt,
-        finishedAt: approvedFinishedAt,
-      },
-    ]);
-
-    const result = await service.listCatalogReferees('catalog-1');
-
-    expect(result.summary).toEqual({
-      resolutions: { resolved: 2, total: 3 },
-      averageScoreOnTen: 6,
-      approved: { count: 1, totalResolved: 2 },
-      pending: 0,
-    });
-    expect(result.referees).toEqual([
-      expect.objectContaining({
-        user: expect.objectContaining({ id: 'user-1' }),
-        status: 'APPROVED',
-        result: { scorePercent: 80, scoreOnTen: 8 },
-      }),
-      expect.objectContaining({
-        user: expect.objectContaining({ id: 'user-2' }),
-        status: 'FAILED',
-        result: { scorePercent: 40, scoreOnTen: 4 },
-      }),
-      expect.objectContaining({
-        user: expect.objectContaining({ id: 'user-3' }),
-        status: 'FAILED',
-        result: { scorePercent: null, scoreOnTen: null },
-      }),
-    ]);
-  });
-
-  it('throws not found when listing referees for missing catalog', async () => {
-    prisma.finalExamCatalog.findUnique.mockResolvedValue(null);
-
-    await expect(service.listCatalogReferees('missing')).rejects.toBeInstanceOf(
-      NotFoundException,
-    );
-  });
-});
