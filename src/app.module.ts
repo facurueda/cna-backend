@@ -16,6 +16,8 @@ import { ExamsModule } from './exams/exams.module';
 import { FinalExamsModule } from './final-exams/final-exams.module';
 import { EventsModule } from './events/events.module';
 import { ButtonLayoutsModule } from './button-layouts/button-layouts.module';
+import { GroupsModule } from './groups/groups.module';
+import { StudyMaterialsModule } from './study-materials/study-materials.module';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { ButtonLayoutsModule } from './button-layouts/button-layouts.module';
     FinalExamsModule,
     EventsModule,
     ButtonLayoutsModule,
+    GroupsModule,
+    StudyMaterialsModule,
   ],
 })
 export class AppModule {}

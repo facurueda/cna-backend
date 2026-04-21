@@ -65,6 +65,31 @@ model User {
   finalExamCatalogsCreated FinalExamCatalog[]   @relation("FinalExamCatalogCreator")
   userEvents               UserEvent[]
   buttonLayouts            ButtonLayout[]
+  groups                   UserGroup[]
+}
+
+model Group {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members           UserGroup[]
+  finalExamCatalogs FinalExamCatalogGroup[]
+
+  @@index([name])
+}
+
+model UserGroup {
+  groupId String
+  userId  String
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([groupId, userId])
+  @@index([userId])
 }
 
 model Competition {
@@ -74,9 +99,8 @@ model Competition {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  matches           Match[] // lo vamos a crear en el próximo paso
-  referees          CompetitionReferee[]
-  finalExamCatalogs FinalExamCatalogCompetition[]
+  matches  Match[]
+  referees CompetitionReferee[]
 }
 
 model Match {
@@ -279,13 +303,26 @@ model FinalExamCatalog {
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
 
-  createdBy    User?                         @relation("FinalExamCatalogCreator", fields: [createdById], references: [id], onDelete: SetNull)
-  categories   FinalExamCatalogCategory[]
-  competitions FinalExamCatalogCompetition[]
-  exams        Exam[]
+  createdBy      User?                       @relation("FinalExamCatalogCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  categories     FinalExamCatalogCategory[]
+  groups         FinalExamCatalogGroup[]
+  fixedQuestions FinalExamCatalogQuestion[]
+  exams          Exam[]
 
   @@index([status])
   @@index([createdAt])
+}
+
+model FinalExamCatalogQuestion {
+  finalExamCatalogId String @db.Uuid
+  questionId         String @db.Uuid
+  position           Int
+
+  finalExamCatalog FinalExamCatalog @relation(fields: [finalExamCatalogId], references: [id], onDelete: Cascade)
+  question         Question         @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@id([finalExamCatalogId, questionId])
+  @@index([finalExamCatalogId])
 }
 
 model FinalExamCatalogCategory {
@@ -299,15 +336,15 @@ model FinalExamCatalogCategory {
   @@index([categoryId])
 }
 
-model FinalExamCatalogCompetition {
+model FinalExamCatalogGroup {
   finalExamCatalogId String @db.Uuid
-  competitionId      String
+  groupId            String
 
   finalExamCatalog FinalExamCatalog @relation(fields: [finalExamCatalogId], references: [id], onDelete: Cascade)
-  competition      Competition      @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  group            Group            @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
-  @@id([finalExamCatalogId, competitionId])
-  @@index([competitionId])
+  @@id([finalExamCatalogId, groupId])
+  @@index([groupId])
 }
 
 model Question {
@@ -322,6 +359,7 @@ model Question {
   category          Category?                  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   answers           Answer[]
   correctAnswerKeys QuestionCorrectAnswerKey[]
+  finalExamCatalogs FinalExamCatalogQuestion[]
 }
 
 model Answer {
@@ -437,6 +475,14 @@ model ButtonLayoutTile {
 
   @@unique([buttonLayoutId, position])
   @@index([buttonLayoutId])
+}
+
+model StudyMaterial {
+  id           String   @id @default(uuid()) @db.Uuid
+  url          String
+  documentName String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model UserEventItem {

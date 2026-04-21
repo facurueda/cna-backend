@@ -34,39 +34,69 @@ export class FinalExamsService {
 
   async createCatalog(user: AuthUserPayload, dto: CreateFinalExamCatalogDto) {
     this.validateTimerFields(dto);
+    const hasFixedQuestions =
+      dto.questionIds != null && dto.questionIds.length > 0;
+
+    if (!hasFixedQuestions && (!dto.categoryIds || dto.categoryIds.length === 0)) {
+      throw new BadRequestException(
+        'Either categoryIds or questionIds must be provided',
+      );
+    }
+
     const availableUntilDate = this.normalizeAvailableUntilDate(
       dto.availableUntilDate,
     );
 
-    const categoryIds = this.normalizeUniqueTextValues(dto.categoryIds);
-    const competitionIds = this.normalizeUniqueTextValues(dto.competitionIds);
-    const [categories, competitions] = await Promise.all([
-      this.prisma.category.findMany({
-        where: { id: { in: categoryIds } },
-        select: { id: true, name: true },
-      }),
-      this.prisma.competition.findMany({
-        where: { id: { in: competitionIds } },
-        select: { id: true, name: true },
-      }),
-    ]);
+    const groupIds = this.normalizeUniqueTextValues(dto.groupIds);
 
-    if (categories.length !== categoryIds.length) {
-      const existing = new Set(categories.map((category) => category.id));
-      const missing = categoryIds.filter((id) => !existing.has(id));
+    const groups = await this.prisma.group.findMany({
+      where: { id: { in: groupIds } },
+      select: { id: true, name: true },
+    });
+
+    if (groups.length !== groupIds.length) {
+      const existing = new Set(groups.map((group) => group.id));
+      const missing = groupIds.filter((id) => !existing.has(id));
       throw new NotFoundException(
-        `Category not found for final exam catalog: ${missing.join(', ')}`,
+        `Group not found for final exam catalog: ${missing.join(', ')}`,
       );
     }
 
-    if (competitions.length !== competitionIds.length) {
-      const existing = new Set(
-        competitions.map((competition) => competition.id),
-      );
-      const missing = competitionIds.filter((id) => !existing.has(id));
-      throw new NotFoundException(
-        `Competition not found for final exam catalog: ${missing.join(', ')}`,
-      );
+    let categoryIds: string[] = [];
+    if (!hasFixedQuestions) {
+      categoryIds = this.normalizeUniqueTextValues(dto.categoryIds!);
+      const categories = await this.prisma.category.findMany({
+        where: { id: { in: categoryIds } },
+        select: { id: true, name: true },
+      });
+      if (categories.length !== categoryIds.length) {
+        const existing = new Set(categories.map((c) => c.id));
+        const missing = categoryIds.filter((id) => !existing.has(id));
+        throw new NotFoundException(
+          `Category not found for final exam catalog: ${missing.join(', ')}`,
+        );
+      }
+    }
+
+    let questionIds: string[] = [];
+    if (hasFixedQuestions) {
+      questionIds = this.normalizeUniqueTextValues(dto.questionIds!);
+      if (questionIds.length !== dto.questionCount) {
+        throw new BadRequestException(
+          `questionIds length (${questionIds.length}) must equal questionCount (${dto.questionCount})`,
+        );
+      }
+      const questions = await this.prisma.question.findMany({
+        where: { id: { in: questionIds } },
+        select: { id: true },
+      });
+      if (questions.length !== questionIds.length) {
+        const existing = new Set(questions.map((q) => q.id));
+        const missing = questionIds.filter((id) => !existing.has(id));
+        throw new NotFoundException(
+          `Question not found: ${missing.join(', ')}`,
+        );
+      }
     }
 
     const created = await this.prisma.finalExamCatalog.create({
@@ -82,18 +112,35 @@ export class FinalExamsService {
         status: FinalExamCatalogStatus.DRAFT,
         publishedAt: null,
         createdById: user.id,
-        categories: {
+        ...(categoryIds.length > 0
+          ? {
+              categories: {
+                createMany: {
+                  data: categoryIds.map((categoryId) => ({ categoryId })),
+                  skipDuplicates: true,
+                },
+              },
+            }
+          : {}),
+        groups: {
           createMany: {
-            data: categoryIds.map((categoryId) => ({ categoryId })),
+            data: groupIds.map((groupId) => ({ groupId })),
             skipDuplicates: true,
           },
         },
-        competitions: {
-          createMany: {
-            data: competitionIds.map((competitionId) => ({ competitionId })),
-            skipDuplicates: true,
-          },
-        },
+        ...(questionIds.length > 0
+          ? {
+              fixedQuestions: {
+                createMany: {
+                  data: questionIds.map((questionId, index) => ({
+                    questionId,
+                    position: index + 1,
+                  })),
+                  skipDuplicates: true,
+                },
+              },
+            }
+          : {}),
       },
       include: {
         categories: {
@@ -101,10 +148,14 @@ export class FinalExamsService {
             category: { select: { id: true, name: true } },
           },
         },
-        competitions: {
+        groups: {
           include: {
-            competition: { select: { id: true, name: true } },
+            group: { select: { id: true, name: true } },
           },
+        },
+        fixedQuestions: {
+          orderBy: { position: 'asc' },
+          select: { questionId: true, position: true },
         },
       },
     });
@@ -125,7 +176,8 @@ export class FinalExamsService {
       publishedAt: created.publishedAt,
       createdAt: created.createdAt,
       categories: created.categories.map((item) => item.category),
-      competitions: created.competitions.map((item) => item.competition),
+      groups: created.groups.map((item) => item.group),
+      fixedQuestions: created.fixedQuestions.map((item) => item.questionId),
     };
   }
 
@@ -156,14 +208,85 @@ export class FinalExamsService {
     return this.getCatalogById(id);
   }
 
+  async listAllCatalogs() {
+    const catalogs = await this.prisma.finalExamCatalog.findMany({
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+      include: {
+        categories: {
+          include: { category: { select: { id: true, name: true } } },
+        },
+        groups: {
+          include: { group: { select: { id: true, name: true } } },
+        },
+        exams: {
+          orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+          select: {
+            id: true,
+            userId: true,
+            status: true,
+            isPassed: true,
+            scorePercent: true,
+            attemptNumber: true,
+            createdAt: true,
+            finishedAt: true,
+          },
+        },
+      },
+    });
+
+    return catalogs.map((catalog) => {
+      const maxAttempts = this.toMaxAttempts(catalog.maxRetries);
+      const isClosed = isFinalExamCatalogClosed(catalog.availableUntilDate);
+      const finishedExams = catalog.exams.filter(
+        (e) => e.status === ExamStatus.FINISHED,
+      );
+      const resolvedCount = new Set(finishedExams.map((e) => e.userId)).size;
+      const totalReferees = new Set(catalog.exams.map((e) => e.userId)).size;
+      const scores = finishedExams
+        .filter((e) => e.scorePercent != null)
+        .map((e) => e.scorePercent as number);
+      const averageScoreOnTen =
+        scores.length > 0
+          ? Number(
+              (scores.reduce((s, v) => s + v, 0) / scores.length / 10).toFixed(
+                2,
+              ),
+            )
+          : null;
+
+      return {
+        id: catalog.id,
+        title: catalog.title,
+        status: catalog.status,
+        questionCount: catalog.questionCount,
+        isTimed: catalog.isTimed,
+        totalTimeSeconds: catalog.totalTimeSeconds,
+        availableUntilDate: catalog.availableUntilDate,
+        isClosed,
+        maxRetries: catalog.maxRetries,
+        maxAttempts,
+        shuffleOptions: catalog.shuffleOptions,
+        passThresholdPercent: catalog.passThresholdPercent,
+        publishedAt: catalog.publishedAt,
+        createdAt: catalog.createdAt,
+        categories: catalog.categories.map((item) => item.category),
+        groups: catalog.groups.map((item) => item.group),
+        summary: {
+          resolutions: { resolved: resolvedCount, total: totalReferees },
+          averageScoreOnTen,
+        },
+      };
+    });
+  }
+
   async listMyCatalogs(user: AuthUserPayload) {
     const catalogs = await this.prisma.finalExamCatalog.findMany({
       where: {
         status: FinalExamCatalogStatus.PUBLISHED,
-        competitions: {
+        groups: {
           some: {
-            competition: {
-              referees: {
+            group: {
+              members: {
                 some: { userId: user.id },
               },
             },
@@ -175,8 +298,8 @@ export class FinalExamsService {
         categories: {
           include: { category: { select: { id: true, name: true } } },
         },
-        competitions: {
-          include: { competition: { select: { id: true, name: true } } },
+        groups: {
+          include: { group: { select: { id: true, name: true } } },
         },
         exams: {
           where: { userId: user.id },
@@ -227,7 +350,7 @@ export class FinalExamsService {
         publishedAt: catalog.publishedAt,
         createdAt: catalog.createdAt,
         categories: catalog.categories.map((item) => item.category),
-        competitions: catalog.competitions.map((item) => item.competition),
+        groups: catalog.groups.map((item) => item.group),
         myAttempts: {
           usedAttempts,
           remainingAttempts,
@@ -252,10 +375,10 @@ export class FinalExamsService {
         availableUntilDate: true,
         maxRetries: true,
         createdAt: true,
-        competitions: {
+        groups: {
           select: {
-            competitionId: true,
-            competition: {
+            groupId: true,
+            group: {
               select: {
                 id: true,
                 name: true,
@@ -268,95 +391,86 @@ export class FinalExamsService {
 
     if (!catalog) throw new NotFoundException('Final exam catalog not found');
 
-    const competitions = Array.from(
+    const groups = Array.from(
       new Map(
-        catalog.competitions.map((item) => [
-          item.competition.id,
-          { id: item.competition.id, name: item.competition.name },
+        catalog.groups.map((item) => [
+          item.group.id,
+          { id: item.group.id, name: item.group.name },
         ]),
       ).values(),
     );
-    const competitionIds = Array.from(
-      new Set(catalog.competitions.map((item) => item.competitionId)),
+    const groupIds = Array.from(
+      new Set(catalog.groups.map((item) => item.groupId)),
     );
     const maxAttempts = this.toMaxAttempts(catalog.maxRetries);
 
-    if (!competitionIds.length) {
-      return {
-        id: catalog.id,
-        title: catalog.title,
-        status: catalog.status,
-        createdAt: catalog.createdAt,
-        questionCount: catalog.questionCount,
-        availableUntilDate: catalog.availableUntilDate,
-        isClosed: isFinalExamCatalogClosed(catalog.availableUntilDate),
-        maxRetries: catalog.maxRetries,
-        maxAttempts,
-        competitions,
-        summary: {
-          resolutions: { resolved: 0, total: 0 },
-          averageScoreOnTen: null,
-          approved: { count: 0, totalResolved: 0 },
-          pending: 0,
-        },
-        referees: [],
-      };
-    }
-
-    const links = await this.prisma.competitionReferee.findMany({
-      where: {
-        competitionId: { in: competitionIds },
-      },
+    const exams = await this.prisma.exam.findMany({
+      where: { finalExamCatalogId: catalog.id },
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
       select: {
+        id: true,
         userId: true,
-        user: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-          },
-        },
+        status: true,
+        isPassed: true,
+        scorePercent: true,
+        attemptNumber: true,
+        createdAt: true,
+        finishedAt: true,
       },
     });
 
-    const userById = new Map(
-      links.map((link) => [
-        link.userId,
-        {
-          id: link.user.id,
-          firstName: link.user.firstName,
-          lastName: link.user.lastName,
-          email: link.user.email,
+    let users: { id: string; firstName: string; lastName: string; email: string }[];
+
+    if (groupIds.length) {
+      const links = await this.prisma.userGroup.findMany({
+        where: { groupId: { in: groupIds } },
+        select: {
+          userId: true,
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+            },
+          },
         },
-      ]),
-    );
-    const users = Array.from(userById.values()).sort((a, b) => {
+      });
+
+      const userById = new Map(
+        links.map((link) => [
+          link.userId,
+          {
+            id: link.user.id,
+            firstName: link.user.firstName,
+            lastName: link.user.lastName,
+            email: link.user.email,
+          },
+        ]),
+      );
+      users = Array.from(userById.values());
+    } else {
+      // No groups: derive users from who actually took the exam
+      const examUserIds = Array.from(new Set(exams.map((e) => e.userId)));
+      const rawUsers = examUserIds.length
+        ? await this.prisma.user.findMany({
+            where: { id: { in: examUserIds } },
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+            },
+          })
+        : [];
+      users = rawUsers;
+    }
+
+    users.sort((a, b) => {
       const byLastName = a.lastName.localeCompare(b.lastName);
       if (byLastName !== 0) return byLastName;
       return a.firstName.localeCompare(b.firstName);
     });
-
-    const userIds = users.map((user) => user.id);
-    const exams = userIds.length
-      ? await this.prisma.exam.findMany({
-          where: {
-            finalExamCatalogId: catalog.id,
-            userId: { in: userIds },
-          },
-          orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-          select: {
-            id: true,
-            userId: true,
-            status: true,
-            isPassed: true,
-            scorePercent: true,
-            attemptNumber: true,
-            createdAt: true,
-            finishedAt: true,
-          },
-        })
-      : [];
 
     const examsByUser = new Map<string, typeof exams>();
     for (const exam of exams) {
@@ -435,7 +549,7 @@ export class FinalExamsService {
       isClosed: isFinalExamCatalogClosed(catalog.availableUntilDate),
       maxRetries: catalog.maxRetries,
       maxAttempts,
-      competitions,
+      groups,
       summary: {
         resolutions: {
           resolved: completedReferees.length,
@@ -459,14 +573,19 @@ export class FinalExamsService {
         categories: {
           select: { categoryId: true },
         },
-        competitions: {
-          select: { competitionId: true },
+        groups: {
+          select: { groupId: true },
+        },
+        fixedQuestions: {
+          orderBy: { position: 'asc' },
+          select: { questionId: true },
         },
       },
     });
 
     if (!catalog) throw new NotFoundException('Final exam catalog not found');
-    if (!catalog.categories.length) {
+    const hasFixedQuestions = catalog.fixedQuestions.length > 0;
+    if (!hasFixedQuestions && !catalog.categories.length) {
       throw new BadRequestException('Final exam catalog has no categories');
     }
 
@@ -474,15 +593,13 @@ export class FinalExamsService {
       throw new ForbiddenException('Final exam catalog is not published');
     }
 
-    const competitionIds = catalog.competitions.map(
-      (item) => item.competitionId,
-    );
-    const assignment = await this.prisma.competitionReferee.findFirst({
+    const groupIds = catalog.groups.map((item) => item.groupId);
+    const assignment = await this.prisma.userGroup.findFirst({
       where: {
         userId: user.id,
-        competitionId: { in: competitionIds },
+        groupId: { in: groupIds },
       },
-      select: { competitionId: true },
+      select: { groupId: true },
     });
 
     if (!assignment) {
@@ -537,6 +654,9 @@ export class FinalExamsService {
         examType: ExamType.FINAL,
         questionCount: catalog.questionCount,
         categoryIds: catalog.categories.map((item) => item.categoryId),
+        fixedQuestionIds: hasFixedQuestions
+          ? catalog.fixedQuestions.map((item) => item.questionId)
+          : undefined,
         isTimed: catalog.isTimed,
         totalTimeSeconds: catalog.totalTimeSeconds,
         shuffleOptions: catalog.shuffleOptions ?? true,
@@ -566,9 +686,9 @@ export class FinalExamsService {
             category: { select: { id: true, name: true } },
           },
         },
-        competitions: {
+        groups: {
           include: {
-            competition: { select: { id: true, name: true } },
+            group: { select: { id: true, name: true } },
           },
         },
       },
@@ -592,7 +712,7 @@ export class FinalExamsService {
       publishedAt: catalog.publishedAt,
       createdAt: catalog.createdAt,
       categories: catalog.categories.map((item) => item.category),
-      competitions: catalog.competitions.map((item) => item.competition),
+      groups: catalog.groups.map((item) => item.group),
     };
   }
 

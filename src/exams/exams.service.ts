@@ -21,6 +21,7 @@ type CreateGeneratedExamInput = {
   examType: ExamType;
   questionCount: number;
   categoryIds: string[];
+  fixedQuestionIds?: string[];
   isTimed: boolean;
   totalTimeSeconds?: number | null;
   passThresholdPercent?: number;
@@ -65,45 +66,76 @@ export class ExamsService {
       );
     }
 
-    const categoryIds = this.normalizeUniqueKeys(input.categoryIds);
-    const categories = await this.prisma.category.findMany({
-      where: { id: { in: categoryIds } },
-      select: { id: true, name: true },
-    });
+    let selectedQuestions: {
+      id?: string;
+      code: string;
+      text: string;
+      category: { name: string } | null;
+      answers: { key: string; text: string }[];
+      correctAnswerKeys: { key: string }[];
+    }[];
 
-    if (categories.length !== categoryIds.length) {
-      const existing = new Set(categories.map((category) => category.id));
-      const missing = categoryIds.filter((id) => !existing.has(id));
-      throw new NotFoundException(`Category not found: ${missing.join(', ')}`);
-    }
-
-    const pool = await this.prisma.question.findMany({
-      where: { categoryId: { in: categoryIds } },
-      select: {
-        code: true,
-        text: true,
-        category: { select: { name: true } },
-        answers: {
-          orderBy: [{ key: 'asc' }, { id: 'asc' }],
-          select: { key: true, text: true },
+    if (input.fixedQuestionIds && input.fixedQuestionIds.length > 0) {
+      const fixedIds = this.normalizeUniqueKeys(input.fixedQuestionIds);
+      const rows = await this.prisma.question.findMany({
+        where: { id: { in: fixedIds } },
+        select: {
+          id: true,
+          code: true,
+          text: true,
+          category: { select: { name: true } },
+          answers: {
+            orderBy: [{ key: 'asc' }, { id: 'asc' }],
+            select: { key: true, text: true },
+          },
+          correctAnswerKeys: {
+            orderBy: [{ key: 'asc' }, { id: 'asc' }],
+            select: { key: true },
+          },
         },
-        correctAnswerKeys: {
-          orderBy: [{ key: 'asc' }, { id: 'asc' }],
-          select: { key: true },
+      });
+      const byId = new Map(rows.map((q) => [q.id, q]));
+      selectedQuestions = fixedIds
+        .map((id) => byId.get(id))
+        .filter((q): q is NonNullable<typeof q> => q != null);
+    } else {
+      const categoryIds = this.normalizeUniqueKeys(input.categoryIds);
+      const categories = await this.prisma.category.findMany({
+        where: { id: { in: categoryIds } },
+        select: { id: true, name: true },
+      });
+
+      if (categories.length !== categoryIds.length) {
+        const existing = new Set(categories.map((category) => category.id));
+        const missing = categoryIds.filter((id) => !existing.has(id));
+        throw new NotFoundException(`Category not found: ${missing.join(', ')}`);
+      }
+
+      const pool = await this.prisma.question.findMany({
+        where: { categoryId: { in: categoryIds } },
+        select: {
+          code: true,
+          text: true,
+          category: { select: { name: true } },
+          answers: {
+            orderBy: [{ key: 'asc' }, { id: 'asc' }],
+            select: { key: true, text: true },
+          },
+          correctAnswerKeys: {
+            orderBy: [{ key: 'asc' }, { id: 'asc' }],
+            select: { key: true },
+          },
         },
-      },
-    });
+      });
 
-    if (pool.length < input.questionCount) {
-      throw new BadRequestException(
-        `Not enough questions for selected categories. Requested ${input.questionCount}, available ${pool.length}`,
-      );
+      if (pool.length < input.questionCount) {
+        throw new BadRequestException(
+          `Not enough questions for selected categories. Requested ${input.questionCount}, available ${pool.length}`,
+        );
+      }
+
+      selectedQuestions = this.pickRandomQuestions(pool, input.questionCount);
     }
-
-    const selectedQuestions = this.pickRandomQuestions(
-      pool,
-      input.questionCount,
-    );
 
     const examQuestions = selectedQuestions.map((question, index) => {
       const orderedAnswers = input.shuffleOptions
