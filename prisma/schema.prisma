@@ -12,14 +12,20 @@ enum Role {
   ADMIN
 }
 
+enum AppCredentialPlatform {
+  ANDROID
+  IOS
+  WINDOWS
+}
+
 enum MatchStatus {
   OPEN
   CLOSED
 }
 
-enum ClipStatus {
-  OPEN
-  CLOSED
+enum ClipVisibility {
+  PRIVATE
+  PUBLIC
 }
 
 enum ExamStatus {
@@ -50,10 +56,9 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  appCredentials           AppCredential[]
   matchesAsReferee         MatchReferee[]
-  clipsAsReferee           ClipReferee[]
   clipsCreated             Clip[]               @relation("ClipCreator")
-  comments                 Comment[]
   competitionsAsReferee    CompetitionReferee[]
   exams                    Exam[]
   stats                    UserStats?
@@ -111,7 +116,6 @@ model Match {
 
   competition Competition    @relation(fields: [competitionId], references: [id])
   referees    MatchReferee[]
-  clips       Clip[]
 
   @@index([competitionId])
   @@index([date])
@@ -139,76 +143,48 @@ model CompetitionReferee {
   @@index([userId])
 }
 
+model ClipCollection {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  clips Clip[]
+}
+
 model Clip {
-  id           String     @id @default(uuid())
-  matchId      String
+  id           String         @id @default(uuid())
+  collectionId String
+  categoryId   String
   title        String
+  description  String
   videoUrl     String
   thumbnailUrl String?
   duration     Int?
-  status       ClipStatus @default(OPEN)
+  visibility   ClipVisibility @default(PRIVATE)
+  publishedAt  DateTime?
 
   createdById String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  match     Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
-  createdBy User  @relation("ClipCreator", fields: [createdById], references: [id])
+  collection ClipCollection @relation(fields: [collectionId], references: [id], onDelete: Restrict)
+  category   ClipCategory   @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdBy  User           @relation("ClipCreator", fields: [createdById], references: [id])
 
-  referees   ClipReferee[]
-  comments   Comment[]
-  categories ClipCategoryOnClip[]
-
-  finalDecisionCommentId String? @unique
-
-  @@index([matchId])
+  @@index([collectionId])
+  @@index([categoryId])
+  @@index([visibility, createdAt])
   @@index([createdAt])
+  @@index([publishedAt])
 }
 
 model ClipCategory {
   id   String @id @default(cuid())
   name String @unique
 
-  clips ClipCategoryOnClip[]
-}
-
-model ClipCategoryOnClip {
-  clipId     String
-  categoryId String
-
-  clip     Clip         @relation(fields: [clipId], references: [id], onDelete: Cascade)
-  category ClipCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  @@id([clipId, categoryId])
-  @@index([categoryId])
-}
-
-model ClipReferee {
-  clipId String
-  userId String
-
-  clip Clip @relation(fields: [clipId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@id([clipId, userId])
-  @@index([userId])
-}
-
-model Comment {
-  id      String @id @default(uuid())
-  clipId  String
-  userId  String
-  content String
-
-  isFinalDecision Boolean @default(false)
-
-  createdAt DateTime @default(now())
-
-  clip Clip @relation(fields: [clipId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([clipId])
-  @@index([createdAt])
+  clips Clip[]
 }
 
 model Exam {
@@ -302,7 +278,6 @@ model UserStats {
   finalTestsTotalCount  Int      @default(0)
   finalAverage          Float    @default(0)
   clipsCount            Int      @default(0)
-  commentsCount         Int      @default(0)
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
@@ -415,6 +390,47 @@ model QuestionCorrectAnswerKey {
 
   @@unique([questionId, key])
   @@index([questionId])
+}
+
+model AppCredential {
+  id         String                @id @default(cuid())
+  userId     String
+  platform   AppCredentialPlatform
+  name       String
+  secretHash String
+  scopes     String[]
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+
+  user   User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  device AppCredentialDevice?
+
+  @@index([userId])
+  @@index([platform])
+  @@index([revokedAt])
+}
+
+model AppCredentialDevice {
+  id                  String   @id @default(cuid())
+  appCredentialId     String   @unique
+  deviceId            String
+  brand               String?
+  model               String?
+  os                  String?
+  osVersion           String?
+  appVersion          String?
+  buildVersion        String?
+  timezone            String?
+  locale              String?
+  isPhysicalDevice    Boolean?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  appCredential AppCredential @relation(fields: [appCredentialId], references: [id], onDelete: Cascade)
+
+  @@index([deviceId])
 }
 
 model UserEvent {

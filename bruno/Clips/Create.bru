@@ -11,7 +11,7 @@ post {
 }
 
 auth:bearer {
-  token: {{token}}
+  token: {{adminToken}}
 }
 
 headers {
@@ -19,8 +19,9 @@ headers {
 }
 
 body:json {
-  "matchId": "{{matchId}}",
+  "collectionId": "{{clipCollectionId}}",
+  "categoryId": "{{clipCategoryId}}",
   "title": "Contacto en suspensión - 2 minutos",
-  "videoUrl": "https://example.com/dummy.mp4",
-  "refereeIds": ["{{refereeId1}}", "{{refereeId2}}"]
+  "description": "Decisión final: sanción progresiva por contacto peligroso en zona alta.",
+  "videoUrl": "https://example.com/dummy.mp4"
 }

@@ -47,26 +47,6 @@ export class UserStatsService {
     });
   }
 
-  async incrementComments(
-    userId: string,
-    amount = 1,
-    tx?: Prisma.TransactionClient,
-  ) {
-    if (amount <= 0) return;
-    const client: StatsClient = tx ?? this.prisma;
-
-    await client.userStats.upsert({
-      where: { userId },
-      create: {
-        userId,
-        commentsCount: amount,
-      },
-      update: {
-        commentsCount: { increment: amount },
-      },
-    });
-  }
-
   private async registerFinishedExamInTx(
     params: {
       userId: string;
