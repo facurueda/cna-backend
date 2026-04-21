@@ -7,9 +7,9 @@ import {
   IsIn,
   IsInt,
   IsOptional,
-  Matches,
   IsString,
   IsUUID,
+  Matches,
   Max,
   Min,
 } from 'class-validator';
@@ -31,17 +31,23 @@ export class CreateFinalExamCatalogDto {
   @IsIn([10, 15, 20, 30])
   questionCount!: number;
 
+  @IsOptional()
   @IsArray()
-  @ArrayMinSize(1)
   @ArrayUnique()
   @IsUUID('4', { each: true })
-  categoryIds!: string[];
+  categoryIds?: string[];
+
+  @IsOptional()
+  @IsArray()
+  @ArrayUnique()
+  @IsUUID('4', { each: true })
+  questionIds?: string[];
 
   @IsArray()
   @ArrayMinSize(1)
   @ArrayUnique()
-  @IsString({ each: true })
-  competitionIds!: string[];
+  @IsUUID('4', { each: true })
+  groupIds!: string[];
 
   @Type(() => Number)
   @IsOptional()

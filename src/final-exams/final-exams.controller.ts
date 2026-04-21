@@ -34,6 +34,13 @@ export class FinalExamsController {
     return this.finalExamsService.publishCatalog(id);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN)
+  @Get()
+  listAllCatalogs() {
+    return this.finalExamsService.listAllCatalogs();
+  }
+
   @Get('my')
   listMyCatalogs(@AuthUser() user: AuthUserPayload) {
     return this.finalExamsService.listMyCatalogs(user);
