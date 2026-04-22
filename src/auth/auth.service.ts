@@ -14,10 +14,14 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { RegisterDto } from './dto/register.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { VerifyResetCodeDto } from './dto/verify-reset-code.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { Prisma, Role, User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { AppCredentialsService } from './app-credentials.service';
 import { EVENTS_APP_CREDENTIAL_SCOPES } from './app-credentials.constants';
+import { MailService } from '../mail/mail.service';
 
 const TEMPORARY_PASSWORD = '123456';
 
@@ -28,6 +32,7 @@ export class AuthService {
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
     private readonly appCredentials: AppCredentialsService,
+    private readonly mail: MailService,
   ) {}
 
   private toPublicUser(
@@ -288,6 +293,71 @@ export class AuthService {
     return {
       user: this.toPublicUser(user, false),
     };
+  }
+
+  async forgotPassword(dto: ForgotPasswordDto) {
+    const email = dto.email.toLowerCase().trim();
+    const user = await this.prisma.user.findUnique({ where: { email } });
+
+    if (user) {
+      const code = String(Math.floor(1000 + Math.random() * 9000));
+      const codeHash = await bcrypt.hash(code, 10);
+      const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+      await this.prisma.passwordResetToken.deleteMany({ where: { userId: user.id } });
+      await this.prisma.passwordResetToken.create({
+        data: { userId: user.id, codeHash, expiresAt },
+      });
+
+      await this.mail.sendPasswordResetCode(email, code);
+    }
+
+    return { ok: true };
+  }
+
+  async verifyResetCode(dto: VerifyResetCodeDto) {
+    const email = dto.email.toLowerCase().trim();
+    await this.validateResetCode(email, dto.code);
+    return { ok: true };
+  }
+
+  async resetPassword(dto: ResetPasswordDto) {
+    const email = dto.email.toLowerCase().trim();
+    const token = await this.validateResetCode(email, dto.code);
+
+    const passwordHash = await bcrypt.hash(dto.newPassword, 10);
+    await this.prisma.user.update({
+      where: { id: token.userId },
+      data: { password: passwordHash, requiresPasswordChange: false },
+    });
+
+    await this.prisma.passwordResetToken.update({
+      where: { id: token.id },
+      data: { usedAt: new Date() },
+    });
+
+    return { ok: true };
+  }
+
+  private async validateResetCode(email: string, code: string) {
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    if (!user) throw new BadRequestException('Código inválido o expirado');
+
+    const token = await this.prisma.passwordResetToken.findFirst({
+      where: {
+        userId: user.id,
+        usedAt: null,
+        expiresAt: { gt: new Date() },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!token) throw new BadRequestException('Código inválido o expirado');
+
+    const valid = await bcrypt.compare(code, token.codeHash);
+    if (!valid) throw new BadRequestException('Código inválido o expirado');
+
+    return token;
   }
 
   private async validateUserCredentials(emailRaw: string, password: string) {

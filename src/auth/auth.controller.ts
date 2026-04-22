@@ -20,6 +20,9 @@ import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { RegisterDto } from './dto/register.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { VerifyResetCodeDto } from './dto/verify-reset-code.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 import { AuthenticatedUser } from './auth-user.types';
 
 @Controller('auth')
@@ -44,6 +47,21 @@ export class AuthController {
   @Post('refresh')
   refresh(@Body() dto: RefreshTokenDto) {
     return this.auth.refresh(dto);
+  }
+
+  @Post('forgot-password')
+  forgotPassword(@Body() dto: ForgotPasswordDto) {
+    return this.auth.forgotPassword(dto);
+  }
+
+  @Post('verify-reset-code')
+  verifyResetCode(@Body() dto: VerifyResetCodeDto) {
+    return this.auth.verifyResetCode(dto);
+  }
+
+  @Post('reset-password')
+  resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.auth.resetPassword(dto);
   }
 
   @UseGuards(JwtAuthGuard)

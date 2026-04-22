@@ -57,6 +57,7 @@ describe('AuthService', () => {
       jwt as never,
       config as never,
       appCredentials as never,
+      { sendPasswordResetCode: jest.fn() } as never,
     );
   });
 
