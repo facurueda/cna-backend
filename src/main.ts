@@ -14,11 +14,11 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [
-      'https://www.acab.com.ar',
+      'https://www.cnavirtual.com.ar',
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://staging.acab.com.ar',
-      'https://acab.com.ar',
+      'https://staging.cnavirtual.com.ar',
+      'https://cnavirtual.com.ar',
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
