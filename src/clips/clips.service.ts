@@ -33,13 +33,31 @@ export class ClipsService {
   ) {}
 
   async list(query: ListClipsQueryDto, user: AuthUser) {
-    return this.prisma.clip.findMany({
-      where: this.buildListWhere(query, user),
-      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
-      skip: this.normalizeSkip(query.skip),
-      take: this.normalizeTake(query.take),
-      include: clipInclude,
-    });
+    const where = this.buildListWhere(query, user);
+    const take = query.limit ?? this.normalizeTake(query.take);
+    const page = query.page ?? 1;
+    const skip = query.page != null ? (page - 1) * take : this.normalizeSkip(query.skip);
+
+    const [data, total] = await this.prisma.$transaction([
+      this.prisma.clip.findMany({
+        where,
+        orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
+        skip,
+        take,
+        include: clipInclude,
+      }),
+      this.prisma.clip.count({ where }),
+    ]);
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit: take,
+        totalPages: Math.ceil(total / take),
+      },
+    };
   }
 
   async createBatch(dto: BatchCreateClipsDto, user: AuthUser) {
