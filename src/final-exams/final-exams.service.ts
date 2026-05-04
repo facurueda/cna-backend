@@ -108,7 +108,7 @@ export class FinalExamsService {
         availableUntilDate,
         maxRetries: dto.maxRetries ?? 0,
         shuffleOptions: dto.shuffleOptions ?? true,
-        passThresholdPercent: dto.passThresholdPercent ?? 70,
+        passThresholdPercent: dto.passThresholdPercent ?? 80,
         status: FinalExamCatalogStatus.DRAFT,
         publishedAt: null,
         createdById: user.id,

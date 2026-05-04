@@ -30,7 +30,7 @@ type CreateGeneratedExamInput = {
   shuffleOptions?: boolean;
 };
 
-const DEFAULT_PASS_THRESHOLD = 70;
+const DEFAULT_PASS_THRESHOLD = 80;
 
 @Injectable()
 export class ExamsService {
