@@ -69,10 +69,4 @@ export class CreateFinalExamCatalogDto {
   @IsBoolean()
   shuffleOptions?: boolean;
 
-  @Type(() => Number)
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  @Max(100)
-  passThresholdPercent?: number;
 }
