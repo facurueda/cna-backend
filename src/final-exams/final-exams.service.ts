@@ -108,7 +108,7 @@ export class FinalExamsService {
         availableUntilDate,
         maxRetries: dto.maxRetries ?? 0,
         shuffleOptions: dto.shuffleOptions ?? true,
-        passThresholdPercent: dto.passThresholdPercent ?? 80,
+        passThresholdPercent: 80,
         status: FinalExamCatalogStatus.DRAFT,
         publishedAt: null,
         createdById: user.id,
@@ -660,7 +660,6 @@ export class FinalExamsService {
         isTimed: catalog.isTimed,
         totalTimeSeconds: catalog.totalTimeSeconds,
         shuffleOptions: catalog.shuffleOptions ?? true,
-        passThresholdPercent: catalog.passThresholdPercent,
         finalExamCatalogId: catalog.id,
         attemptNumber: usedAttempts + 1,
       });

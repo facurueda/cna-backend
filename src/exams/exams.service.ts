@@ -24,7 +24,6 @@ type CreateGeneratedExamInput = {
   fixedQuestionIds?: string[];
   isTimed: boolean;
   totalTimeSeconds?: number | null;
-  passThresholdPercent?: number;
   finalExamCatalogId?: string;
   attemptNumber?: number;
   shuffleOptions?: boolean;
@@ -172,8 +171,7 @@ export class ExamsService {
         totalTimeSeconds: input.isTimed ? (input.totalTimeSeconds ?? null) : null,
         examType: input.examType,
         status: ExamStatus.PENDING,
-        passThresholdPercent:
-          input.passThresholdPercent ?? DEFAULT_PASS_THRESHOLD,
+        passThresholdPercent: DEFAULT_PASS_THRESHOLD,
         correctCount: null,
         wrongCount: null,
         scorePercent: null,
