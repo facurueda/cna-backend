@@ -210,7 +210,7 @@ describe('ExamsService', () => {
       totalTimeSeconds: null,
       status: ExamStatus.PENDING,
       examType: ExamType.PRACTICE,
-      passThresholdPercent: 70,
+      passThresholdPercent: 80,
       correctCount: null,
       wrongCount: null,
       scorePercent: null,
