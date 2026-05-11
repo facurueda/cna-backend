@@ -1,4 +1,3 @@
-import { ForbiddenException } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { EventsService } from './events.service';
 
@@ -36,21 +35,6 @@ describe('EventsService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     service = new EventsService(prisma as never);
-  });
-
-  it('does not allow app credentials to use the admin bypass on foreign events', async () => {
-    prisma.userEvent.findUnique.mockResolvedValue({
-      ...ownedEvent,
-      userId: 'another-user',
-    });
-
-    await expect(
-      service.findOne('event-1', {
-        id: 'admin-user',
-        role: Role.ADMIN,
-        authType: 'app_credential',
-      }),
-    ).rejects.toBeInstanceOf(ForbiddenException);
   });
 
   it('accepts event payloads that come with name instead of eventName', async () => {

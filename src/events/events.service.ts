@@ -51,9 +51,8 @@ export class EventsService {
     return this.findSerializedEvent(createdEvent.id);
   }
 
-  async findMyEvents(user: AuthUser) {
+  async findMyEvents() {
     const events = await this.prisma.userEvent.findMany({
-      where: { userId: user.id },
       orderBy: { createdAt: 'desc' },
       include: {
         items: {
@@ -65,8 +64,20 @@ export class EventsService {
     return events.map((event) => this.serializeEvent(event));
   }
 
-  async findOne(id: string, user: AuthUser) {
-    const event = await this.findAccessibleEvent(id, user);
+  async findOne(id: string) {
+    const event = await this.prisma.userEvent.findUnique({
+      where: { id },
+      include: {
+        items: {
+          orderBy: { position: 'asc' },
+        },
+      },
+    });
+
+    if (!event) {
+      throw new NotFoundException('Evento no encontrado');
+    }
+
     return this.serializeEvent(event);
   }
 

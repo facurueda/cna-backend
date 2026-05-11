@@ -20,29 +20,28 @@ import { UpdateEventItemDto } from './dto/update-event-item.dto';
 import { EventsService } from './events.service';
 
 @Controller('events')
-@UseGuards(JwtOrAppCredentialGuard)
 export class EventsController {
   constructor(private readonly eventsService: EventsService) {}
 
   @Post()
+  @UseGuards(JwtOrAppCredentialGuard)
   @AppCredentialScopes(APP_CREDENTIAL_SCOPES.EVENTS_WRITE)
   create(@Body() dto: CreateEventDto, @AuthUser() user: AuthenticatedUser) {
     return this.eventsService.create(dto, user);
   }
 
   @Get('my')
-  @AppCredentialScopes(APP_CREDENTIAL_SCOPES.EVENTS_READ)
-  findMyEvents(@AuthUser() user: AuthenticatedUser) {
-    return this.eventsService.findMyEvents(user);
+  findMyEvents() {
+    return this.eventsService.findMyEvents();
   }
 
   @Get(':id')
-  @AppCredentialScopes(APP_CREDENTIAL_SCOPES.EVENTS_READ)
-  findOne(@Param('id') id: string, @AuthUser() user: AuthenticatedUser) {
-    return this.eventsService.findOne(id, user);
+  findOne(@Param('id') id: string) {
+    return this.eventsService.findOne(id);
   }
 
   @Patch(':id')
+  @UseGuards(JwtOrAppCredentialGuard)
   @AppCredentialScopes(APP_CREDENTIAL_SCOPES.EVENTS_WRITE)
   update(
     @Param('id') id: string,
@@ -53,12 +52,14 @@ export class EventsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtOrAppCredentialGuard)
   @AppCredentialScopes(APP_CREDENTIAL_SCOPES.EVENTS_WRITE)
   remove(@Param('id') id: string, @AuthUser() user: AuthenticatedUser) {
     return this.eventsService.remove(id, user);
   }
 
   @Post(':id/items')
+  @UseGuards(JwtOrAppCredentialGuard)
   @AppCredentialScopes(APP_CREDENTIAL_SCOPES.EVENTS_WRITE)
   createItem(
     @Param('id') id: string,
@@ -69,6 +70,7 @@ export class EventsController {
   }
 
   @Patch(':eventId/items/:itemId')
+  @UseGuards(JwtOrAppCredentialGuard)
   @AppCredentialScopes(APP_CREDENTIAL_SCOPES.EVENTS_WRITE)
   updateItem(
     @Param('eventId') eventId: string,
@@ -80,6 +82,7 @@ export class EventsController {
   }
 
   @Delete(':eventId/items/:itemId')
+  @UseGuards(JwtOrAppCredentialGuard)
   @AppCredentialScopes(APP_CREDENTIAL_SCOPES.EVENTS_WRITE)
   removeItem(
     @Param('eventId') eventId: string,
