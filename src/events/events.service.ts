@@ -51,9 +51,9 @@ export class EventsService {
     return this.findSerializedEvent(createdEvent.id);
   }
 
-  async findMyEvents(userId: string | null) {
+  async findMyEvents(userId: string) {
     const events = await this.prisma.userEvent.findMany({
-      where: userId ? { userId } : undefined,
+      where: { userId },
       orderBy: { createdAt: 'desc' },
       include: {
         items: {
