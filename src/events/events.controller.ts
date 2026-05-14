@@ -3,13 +3,11 @@ import {
   Controller,
   Delete,
   Get,
-  Headers,
   Param,
   Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { AppCredentialScopes } from '../auth/decorators/app-credential-scopes.decorator';
 import { JwtOrAppCredentialGuard } from '../auth/guards/jwt-or-app-credential.guard';
@@ -23,10 +21,7 @@ import { EventsService } from './events.service';
 
 @Controller('events')
 export class EventsController {
-  constructor(
-    private readonly eventsService: EventsService,
-    private readonly jwt: JwtService,
-  ) {}
+  constructor(private readonly eventsService: EventsService) {}
 
   @Post()
   @UseGuards(JwtOrAppCredentialGuard)
@@ -36,13 +31,10 @@ export class EventsController {
   }
 
   @Get('my')
-  findMyEvents(@Headers('authorization') authorization: string) {
-    const token = authorization?.startsWith('Bearer ')
-      ? authorization.slice(7).trim()
-      : null;
-    const payload = token ? this.jwt.decode(token) : null;
-    const userId = payload?.sub ?? null;
-    return this.eventsService.findMyEvents(userId);
+  @UseGuards(JwtOrAppCredentialGuard)
+  @AppCredentialScopes(APP_CREDENTIAL_SCOPES.EVENTS_READ)
+  findMyEvents(@AuthUser() user: AuthenticatedUser) {
+    return this.eventsService.findMyEvents(user.id);
   }
 
   @Get(':id')
