@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -27,6 +28,8 @@ const TEMPORARY_PASSWORD = '123456';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
@@ -309,7 +312,12 @@ export class AuthService {
         data: { userId: user.id, codeHash, expiresAt },
       });
 
-      await this.mail.sendPasswordResetCode(email, code);
+      // TEMPORAL: el envio de mail esta fallando (SMTP), loguear el codigo mientras se resuelve.
+      this.logger.warn(`Reset code for ${email}: ${code}`);
+
+      await this.mail.sendPasswordResetCode(email, code).catch((err) => {
+        this.logger.error(`Failed to send reset code email to ${email}`, err);
+      });
     }
 
     return { ok: true };
