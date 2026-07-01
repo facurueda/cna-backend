@@ -232,19 +232,45 @@ model Exam {
 }
 
 model ExamQuestion {
-  id          String  @id @default(uuid()) @db.Uuid
-  examId      String  @db.Uuid
-  questionId  String  @db.Uuid
-  position    Int
-  optionOrder String?
+  id           String  @id @default(uuid()) @db.Uuid
+  examId       String  @db.Uuid
+  position     Int
+  questionCode String
+  questionText String
+  categoryName String?
 
-  exam      Exam                   @relation(fields: [examId], references: [id], onDelete: Cascade)
-  question  Question               @relation(fields: [questionId], references: [id], onDelete: Restrict)
-  responses ExamQuestionResponse[]
+  exam        Exam                     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  options     ExamQuestionOption[]
+  correctKeys ExamQuestionCorrectKey[]
+  responses   ExamQuestionResponse[]
 
   @@unique([examId, position])
   @@index([examId])
-  @@index([questionId])
+}
+
+model ExamQuestionOption {
+  id             String @id @default(uuid()) @db.Uuid
+  examQuestionId String @db.Uuid
+  position       Int
+  key            String
+  text           String
+
+  examQuestion ExamQuestion @relation(fields: [examQuestionId], references: [id], onDelete: Cascade)
+
+  @@unique([examQuestionId, key])
+  @@index([examQuestionId])
+  @@index([examQuestionId, position])
+}
+
+model ExamQuestionCorrectKey {
+  id             String @id @default(uuid()) @db.Uuid
+  examQuestionId String @db.Uuid
+  key            String
+
+  examQuestion ExamQuestion @relation(fields: [examQuestionId], references: [id], onDelete: Cascade)
+
+  @@unique([examQuestionId, key])
+  @@index([examQuestionId])
 }
 
 model ExamQuestionResponse {
@@ -348,7 +374,6 @@ model Question {
   answers           Answer[]
   correctAnswerKeys QuestionCorrectAnswerKey[]
   finalExamCatalogs FinalExamCatalogQuestion[]
-  examQuestions     ExamQuestion[]
 }
 
 model Answer {
