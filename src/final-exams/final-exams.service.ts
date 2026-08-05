@@ -70,6 +70,11 @@ export class FinalExamsService {
       );
     }
 
+    const pairs = dto.pairs ?? [];
+    if (pairs.length > 0) {
+      await this.validatePairs(pairs, groupIds);
+    }
+
     let categoryIds: string[] = [];
     if (!hasFixedQuestions) {
       categoryIds = this.normalizeUniqueTextValues(dto.categoryIds!);
@@ -176,6 +181,19 @@ export class FinalExamsService {
               },
             }
           : {}),
+        ...(pairs.length > 0
+          ? {
+              pairs: {
+                createMany: {
+                  data: pairs.map((pair) => ({
+                    userAId: pair.userAId,
+                    userBId: pair.userBId,
+                  })),
+                  skipDuplicates: true,
+                },
+              },
+            }
+          : {}),
       },
       include: {
         categories: {
@@ -191,6 +209,9 @@ export class FinalExamsService {
         fixedQuestions: {
           orderBy: { position: 'asc' },
           select: { questionId: true, position: true },
+        },
+        pairs: {
+          select: { userAId: true, userBId: true },
         },
       },
     });
@@ -214,6 +235,10 @@ export class FinalExamsService {
       categories: created.categories.map((item) => item.category),
       groups: created.groups.map((item) => item.group),
       fixedQuestions: created.fixedQuestions.map((item) => item.questionId),
+      pairs: created.pairs.map((item) => ({
+        userAId: item.userAId,
+        userBId: item.userBId,
+      })),
     };
   }
 
@@ -623,6 +648,9 @@ export class FinalExamsService {
           orderBy: { position: 'asc' },
           select: { questionId: true },
         },
+        pairs: {
+          select: { userAId: true, userBId: true },
+        },
       },
     });
 
@@ -665,6 +693,39 @@ export class FinalExamsService {
 
     if (pendingAttempt) {
       return this.examsService.findOne(pendingAttempt.id, user);
+    }
+
+    const pair = catalog.pairs.find(
+      (item) => item.userAId === user.id || item.userBId === user.id,
+    );
+    const isFirstAttempt =
+      pair &&
+      (await this.prisma.exam.count({
+        where: { userId: user.id, finalExamCatalogId: catalog.id },
+      })) === 0;
+    if (pair && isFirstAttempt) {
+      const partnerId = pair.userAId === user.id ? pair.userBId : pair.userAId;
+      const partnerPendingAttempt = await this.prisma.exam.findFirst({
+        where: {
+          userId: partnerId,
+          finalExamCatalogId: catalog.id,
+          status: ExamStatus.PENDING,
+        },
+        select: { id: true },
+      });
+
+      if (partnerPendingAttempt) {
+        const partner = await this.prisma.user.findUnique({
+          where: { id: partnerId },
+          select: { firstName: true, lastName: true },
+        });
+        const partnerName = partner
+          ? `${partner.firstName} ${partner.lastName}`
+          : 'tu pareja';
+        throw new ConflictException(
+          `Tu pareja, ${partnerName}, ya está rindiendo este examen.`,
+        );
+      }
     }
 
     const alreadyPassed = await this.prisma.exam.findFirst({
@@ -767,6 +828,43 @@ export class FinalExamsService {
     if (dto.isTimed && !dto.totalTimeSeconds) {
       throw new BadRequestException(
         'totalTimeSeconds is required when isTimed is true',
+      );
+    }
+  }
+
+  private async validatePairs(
+    pairs: { userAId: string; userBId: string }[],
+    groupIds: string[],
+  ) {
+    const userIds: string[] = [];
+    for (const pair of pairs) {
+      if (pair.userAId === pair.userBId) {
+        throw new BadRequestException(
+          `A pair cannot have the same user on both sides: ${pair.userAId}`,
+        );
+      }
+      userIds.push(pair.userAId, pair.userBId);
+    }
+
+    const duplicated = userIds.filter(
+      (id, index) => userIds.indexOf(id) !== index,
+    );
+    if (duplicated.length > 0) {
+      throw new BadRequestException(
+        `User(s) cannot be part of more than one pair: ${Array.from(new Set(duplicated)).join(', ')}`,
+      );
+    }
+
+    const uniqueUserIds = Array.from(new Set(userIds));
+    const memberships = await this.prisma.userGroup.findMany({
+      where: { userId: { in: uniqueUserIds }, groupId: { in: groupIds } },
+      select: { userId: true },
+    });
+    const memberIds = new Set(memberships.map((m) => m.userId));
+    const notInGroups = uniqueUserIds.filter((id) => !memberIds.has(id));
+    if (notInGroups.length > 0) {
+      throw new BadRequestException(
+        `User(s) in pairs are not members of the selected groups: ${notInGroups.join(', ')}`,
       );
     }
   }

@@ -13,8 +13,17 @@ import {
   Matches,
   Max,
   Min,
+  ValidateNested,
 } from 'class-validator';
 import { Language } from '@prisma/client';
+
+export class FinalExamCatalogPairDto {
+  @IsUUID('4')
+  userAId!: string;
+
+  @IsUUID('4')
+  userBId!: string;
+}
 
 export class CreateFinalExamCatalogDto {
   @IsOptional()
@@ -74,4 +83,10 @@ export class CreateFinalExamCatalogDto {
   @IsOptional()
   @IsEnum(Language)
   language?: Language;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => FinalExamCatalogPairDto)
+  pairs?: FinalExamCatalogPairDto[];
 }

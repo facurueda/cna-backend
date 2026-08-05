@@ -63,15 +63,17 @@ model User {
 
   appCredentials           AppCredential[]
   matchesAsReferee         MatchReferee[]
-  clipsCreated             Clip[]               @relation("ClipCreator")
+  clipsCreated             Clip[]                 @relation("ClipCreator")
   competitionsAsReferee    CompetitionReferee[]
   exams                    Exam[]
   stats                    UserStats?
-  finalExamCatalogsCreated FinalExamCatalog[]   @relation("FinalExamCatalogCreator")
+  finalExamCatalogsCreated FinalExamCatalog[]     @relation("FinalExamCatalogCreator")
   userEvents               UserEvent[]
   buttonLayouts            ButtonLayout[]
   groups                   UserGroup[]
   passwordResetTokens      PasswordResetToken[]
+  finalExamPairsAsUserA    FinalExamCatalogPair[] @relation("FinalExamCatalogPairAsUserA")
+  finalExamPairsAsUserB    FinalExamCatalogPair[] @relation("FinalExamCatalogPairAsUserB")
 }
 
 model PasswordResetToken {
@@ -328,10 +330,26 @@ model FinalExamCatalog {
   categories     FinalExamCatalogCategory[]
   groups         FinalExamCatalogGroup[]
   fixedQuestions FinalExamCatalogQuestion[]
+  pairs          FinalExamCatalogPair[]
   exams          Exam[]
 
   @@index([status])
   @@index([createdAt])
+}
+
+model FinalExamCatalogPair {
+  id                 String @id @default(uuid()) @db.Uuid
+  finalExamCatalogId String @db.Uuid
+  userAId            String
+  userBId            String
+
+  finalExamCatalog FinalExamCatalog @relation(fields: [finalExamCatalogId], references: [id], onDelete: Cascade)
+  userA            User             @relation("FinalExamCatalogPairAsUserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB            User             @relation("FinalExamCatalogPairAsUserB", fields: [userBId], references: [id], onDelete: Cascade)
+
+  @@unique([finalExamCatalogId, userAId])
+  @@unique([finalExamCatalogId, userBId])
+  @@index([finalExamCatalogId])
 }
 
 model FinalExamCatalogQuestion {

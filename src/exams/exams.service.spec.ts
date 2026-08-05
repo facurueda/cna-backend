@@ -9,6 +9,7 @@ describe('ExamsService', () => {
     exam: {
       create: jest.fn(),
       update: jest.fn(),
+      count: jest.fn(),
     },
     examQuestion: {
       create: jest.fn(),
@@ -16,6 +17,9 @@ describe('ExamsService', () => {
     examQuestionResponse: {
       deleteMany: jest.fn(),
       createMany: jest.fn(),
+    },
+    finalExamCatalogPair: {
+      findFirst: jest.fn(),
     },
   };
 
@@ -94,6 +98,140 @@ describe('ExamsService', () => {
     await expect(
       service.finish('exam-1', { id: 'user-1', role: Role.GENERAL }),
     ).rejects.toBeInstanceOf(ConflictException);
+  });
+
+  it('duplicates the finished exam to the paired partner on first attempt', async () => {
+    const finishedAt = new Date('2026-04-01T10:00:00.000Z');
+    jest.useFakeTimers().setSystemTime(finishedAt);
+
+    prisma.exam.findUnique.mockResolvedValue({
+      id: 'exam-1',
+      userId: 'user-a',
+      status: ExamStatus.PENDING,
+      finalExamCatalogId: 'catalog-1',
+      attemptNumber: 1,
+      questionCount: 1,
+      isTimed: false,
+      totalTimeSeconds: null,
+      examType: ExamType.FINAL,
+      passThresholdPercent: 80,
+      language: Language.EN,
+      finalExamCatalog: { availableUntilDate: null },
+      questions: [
+        {
+          position: 1,
+          questionCode: '1.1',
+          questionText: 'Question text',
+          categoryName: 'Regla 1',
+          options: [
+            { position: 1, key: 'a', text: 'Option A' },
+            { position: 2, key: 'b', text: 'Option B' },
+          ],
+          correctKeys: [{ key: 'a' }],
+          responses: [{ key: 'a' }],
+        },
+      ],
+    });
+
+    tx.exam.update.mockResolvedValue({
+      id: 'exam-1',
+      status: ExamStatus.FINISHED,
+      questionCount: 1,
+      correctCount: 1,
+      wrongCount: 0,
+      scorePercent: 100,
+      isPassed: true,
+      finishedAt,
+    });
+    tx.finalExamCatalogPair.findFirst.mockResolvedValue({
+      userAId: 'user-a',
+      userBId: 'user-b',
+    });
+    tx.exam.count.mockResolvedValue(0);
+
+    await service.finish('exam-1', { id: 'user-a', role: Role.GENERAL });
+
+    expect(tx.exam.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        userId: 'user-b',
+        finalExamCatalogId: 'catalog-1',
+        attemptNumber: 1,
+        status: ExamStatus.FINISHED,
+        isPassed: true,
+        scorePercent: 100,
+        language: Language.EN,
+        questions: {
+          create: [
+            expect.objectContaining({
+              questionCode: '1.1',
+              options: {
+                create: [
+                  { position: 1, key: 'a', text: 'Option A' },
+                  { position: 2, key: 'b', text: 'Option B' },
+                ],
+              },
+              correctKeys: { create: [{ key: 'a' }] },
+              responses: { create: [{ key: 'a' }] },
+            }),
+          ],
+        },
+      }),
+    });
+
+    expect(userStatsService.registerFinishedExam).toHaveBeenCalledTimes(2);
+    expect(userStatsService.registerFinishedExam).toHaveBeenCalledWith(
+      expect.objectContaining({ userId: 'user-b', isPassed: true }),
+      tx,
+    );
+  });
+
+  it('does not duplicate the exam when the partner already has one for the catalog', async () => {
+    prisma.exam.findUnique.mockResolvedValue({
+      id: 'exam-1',
+      userId: 'user-a',
+      status: ExamStatus.PENDING,
+      finalExamCatalogId: 'catalog-1',
+      attemptNumber: 1,
+      questionCount: 1,
+      isTimed: false,
+      totalTimeSeconds: null,
+      examType: ExamType.FINAL,
+      passThresholdPercent: 80,
+      language: Language.EN,
+      finalExamCatalog: { availableUntilDate: null },
+      questions: [
+        {
+          position: 1,
+          questionCode: '1.1',
+          questionText: 'Question text',
+          categoryName: 'Regla 1',
+          options: [{ position: 1, key: 'a', text: 'Option A' }],
+          correctKeys: [{ key: 'a' }],
+          responses: [{ key: 'a' }],
+        },
+      ],
+    });
+
+    tx.exam.update.mockResolvedValue({
+      id: 'exam-1',
+      status: ExamStatus.FINISHED,
+      questionCount: 1,
+      correctCount: 1,
+      wrongCount: 0,
+      scorePercent: 100,
+      isPassed: true,
+      finishedAt: new Date('2026-04-01T10:00:00.000Z'),
+    });
+    tx.finalExamCatalogPair.findFirst.mockResolvedValue({
+      userAId: 'user-a',
+      userBId: 'user-b',
+    });
+    tx.exam.count.mockResolvedValue(1);
+
+    await service.finish('exam-1', { id: 'user-a', role: Role.GENERAL });
+
+    expect(tx.exam.create).not.toHaveBeenCalled();
+    expect(userStatsService.registerFinishedExam).toHaveBeenCalledTimes(1);
   });
 
   it('persists shuffled option order for final exams when shuffleOptions is enabled', async () => {

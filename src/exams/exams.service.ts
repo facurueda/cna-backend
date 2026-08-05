@@ -474,6 +474,10 @@ export class ExamsService {
         },
         questions: {
           include: {
+            options: {
+              orderBy: [{ position: 'asc' }, { id: 'asc' }],
+              select: { position: true, key: true, text: true },
+            },
             correctKeys: { select: { key: true } },
             responses: { select: { key: true } },
           },
@@ -532,6 +536,84 @@ export class ExamsService {
         },
         tx,
       );
+
+      if (exam.finalExamCatalogId && exam.attemptNumber === 1) {
+        const pair = await tx.finalExamCatalogPair.findFirst({
+          where: {
+            finalExamCatalogId: exam.finalExamCatalogId,
+            OR: [{ userAId: exam.userId }, { userBId: exam.userId }],
+          },
+          select: { userAId: true, userBId: true },
+        });
+
+        if (pair) {
+          const partnerId =
+            pair.userAId === exam.userId ? pair.userBId : pair.userAId;
+          const partnerAlreadyHasExam = await tx.exam.count({
+            where: {
+              userId: partnerId,
+              finalExamCatalogId: exam.finalExamCatalogId,
+            },
+          });
+
+          if (partnerAlreadyHasExam === 0) {
+            await tx.exam.create({
+              data: {
+                userId: partnerId,
+                finalExamCatalogId: exam.finalExamCatalogId,
+                attemptNumber: 1,
+                questionCount: exam.questionCount,
+                isTimed: exam.isTimed,
+                totalTimeSeconds: exam.totalTimeSeconds,
+                examType: exam.examType,
+                passThresholdPercent: exam.passThresholdPercent,
+                language: exam.language,
+                status: ExamStatus.FINISHED,
+                correctCount,
+                wrongCount,
+                scorePercent,
+                isPassed,
+                finishedAt: finishedExam.finishedAt,
+                questions: {
+                  create: exam.questions.map((question) => ({
+                    position: question.position,
+                    questionCode: question.questionCode,
+                    questionText: question.questionText,
+                    categoryName: question.categoryName,
+                    options: {
+                      create: question.options.map((option) => ({
+                        position: option.position,
+                        key: option.key,
+                        text: option.text,
+                      })),
+                    },
+                    correctKeys: {
+                      create: question.correctKeys.map((item) => ({
+                        key: item.key,
+                      })),
+                    },
+                    responses: {
+                      create: question.responses.map((item) => ({
+                        key: item.key,
+                      })),
+                    },
+                  })),
+                },
+              },
+            });
+
+            await this.userStatsService.registerFinishedExam(
+              {
+                userId: partnerId,
+                examType: exam.examType,
+                scorePercent,
+                isPassed,
+              },
+              tx,
+            );
+          }
+        }
+      }
 
       return finishedExam;
     });
