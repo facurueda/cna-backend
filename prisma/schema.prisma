@@ -217,6 +217,7 @@ model Exam {
   status               ExamStatus @default(PENDING)
   examType             ExamType
   passThresholdPercent Int        @default(70)
+  language             Language   @default(ES)
   correctCount         Int?
   wrongCount           Int?
   scorePercent         Float?
