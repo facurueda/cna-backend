@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 
 @Controller('questions')
@@ -21,7 +21,7 @@ export class QuestionsController {
   }
 
   @Get()
-  listQuestions() {
-    return this.questionsService.listQuestions();
+  listQuestions(@Query('language') language?: string) {
+    return this.questionsService.listQuestions(language);
   }
 }

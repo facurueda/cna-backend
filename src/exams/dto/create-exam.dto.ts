@@ -11,7 +11,7 @@ import {
   IsUUID,
   Min,
 } from 'class-validator';
-import { ExamType } from '@prisma/client';
+import { ExamType, Language } from '@prisma/client';
 
 export class CreateExamDto {
   @Type(() => Number)
@@ -36,4 +36,8 @@ export class CreateExamDto {
 
   @IsEnum(ExamType)
   examType!: ExamType;
+
+  @IsOptional()
+  @IsEnum(Language)
+  language?: Language;
 }

@@ -1,5 +1,5 @@
 import { ConflictException } from '@nestjs/common';
-import { ExamStatus, ExamType, Role } from '@prisma/client';
+import { ExamStatus, ExamType, Language, Role } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserStatsService } from '../users/user-stats.service';
 import { ExamsService } from './exams.service';
@@ -103,12 +103,16 @@ describe('ExamsService', () => {
     prisma.question.findMany.mockResolvedValue([
       {
         code: 'Q-1',
-        text: 'Pregunta 1',
         category: { name: 'Regla 1' },
-        answers: [
-          { key: 'a', text: 'Opcion A' },
-          { key: 'b', text: 'Opcion B' },
-          { key: 'c', text: 'Opcion C' },
+        translations: [
+          {
+            text: 'Pregunta 1',
+            answers: [
+              { key: 'a', text: 'Opcion A' },
+              { key: 'b', text: 'Opcion B' },
+              { key: 'c', text: 'Opcion C' },
+            ],
+          },
         ],
         correctAnswerKeys: [{ key: 'b' }],
       },
@@ -125,6 +129,7 @@ describe('ExamsService', () => {
         categoryIds: ['cat-1'],
         isTimed: false,
         shuffleOptions: true,
+        language: Language.ES,
       },
     );
 
@@ -155,12 +160,16 @@ describe('ExamsService', () => {
     prisma.question.findMany.mockResolvedValue([
       {
         code: 'Q-1',
-        text: 'Pregunta 1',
         category: { name: 'Regla 1' },
-        answers: [
-          { key: 'a', text: 'Opcion A' },
-          { key: 'b', text: 'Opcion B' },
-          { key: 'c', text: 'Opcion C' },
+        translations: [
+          {
+            text: 'Pregunta 1',
+            answers: [
+              { key: 'a', text: 'Opcion A' },
+              { key: 'b', text: 'Opcion B' },
+              { key: 'c', text: 'Opcion C' },
+            ],
+          },
         ],
         correctAnswerKeys: [{ key: 'b' }],
       },
@@ -176,6 +185,7 @@ describe('ExamsService', () => {
         categoryIds: ['cat-1'],
         isTimed: false,
         shuffleOptions: false,
+        language: Language.ES,
       },
     );
 

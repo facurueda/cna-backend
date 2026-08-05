@@ -43,6 +43,11 @@ enum FinalExamCatalogStatus {
   PUBLISHED
 }
 
+enum Language {
+  ES
+  EN
+}
+
 model User {
   id                     String  @id @default(uuid())
   firstName              String
@@ -311,13 +316,14 @@ model FinalExamCatalog {
   maxRetries           Int                    @default(0)
   shuffleOptions       Boolean                @default(true)
   passThresholdPercent Int                    @default(70)
+  language             Language               @default(ES)
   status               FinalExamCatalogStatus @default(DRAFT)
   publishedAt          DateTime?
   createdById          String?
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
 
-  createdBy      User?                       @relation("FinalExamCatalogCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  createdBy      User?                      @relation("FinalExamCatalogCreator", fields: [createdById], references: [id], onDelete: SetNull)
   categories     FinalExamCatalogCategory[]
   groups         FinalExamCatalogGroup[]
   fixedQuestions FinalExamCatalogQuestion[]
@@ -363,26 +369,40 @@ model FinalExamCatalogGroup {
 
 model Question {
   id         String   @id @default(uuid()) @db.Uuid
-  code       String
-  text       String
+  code       String   @unique
   categoryId String?  @db.Uuid
   order      Int      @map("Order")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   category          Category?                  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  answers           Answer[]
+  translations      QuestionTranslation[]
   correctAnswerKeys QuestionCorrectAnswerKey[]
   finalExamCatalogs FinalExamCatalogQuestion[]
 }
 
-model Answer {
-  id         String @id @default(uuid()) @db.Uuid
-  questionId String @db.Uuid
-  key        String
+model QuestionTranslation {
+  id         String   @id @default(uuid()) @db.Uuid
+  questionId String   @db.Uuid
+  language   Language
   text       String
 
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answers  Answer[]
+
+  @@unique([questionId, language])
+  @@index([questionId])
+}
+
+model Answer {
+  id                    String @id @default(uuid()) @db.Uuid
+  questionTranslationId String @db.Uuid
+  key                   String
+  text                  String
+
+  questionTranslation QuestionTranslation @relation(fields: [questionTranslationId], references: [id], onDelete: Cascade)
+
+  @@index([questionTranslationId])
 }
 
 model Category {
@@ -418,7 +438,7 @@ model AppCredential {
   createdAt  DateTime              @default(now())
   updatedAt  DateTime              @updatedAt
 
-  user   User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   device AppCredentialDevice?
 
   @@index([userId])
@@ -427,20 +447,20 @@ model AppCredential {
 }
 
 model AppCredentialDevice {
-  id                  String   @id @default(cuid())
-  appCredentialId     String   @unique
-  deviceId            String
-  brand               String?
-  model               String?
-  os                  String?
-  osVersion           String?
-  appVersion          String?
-  buildVersion        String?
-  timezone            String?
-  locale              String?
-  isPhysicalDevice    Boolean?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id               String   @id @default(cuid())
+  appCredentialId  String   @unique
+  deviceId         String
+  brand            String?
+  model            String?
+  os               String?
+  osVersion        String?
+  appVersion       String?
+  buildVersion     String?
+  timezone         String?
+  locale           String?
+  isPhysicalDevice Boolean?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   appCredential AppCredential @relation(fields: [appCredentialId], references: [id], onDelete: Cascade)
 

@@ -9,6 +9,7 @@ import {
   ExamStatus,
   ExamType,
   FinalExamCatalogStatus,
+  Language,
   Prisma,
   Role,
 } from '@prisma/client';
@@ -25,6 +26,8 @@ type AuthUserPayload = {
   role: Role;
 };
 
+const DEFAULT_LANGUAGE: Language = Language.ES;
+
 @Injectable()
 export class FinalExamsService {
   constructor(
@@ -37,11 +40,16 @@ export class FinalExamsService {
     const hasFixedQuestions =
       dto.questionIds != null && dto.questionIds.length > 0;
 
-    if (!hasFixedQuestions && (!dto.categoryIds || dto.categoryIds.length === 0)) {
+    if (
+      !hasFixedQuestions &&
+      (!dto.categoryIds || dto.categoryIds.length === 0)
+    ) {
       throw new BadRequestException(
         'Either categoryIds or questionIds must be provided',
       );
     }
+
+    const language = dto.language ?? DEFAULT_LANGUAGE;
 
     const availableUntilDate = this.normalizeAvailableUntilDate(
       dto.availableUntilDate,
@@ -76,6 +84,18 @@ export class FinalExamsService {
           `Category not found for final exam catalog: ${missing.join(', ')}`,
         );
       }
+
+      const availableQuestionCount = await this.prisma.question.count({
+        where: {
+          categoryId: { in: categoryIds },
+          translations: { some: { language } },
+        },
+      });
+      if (availableQuestionCount < dto.questionCount) {
+        throw new BadRequestException(
+          `Not enough ${language} questions for selected categories. Requested ${dto.questionCount}, available ${availableQuestionCount}`,
+        );
+      }
     }
 
     let questionIds: string[] = [];
@@ -88,13 +108,27 @@ export class FinalExamsService {
       }
       const questions = await this.prisma.question.findMany({
         where: { id: { in: questionIds } },
-        select: { id: true },
+        select: {
+          id: true,
+          code: true,
+          translations: { where: { language }, select: { id: true } },
+        },
       });
       if (questions.length !== questionIds.length) {
         const existing = new Set(questions.map((q) => q.id));
         const missing = questionIds.filter((id) => !existing.has(id));
         throw new NotFoundException(
           `Question not found: ${missing.join(', ')}`,
+        );
+      }
+      const missingTranslation = questions.filter(
+        (q) => q.translations.length === 0,
+      );
+      if (missingTranslation.length > 0) {
+        throw new BadRequestException(
+          `Question(s) without a ${language} translation: ${missingTranslation
+            .map((q) => q.code)
+            .join(', ')}`,
         );
       }
     }
@@ -109,6 +143,7 @@ export class FinalExamsService {
         maxRetries: dto.maxRetries ?? 0,
         shuffleOptions: dto.shuffleOptions ?? true,
         passThresholdPercent: 80,
+        language,
         status: FinalExamCatalogStatus.DRAFT,
         publishedAt: null,
         createdById: user.id,
@@ -173,6 +208,7 @@ export class FinalExamsService {
       maxAttempts: this.toMaxAttempts(created.maxRetries),
       shuffleOptions: created.shuffleOptions,
       passThresholdPercent: created.passThresholdPercent,
+      language: created.language,
       publishedAt: created.publishedAt,
       createdAt: created.createdAt,
       categories: created.categories.map((item) => item.category),
@@ -267,6 +303,7 @@ export class FinalExamsService {
         maxAttempts,
         shuffleOptions: catalog.shuffleOptions,
         passThresholdPercent: catalog.passThresholdPercent,
+        language: catalog.language,
         publishedAt: catalog.publishedAt,
         createdAt: catalog.createdAt,
         categories: catalog.categories.map((item) => item.category),
@@ -347,6 +384,7 @@ export class FinalExamsService {
         maxAttempts,
         shuffleOptions: catalog.shuffleOptions,
         passThresholdPercent: catalog.passThresholdPercent,
+        language: catalog.language,
         publishedAt: catalog.publishedAt,
         createdAt: catalog.createdAt,
         categories: catalog.categories.map((item) => item.category),
@@ -419,7 +457,12 @@ export class FinalExamsService {
       },
     });
 
-    let users: { id: string; firstName: string; lastName: string; email: string }[];
+    let users: {
+      id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+    }[];
 
     if (groupIds.length) {
       const links = await this.prisma.userGroup.findMany({
@@ -662,6 +705,7 @@ export class FinalExamsService {
         shuffleOptions: catalog.shuffleOptions ?? true,
         finalExamCatalogId: catalog.id,
         attemptNumber: usedAttempts + 1,
+        language: catalog.language,
       });
     } catch (error) {
       if (
@@ -708,6 +752,7 @@ export class FinalExamsService {
       maxAttempts: this.toMaxAttempts(catalog.maxRetries),
       shuffleOptions: catalog.shuffleOptions,
       passThresholdPercent: catalog.passThresholdPercent,
+      language: catalog.language,
       publishedAt: catalog.publishedAt,
       createdAt: catalog.createdAt,
       categories: catalog.categories.map((item) => item.category),

@@ -5,7 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ExamStatus, ExamType, Role } from '@prisma/client';
+import { ExamStatus, ExamType, Language, Role } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { AnswerExamQuestionDto } from './dto/answer-exam-question.dto';
@@ -27,9 +27,11 @@ type CreateGeneratedExamInput = {
   finalExamCatalogId?: string;
   attemptNumber?: number;
   shuffleOptions?: boolean;
+  language: Language;
 };
 
 const DEFAULT_PASS_THRESHOLD = 80;
+const DEFAULT_LANGUAGE: Language = Language.ES;
 
 @Injectable()
 export class ExamsService {
@@ -51,6 +53,7 @@ export class ExamsService {
       categoryIds: dto.categoryIds,
       isTimed: dto.isTimed,
       totalTimeSeconds: dto.totalTimeSeconds ?? null,
+      language: dto.language ?? DEFAULT_LANGUAGE,
     });
   }
 
@@ -81,11 +84,16 @@ export class ExamsService {
         select: {
           id: true,
           code: true,
-          text: true,
           category: { select: { name: true } },
-          answers: {
-            orderBy: [{ key: 'asc' }, { id: 'asc' }],
-            select: { key: true, text: true },
+          translations: {
+            where: { language: input.language },
+            select: {
+              text: true,
+              answers: {
+                orderBy: [{ key: 'asc' }, { id: 'asc' }],
+                select: { key: true, text: true },
+              },
+            },
           },
           correctAnswerKeys: {
             orderBy: [{ key: 'asc' }, { id: 'asc' }],
@@ -93,7 +101,31 @@ export class ExamsService {
           },
         },
       });
-      const byId = new Map(rows.map((q) => [q.id, q]));
+
+      const missingTranslation = rows.filter(
+        (q) => q.translations.length === 0,
+      );
+      if (missingTranslation.length > 0) {
+        throw new BadRequestException(
+          `Question(s) without a ${input.language} translation: ${missingTranslation
+            .map((q) => q.code)
+            .join(', ')}`,
+        );
+      }
+
+      const byId = new Map(
+        rows.map((q) => [
+          q.id,
+          {
+            id: q.id,
+            code: q.code,
+            text: q.translations[0].text,
+            category: q.category,
+            answers: q.translations[0].answers,
+            correctAnswerKeys: q.correctAnswerKeys,
+          },
+        ]),
+      );
       selectedQuestions = fixedIds
         .map((id) => byId.get(id))
         .filter((q): q is NonNullable<typeof q> => q != null);
@@ -107,18 +139,28 @@ export class ExamsService {
       if (categories.length !== categoryIds.length) {
         const existing = new Set(categories.map((category) => category.id));
         const missing = categoryIds.filter((id) => !existing.has(id));
-        throw new NotFoundException(`Category not found: ${missing.join(', ')}`);
+        throw new NotFoundException(
+          `Category not found: ${missing.join(', ')}`,
+        );
       }
 
-      const pool = await this.prisma.question.findMany({
-        where: { categoryId: { in: categoryIds } },
+      const rows = await this.prisma.question.findMany({
+        where: {
+          categoryId: { in: categoryIds },
+          translations: { some: { language: input.language } },
+        },
         select: {
           code: true,
-          text: true,
           category: { select: { name: true } },
-          answers: {
-            orderBy: [{ key: 'asc' }, { id: 'asc' }],
-            select: { key: true, text: true },
+          translations: {
+            where: { language: input.language },
+            select: {
+              text: true,
+              answers: {
+                orderBy: [{ key: 'asc' }, { id: 'asc' }],
+                select: { key: true, text: true },
+              },
+            },
           },
           correctAnswerKeys: {
             orderBy: [{ key: 'asc' }, { id: 'asc' }],
@@ -126,6 +168,14 @@ export class ExamsService {
           },
         },
       });
+
+      const pool = rows.map((q) => ({
+        code: q.code,
+        text: q.translations[0].text,
+        category: q.category,
+        answers: q.translations[0].answers,
+        correctAnswerKeys: q.correctAnswerKeys,
+      }));
 
       if (pool.length < input.questionCount) {
         throw new BadRequestException(
@@ -168,7 +218,9 @@ export class ExamsService {
         attemptNumber: input.attemptNumber,
         questionCount: input.questionCount,
         isTimed: input.isTimed,
-        totalTimeSeconds: input.isTimed ? (input.totalTimeSeconds ?? null) : null,
+        totalTimeSeconds: input.isTimed
+          ? (input.totalTimeSeconds ?? null)
+          : null,
         examType: input.examType,
         status: ExamStatus.PENDING,
         passThresholdPercent: DEFAULT_PASS_THRESHOLD,

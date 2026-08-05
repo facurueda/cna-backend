@@ -3,7 +3,12 @@ import {
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
-import { ExamStatus, FinalExamCatalogStatus, Role } from '@prisma/client';
+import {
+  ExamStatus,
+  FinalExamCatalogStatus,
+  Language,
+  Role,
+} from '@prisma/client';
 import { ExamsService } from '../exams/exams.service';
 import { FinalExamsService } from './final-exams.service';
 
@@ -12,6 +17,7 @@ describe('FinalExamsService', () => {
     category: { findMany: jest.fn() },
     group: { findMany: jest.fn() },
     userGroup: { findFirst: jest.fn(), findMany: jest.fn() },
+    question: { findMany: jest.fn(), count: jest.fn() },
     finalExamCatalog: {
       create: jest.fn(),
       findUnique: jest.fn(),
@@ -30,6 +36,7 @@ describe('FinalExamsService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    prisma.question.count.mockResolvedValue(100);
     service = new FinalExamsService(prisma as never, examsService as never);
   });
 
@@ -60,6 +67,7 @@ describe('FinalExamsService', () => {
       createdAt,
       categories: [{ category: { id: 'cat-1', name: 'Reglamento' } }],
       groups: [{ group: { id: 'group-1', name: 'Grupo A' } }],
+      fixedQuestions: [],
     });
 
     const result = await service.createCatalog(
@@ -105,6 +113,7 @@ describe('FinalExamsService', () => {
       createdAt,
       categories: [{ category: { id: 'cat-1', name: 'Reglamento' } }],
       groups: [{ group: { id: 'group-1', name: 'Grupo A' } }],
+      fixedQuestions: [],
     });
 
     await service.createCatalog(
@@ -201,6 +210,8 @@ describe('FinalExamsService', () => {
       passThresholdPercent: 80,
       categories: [{ categoryId: 'cat-1' }],
       groups: [{ groupId: 'group-1' }],
+      fixedQuestions: [],
+      language: Language.ES,
     });
     prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
     prisma.exam.findFirst.mockResolvedValueOnce({ id: 'pending-exam' });
@@ -227,6 +238,8 @@ describe('FinalExamsService', () => {
       passThresholdPercent: 80,
       categories: [{ categoryId: 'cat-1' }],
       groups: [{ groupId: 'group-1' }],
+      fixedQuestions: [],
+      language: Language.ES,
     });
     prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
     prisma.exam.findFirst
@@ -250,6 +263,8 @@ describe('FinalExamsService', () => {
       passThresholdPercent: 80,
       categories: [{ categoryId: 'cat-1' }],
       groups: [{ groupId: 'group-1' }],
+      fixedQuestions: [],
+      language: Language.ES,
     });
     prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
     prisma.exam.findFirst
@@ -275,6 +290,8 @@ describe('FinalExamsService', () => {
       passThresholdPercent: 75,
       categories: [{ categoryId: 'cat-1' }, { categoryId: 'cat-2' }],
       groups: [{ groupId: 'group-1' }],
+      fixedQuestions: [],
+      language: Language.ES,
     });
     prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
     prisma.exam.findFirst
@@ -295,12 +312,13 @@ describe('FinalExamsService', () => {
         examType: 'FINAL',
         questionCount: 20,
         categoryIds: ['cat-1', 'cat-2'],
+        fixedQuestionIds: undefined,
         isTimed: true,
         totalTimeSeconds: 1200,
         shuffleOptions: true,
-        passThresholdPercent: 75,
         finalExamCatalogId: 'catalog-1',
         attemptNumber: 2,
+        language: Language.ES,
       },
     );
   });
@@ -318,6 +336,8 @@ describe('FinalExamsService', () => {
       passThresholdPercent: 75,
       categories: [{ categoryId: 'cat-1' }],
       groups: [{ groupId: 'group-1' }],
+      fixedQuestions: [],
+      language: Language.ES,
     });
     prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
     prisma.exam.findFirst
@@ -355,6 +375,8 @@ describe('FinalExamsService', () => {
       passThresholdPercent: 80,
       categories: [{ categoryId: 'cat-1' }],
       groups: [{ groupId: 'group-1' }],
+      fixedQuestions: [],
+      language: Language.ES,
     });
     prisma.userGroup.findFirst.mockResolvedValue(null);
 
@@ -375,6 +397,8 @@ describe('FinalExamsService', () => {
       passThresholdPercent: 80,
       categories: [{ categoryId: 'cat-1' }],
       groups: [{ groupId: 'group-1' }],
+      fixedQuestions: [],
+      language: Language.ES,
     });
     prisma.userGroup.findFirst.mockResolvedValue(null);
 
@@ -404,6 +428,8 @@ describe('FinalExamsService', () => {
       passThresholdPercent: 80,
       categories: [{ categoryId: 'cat-1' }],
       groups: [{ groupId: 'group-1' }],
+      fixedQuestions: [],
+      language: Language.ES,
     });
     prisma.userGroup.findFirst.mockResolvedValue({ groupId: 'group-1' });
 

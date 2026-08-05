@@ -4,6 +4,7 @@ import {
   ArrayUnique,
   IsArray,
   IsBoolean,
+  IsEnum,
   IsIn,
   IsInt,
   IsOptional,
@@ -13,6 +14,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
+import { Language } from '@prisma/client';
 
 export class CreateFinalExamCatalogDto {
   @IsOptional()
@@ -69,4 +71,7 @@ export class CreateFinalExamCatalogDto {
   @IsBoolean()
   shuffleOptions?: boolean;
 
+  @IsOptional()
+  @IsEnum(Language)
+  language?: Language;
 }

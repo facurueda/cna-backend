@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Language, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 type BulkAnswerInput = {
@@ -15,30 +15,34 @@ type BulkQuestionInput = {
 };
 
 const TEMP_INSERT_ORDER = 139;
+const DEFAULT_LANGUAGE: Language = Language.ES;
 
 @Injectable()
 export class QuestionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async listQuestions() {
-    return this.prisma.question.findMany({
+  async listQuestions(rawLanguage?: string) {
+    const language = this.parseLanguage(rawLanguage);
+
+    const questions = await this.prisma.question.findMany({
       orderBy: [{ order: 'asc' }, { createdAt: 'asc' }, { id: 'asc' }],
       select: {
         id: true,
         code: true,
-        text: true,
         order: true,
         createdAt: true,
         updatedAt: true,
         category: {
           select: { id: true, name: true },
         },
-        answers: {
-          orderBy: [{ key: 'asc' }, { id: 'asc' }],
+        translations: {
+          where: { language },
           select: {
-            id: true,
-            key: true,
             text: true,
+            answers: {
+              orderBy: [{ key: 'asc' }, { id: 'asc' }],
+              select: { id: true, key: true, text: true },
+            },
           },
         },
         correctAnswerKeys: {
@@ -47,6 +51,14 @@ export class QuestionsService {
         },
       },
     });
+
+    return questions
+      .filter((question) => question.translations.length > 0)
+      .map(({ translations, ...question }) => ({
+        ...question,
+        text: translations[0].text,
+        answers: translations[0].answers,
+      }));
   }
 
   async listCategories() {
@@ -57,7 +69,7 @@ export class QuestionsService {
   }
 
   async bulkCreate(payload: unknown) {
-    const questions = this.validateBulkPayload(payload);
+    const { language, questions } = this.validateBulkPayload(payload);
 
     const inserted = await this.prisma.$transaction(async (tx) => {
       const maxOrder = await tx.question.aggregate({
@@ -65,14 +77,14 @@ export class QuestionsService {
       });
       const nextOrder = (maxOrder._max.order ?? 0) + 1;
 
-      return this.insertQuestionsAtOrder(tx, questions, nextOrder);
+      return this.insertQuestionsAtOrder(tx, questions, language, nextOrder);
     });
 
     return { inserted };
   }
 
   async bulkInsertAtOrder139(payload: unknown) {
-    const questions = this.validateBulkPayload(payload);
+    const { language, questions } = this.validateBulkPayload(payload);
 
     const inserted = await this.prisma.$transaction(async (tx) => {
       await tx.question.updateMany({
@@ -80,7 +92,12 @@ export class QuestionsService {
         data: { order: { increment: questions.length } },
       });
 
-      return this.insertQuestionsAtOrder(tx, questions, TEMP_INSERT_ORDER);
+      return this.insertQuestionsAtOrder(
+        tx,
+        questions,
+        language,
+        TEMP_INSERT_ORDER,
+      );
     });
 
     return { inserted };
@@ -89,25 +106,47 @@ export class QuestionsService {
   private async insertQuestionsAtOrder(
     tx: Prisma.TransactionClient,
     questions: BulkQuestionInput[],
+    language: Language,
     startOrder: number,
   ): Promise<number> {
     const categoryCache = new Map<string, string>();
 
     for (let index = 0; index < questions.length; index += 1) {
       const questionInput = questions[index];
-      const categoryId = await this.resolveCategoryId(
-        tx,
-        questionInput.categoryName,
-        categoryCache,
-      );
 
-      await tx.question.create({
-        data: {
-          code: questionInput.code,
+      const existingQuestion = await tx.question.findUnique({
+        where: { code: questionInput.code },
+        select: { id: true },
+      });
+
+      const questionId = existingQuestion
+        ? existingQuestion.id
+        : await this.createLogicalQuestion(
+            tx,
+            questionInput,
+            categoryCache,
+            startOrder + index,
+          );
+
+      await tx.questionTranslation.upsert({
+        where: {
+          questionId_language: { questionId, language },
+        },
+        create: {
+          questionId,
+          language,
           text: questionInput.text,
-          categoryId,
-          order: startOrder + index,
           answers: {
+            create: questionInput.answers.map((answer) => ({
+              key: answer.key,
+              text: answer.text,
+            })),
+          },
+        },
+        update: {
+          text: questionInput.text,
+          answers: {
+            deleteMany: {},
             create: questionInput.answers.map((answer) => ({
               key: answer.key,
               text: answer.text,
@@ -118,6 +157,30 @@ export class QuestionsService {
     }
 
     return questions.length;
+  }
+
+  private async createLogicalQuestion(
+    tx: Prisma.TransactionClient,
+    questionInput: BulkQuestionInput,
+    categoryCache: Map<string, string>,
+    order: number,
+  ): Promise<string> {
+    const categoryId = await this.resolveCategoryId(
+      tx,
+      questionInput.categoryName,
+      categoryCache,
+    );
+
+    const created = await tx.question.create({
+      data: {
+        code: questionInput.code,
+        categoryId,
+        order,
+      },
+      select: { id: true },
+    });
+
+    return created.id;
   }
 
   private async resolveCategoryId(
@@ -146,16 +209,24 @@ export class QuestionsService {
     return createdCategory.id;
   }
 
-  private validateBulkPayload(payload: unknown): BulkQuestionInput[] {
+  private validateBulkPayload(payload: unknown): {
+    language: Language;
+    questions: BulkQuestionInput[];
+  } {
+    const language = this.parseLanguage(this.extractLanguage(payload));
     const list = this.extractQuestionsArray(payload);
 
     if (list.length === 0) {
-      throw new BadRequestException('Body array must contain at least one question');
+      throw new BadRequestException(
+        'Body array must contain at least one question',
+      );
     }
 
-    return list.map((item, index) => {
+    const questions = list.map((item, index) => {
       if (!item || typeof item !== 'object') {
-        throw new BadRequestException(`Question at index ${index} must be an object`);
+        throw new BadRequestException(
+          `Question at index ${index} must be an object`,
+        );
       }
 
       const raw = item as Record<string, unknown>;
@@ -199,6 +270,8 @@ export class QuestionsService {
         answers,
       };
     });
+
+    return { language, questions };
   }
 
   private extractQuestionsArray(payload: unknown): unknown[] {
@@ -214,6 +287,30 @@ export class QuestionsService {
     );
   }
 
+  private extractLanguage(payload: unknown): unknown {
+    if (payload && typeof payload === 'object' && !Array.isArray(payload)) {
+      return (payload as Record<string, unknown>).language;
+    }
+    return undefined;
+  }
+
+  private parseLanguage(value: unknown): Language {
+    if (value === undefined || value === null) return DEFAULT_LANGUAGE;
+
+    if (typeof value !== 'string') {
+      throw new BadRequestException('language must be a string');
+    }
+
+    const normalized = value.trim().toUpperCase();
+    if (normalized !== Language.ES && normalized !== Language.EN) {
+      throw new BadRequestException(
+        `language must be one of: ${Object.values(Language).join(', ')}`,
+      );
+    }
+
+    return normalized as Language;
+  }
+
   private readRequiredString(value: unknown, fieldName: string): string {
     if (typeof value !== 'string') {
       throw new BadRequestException(`${fieldName} must be a string`);
@@ -227,7 +324,10 @@ export class QuestionsService {
     return trimmed;
   }
 
-  private readOptionalString(value: unknown, fieldName: string): string | undefined {
+  private readOptionalString(
+    value: unknown,
+    fieldName: string,
+  ): string | undefined {
     if (value === undefined || value === null) return undefined;
     if (typeof value !== 'string') {
       throw new BadRequestException(`${fieldName} must be a string`);
