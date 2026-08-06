@@ -18,6 +18,7 @@ import { EventsModule } from './events/events.module';
 import { ButtonLayoutsModule } from './button-layouts/button-layouts.module';
 import { GroupsModule } from './groups/groups.module';
 import { StudyMaterialsModule } from './study-materials/study-materials.module';
+import { RegulationPhrasesModule } from './regulation-phrases/regulation-phrases.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { StudyMaterialsModule } from './study-materials/study-materials.module';
     ButtonLayoutsModule,
     GroupsModule,
     StudyMaterialsModule,
+    RegulationPhrasesModule,
   ],
 })
 export class AppModule {}

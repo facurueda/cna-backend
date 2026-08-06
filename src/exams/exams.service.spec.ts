@@ -1,5 +1,11 @@
 import { ConflictException } from '@nestjs/common';
-import { ExamStatus, ExamType, Language, Role } from '@prisma/client';
+import {
+  ExamStatus,
+  ExamType,
+  FinalExamCatalogKind,
+  Language,
+  Role,
+} from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserStatsService } from '../users/user-stats.service';
 import { ExamsService } from './exams.service';
@@ -31,6 +37,9 @@ describe('ExamsService', () => {
     question: {
       findMany: jest.fn(),
     },
+    regulationPhrase: {
+      findMany: jest.fn(),
+    },
     exam: {
       create: jest.fn(),
       findUnique: jest.fn(),
@@ -38,6 +47,7 @@ describe('ExamsService', () => {
     },
     examQuestion: {
       findFirst: jest.fn(),
+      update: jest.fn(),
     },
   };
 
@@ -381,6 +391,138 @@ describe('ExamsService', () => {
               }),
             }),
           }),
+        }),
+      }),
+    );
+  });
+
+  it('builds phrase-based questions (no options) for SEARCH catalog kind', async () => {
+    prisma.exam.create.mockResolvedValue({ id: 'exam-1' });
+    jest.spyOn(service, 'findOne').mockResolvedValue({ id: 'exam-1' } as never);
+
+    await service.createGeneratedExam(
+      { id: 'user-1', role: Role.GENERAL },
+      {
+        examType: ExamType.FINAL,
+        questionCount: 1,
+        categoryIds: [],
+        isTimed: false,
+        language: Language.ES,
+        catalogKind: FinalExamCatalogKind.SEARCH,
+        phrases: [
+          {
+            text: 'Los saques de banda deben sacarse pisando la línea lateral',
+            answer: '7.8 b',
+          },
+        ],
+      },
+    );
+
+    expect(prisma.category.findMany).not.toHaveBeenCalled();
+    expect(prisma.exam.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        catalogKind: FinalExamCatalogKind.SEARCH,
+        questions: {
+          create: [
+            {
+              position: 1,
+              questionCode: 'phrase-1',
+              questionText:
+                'Los saques de banda deben sacarse pisando la línea lateral',
+              categoryName: '7.8 b',
+            },
+          ],
+        },
+      }),
+      select: { id: true },
+    });
+  });
+
+  it('throws when a SEARCH catalog has no phrases configured', async () => {
+    await expect(
+      service.createGeneratedExam(
+        { id: 'user-1', role: Role.GENERAL },
+        {
+          examType: ExamType.FINAL,
+          questionCount: 1,
+          categoryIds: [],
+          isTimed: false,
+          language: Language.ES,
+          catalogKind: FinalExamCatalogKind.SEARCH,
+          phrases: [],
+        },
+      ),
+    ).rejects.toThrow('Final exam catalog has no phrases configured');
+  });
+
+  it('stores free-text answers for SEARCH catalog exams', async () => {
+    prisma.exam.findUnique.mockResolvedValue({
+      id: 'exam-1',
+      userId: 'user-1',
+      status: ExamStatus.PENDING,
+      examType: ExamType.FINAL,
+      catalogKind: FinalExamCatalogKind.SEARCH,
+      finalExamCatalog: { availableUntilDate: null },
+    });
+    prisma.examQuestion.findFirst.mockResolvedValue({ id: 'question-1' });
+
+    const result = await service.answer(
+      'exam-1',
+      { id: 'user-1', role: Role.GENERAL },
+      { examQuestionId: 'question-1', freeText: 'Regla 5' },
+    );
+
+    expect(prisma.examQuestion.update).toHaveBeenCalledWith({
+      where: { id: 'question-1' },
+      data: { submittedText: 'Regla 5' },
+    });
+    expect(result).toEqual({ ok: true });
+  });
+
+  it('grades SEARCH exams by normalizing free-text answers against the correct rule', async () => {
+    const finishedAt = new Date('2026-05-01T10:00:00.000Z');
+    jest.useFakeTimers().setSystemTime(finishedAt);
+
+    prisma.exam.findUnique.mockResolvedValue({
+      id: 'exam-1',
+      userId: 'user-1',
+      status: ExamStatus.PENDING,
+      examType: ExamType.FINAL,
+      catalogKind: FinalExamCatalogKind.SEARCH,
+      passThresholdPercent: 80,
+      finalExamCatalogId: null,
+      attemptNumber: null,
+      finalExamCatalog: null,
+      questions: [
+        { categoryName: '7.8 b', submittedText: '7.8 B' },
+        { categoryName: '12', submittedText: '12' },
+        { categoryName: '14.2', submittedText: '14 2' },
+        { categoryName: '8.4', submittedText: '9.4' },
+        { categoryName: '3', submittedText: '' },
+      ],
+    });
+
+    tx.exam.update.mockResolvedValue({
+      id: 'exam-1',
+      status: ExamStatus.FINISHED,
+      questionCount: 5,
+      correctCount: 3,
+      wrongCount: 2,
+      scorePercent: 60,
+      isPassed: false,
+      finishedAt,
+    });
+
+    await service.finish('exam-1', { id: 'user-1', role: Role.GENERAL });
+
+    expect(tx.exam.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: 'exam-1' },
+        data: expect.objectContaining({
+          correctCount: 3,
+          wrongCount: 2,
+          scorePercent: 60,
+          isPassed: false,
         }),
       }),
     );

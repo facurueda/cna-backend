@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  ArrayMaxSize,
   ArrayMinSize,
   ArrayUnique,
   IsArray,
@@ -12,10 +13,12 @@ import {
   IsUUID,
   Matches,
   Max,
+  MaxLength,
   Min,
+  MinLength,
   ValidateNested,
 } from 'class-validator';
-import { Language } from '@prisma/client';
+import { FinalExamCatalogKind, Language } from '@prisma/client';
 
 export class FinalExamCatalogPairDto {
   @IsUUID('4')
@@ -23,6 +26,18 @@ export class FinalExamCatalogPairDto {
 
   @IsUUID('4')
   userBId!: string;
+}
+
+export class FinalExamCatalogPhraseInputDto {
+  @IsString()
+  @MinLength(1)
+  @MaxLength(2000)
+  text!: string;
+
+  @IsString()
+  @MinLength(1)
+  @MaxLength(200)
+  answer!: string;
 }
 
 export class CreateFinalExamCatalogDto {
@@ -37,10 +52,12 @@ export class CreateFinalExamCatalogDto {
   })
   availableUntilDate?: string;
 
+  @IsOptional()
   @Type(() => Number)
   @IsInt()
-  @IsIn([10, 15, 20, 30])
-  questionCount!: number;
+  @Min(1)
+  @Max(30)
+  questionCount?: number;
 
   @IsOptional()
   @IsArray()
@@ -85,8 +102,20 @@ export class CreateFinalExamCatalogDto {
   language?: Language;
 
   @IsOptional()
+  @IsEnum(FinalExamCatalogKind)
+  kind?: FinalExamCatalogKind;
+
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => FinalExamCatalogPairDto)
   pairs?: FinalExamCatalogPairDto[];
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(20)
+  @ValidateNested({ each: true })
+  @Type(() => FinalExamCatalogPhraseInputDto)
+  phrases?: FinalExamCatalogPhraseInputDto[];
 }

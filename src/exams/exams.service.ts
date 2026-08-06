@@ -5,7 +5,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ExamStatus, ExamType, Language, Role } from '@prisma/client';
+import {
+  ExamStatus,
+  ExamType,
+  FinalExamCatalogKind,
+  Language,
+  Role,
+} from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { AnswerExamQuestionDto } from './dto/answer-exam-question.dto';
@@ -28,10 +34,13 @@ type CreateGeneratedExamInput = {
   attemptNumber?: number;
   shuffleOptions?: boolean;
   language: Language;
+  catalogKind?: FinalExamCatalogKind;
+  phrases?: { text: string; answer: string }[];
 };
 
 const DEFAULT_PASS_THRESHOLD = 80;
 const DEFAULT_LANGUAGE: Language = Language.ES;
+const DEFAULT_CATALOG_KIND: FinalExamCatalogKind = FinalExamCatalogKind.CATALOG;
 
 @Injectable()
 export class ExamsService {
@@ -68,6 +77,63 @@ export class ExamsService {
       );
     }
 
+    const catalogKind = input.catalogKind ?? DEFAULT_CATALOG_KIND;
+
+    const examQuestions =
+      catalogKind === FinalExamCatalogKind.SEARCH
+        ? this.buildSearchExamQuestions(input)
+        : await this.buildCatalogExamQuestions(input);
+
+    const created = await this.prisma.exam.create({
+      data: {
+        userId: user.id,
+        finalExamCatalogId: input.finalExamCatalogId,
+        attemptNumber: input.attemptNumber,
+        questionCount: input.questionCount,
+        isTimed: input.isTimed,
+        totalTimeSeconds: input.isTimed
+          ? (input.totalTimeSeconds ?? null)
+          : null,
+        examType: input.examType,
+        status: ExamStatus.PENDING,
+        passThresholdPercent: DEFAULT_PASS_THRESHOLD,
+        language: input.language,
+        catalogKind,
+        correctCount: null,
+        wrongCount: null,
+        scorePercent: null,
+        isPassed: null,
+        ...(examQuestions.length > 0
+          ? {
+              questions: {
+                create: examQuestions,
+              },
+            }
+          : {}),
+      },
+      select: { id: true },
+    });
+
+    return this.findOne(created.id, user);
+  }
+
+  private buildSearchExamQuestions(input: CreateGeneratedExamInput) {
+    const phrases = input.phrases ?? [];
+    if (phrases.length === 0) {
+      throw new BadRequestException(
+        'Final exam catalog has no phrases configured',
+      );
+    }
+
+    return phrases.map((phrase, index) => ({
+      position: index + 1,
+      questionCode: `phrase-${index + 1}`,
+      questionText: phrase.text,
+      categoryName: phrase.answer,
+    }));
+  }
+
+  private async buildCatalogExamQuestions(input: CreateGeneratedExamInput) {
     let selectedQuestions: {
       id?: string;
       code: string;
@@ -211,36 +277,7 @@ export class ExamsService {
       };
     });
 
-    const created = await this.prisma.exam.create({
-      data: {
-        userId: user.id,
-        finalExamCatalogId: input.finalExamCatalogId,
-        attemptNumber: input.attemptNumber,
-        questionCount: input.questionCount,
-        isTimed: input.isTimed,
-        totalTimeSeconds: input.isTimed
-          ? (input.totalTimeSeconds ?? null)
-          : null,
-        examType: input.examType,
-        status: ExamStatus.PENDING,
-        passThresholdPercent: DEFAULT_PASS_THRESHOLD,
-        language: input.language,
-        correctCount: null,
-        wrongCount: null,
-        scorePercent: null,
-        isPassed: null,
-        ...(examQuestions.length > 0
-          ? {
-              questions: {
-                create: examQuestions,
-              },
-            }
-          : {}),
-      },
-      select: { id: true },
-    });
-
-    return this.findOne(created.id, user);
+    return examQuestions;
   }
 
   async findMyExams(user: AuthUserPayload) {
@@ -303,6 +340,7 @@ export class ExamsService {
       examType: exam.examType,
       passThresholdPercent: exam.passThresholdPercent,
       language: exam.language,
+      catalogKind: exam.catalogKind,
       correctCount: exam.correctCount,
       wrongCount: exam.wrongCount,
       scorePercent: exam.scorePercent,
@@ -317,6 +355,7 @@ export class ExamsService {
         categoryName: question.categoryName,
         options: question.options,
         selectedKeys: question.responses.map((response) => response.key),
+        submittedText: question.submittedText,
       })),
     };
   }
@@ -370,6 +409,7 @@ export class ExamsService {
       wrongCount,
       scorePercent,
       isPassed,
+      catalogKind: exam.catalogKind,
       examQuestions: exam.questions.map((question) => {
         const correctKeySet = new Set(
           this.normalizeUniqueKeys(
@@ -381,6 +421,14 @@ export class ExamsService {
           id: question.id,
           order: question.position,
           prompt: question.questionText,
+          categoryName: question.categoryName,
+          submittedText: question.submittedText,
+          isCorrect:
+            exam.catalogKind === FinalExamCatalogKind.SEARCH
+              ? this.normalizePhraseAnswer(question.submittedText) !== null &&
+                this.normalizePhraseAnswer(question.submittedText) ===
+                  this.normalizePhraseAnswer(question.categoryName)
+              : undefined,
           options: question.options.map((option) => ({
             key: option.key,
             text: option.text,
@@ -405,6 +453,7 @@ export class ExamsService {
         userId: true,
         status: true,
         examType: true,
+        catalogKind: true,
         finalExamCatalog: {
           select: { availableUntilDate: true },
         },
@@ -423,6 +472,24 @@ export class ExamsService {
       throw new BadRequestException('Exam is already finished');
     }
 
+    if (exam.catalogKind === FinalExamCatalogKind.SEARCH) {
+      const searchQuestion = await this.prisma.examQuestion.findFirst({
+        where: { id: dto.examQuestionId, examId: exam.id },
+        select: { id: true },
+      });
+
+      if (!searchQuestion) {
+        throw new NotFoundException('Exam question not found for this exam');
+      }
+
+      await this.prisma.examQuestion.update({
+        where: { id: searchQuestion.id },
+        data: { submittedText: dto.freeText?.trim() || null },
+      });
+
+      return { ok: true };
+    }
+
     const question = await this.prisma.examQuestion.findFirst({
       where: { id: dto.examQuestionId, examId: exam.id },
       select: {
@@ -435,7 +502,7 @@ export class ExamsService {
       throw new NotFoundException('Exam question not found for this exam');
     }
 
-    const selectedKeys = this.normalizeUniqueKeys(dto.selectedKeys);
+    const selectedKeys = this.normalizeUniqueKeys(dto.selectedKeys ?? []);
     const allowedKeys = new Set(question.options.map((option) => option.key));
 
     for (const key of selectedKeys) {
@@ -502,7 +569,12 @@ export class ExamsService {
     }
 
     const { correctCount, wrongCount, scorePercent, isPassed } =
-      this.calculateExamResults(exam.questions, exam.passThresholdPercent);
+      exam.catalogKind === FinalExamCatalogKind.SEARCH
+        ? this.calculatePhraseExamResults(
+            exam.questions,
+            exam.passThresholdPercent,
+          )
+        : this.calculateExamResults(exam.questions, exam.passThresholdPercent);
 
     const updated = await this.prisma.$transaction(async (tx) => {
       const finishedExam = await tx.exam.update({
@@ -677,6 +749,45 @@ export class ExamsService {
       scorePercent,
       isPassed,
     };
+  }
+
+  private calculatePhraseExamResults(
+    questions: {
+      categoryName: string | null;
+      submittedText: string | null;
+    }[],
+    passThresholdPercent: number,
+  ) {
+    let correctCount = 0;
+
+    for (const question of questions) {
+      const expected = this.normalizePhraseAnswer(question.categoryName);
+      const submitted = this.normalizePhraseAnswer(question.submittedText);
+      if (expected !== null && expected === submitted) {
+        correctCount += 1;
+      }
+    }
+
+    const totalQuestions = questions.length;
+    const wrongCount = Math.max(0, totalQuestions - correctCount);
+    const scorePercent =
+      totalQuestions > 0
+        ? Number(((correctCount / totalQuestions) * 100).toFixed(2))
+        : 0;
+    const isPassed = scorePercent >= passThresholdPercent;
+
+    return {
+      correctCount,
+      wrongCount,
+      scorePercent,
+      isPassed,
+    };
+  }
+
+  private normalizePhraseAnswer(value: string | null | undefined): string | null {
+    if (!value) return null;
+    const cleaned = value.toLowerCase().replace(/[^a-z0-9]/g, '');
+    return cleaned.length > 0 ? cleaned : null;
   }
 
   private validateTimerFields(dto: {

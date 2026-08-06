@@ -8,6 +8,7 @@ import {
 import {
   ExamStatus,
   ExamType,
+  FinalExamCatalogKind,
   FinalExamCatalogStatus,
   Language,
   Prisma,
@@ -37,10 +38,23 @@ export class FinalExamsService {
 
   async createCatalog(user: AuthUserPayload, dto: CreateFinalExamCatalogDto) {
     this.validateTimerFields(dto);
+    const kind = dto.kind ?? FinalExamCatalogKind.CATALOG;
+    const isSearch = kind === FinalExamCatalogKind.SEARCH;
     const hasFixedQuestions =
-      dto.questionIds != null && dto.questionIds.length > 0;
+      !isSearch && dto.questionIds != null && dto.questionIds.length > 0;
 
-    if (
+    let phrases: { text: string; answer: string }[] = [];
+    if (isSearch) {
+      phrases = (dto.phrases ?? []).map((phrase) => ({
+        text: phrase.text.trim(),
+        answer: phrase.answer.trim(),
+      }));
+      if (phrases.length === 0) {
+        throw new BadRequestException(
+          'At least one phrase is required for SEARCH catalogs',
+        );
+      }
+    } else if (
       !hasFixedQuestions &&
       (!dto.categoryIds || dto.categoryIds.length === 0)
     ) {
@@ -49,7 +63,13 @@ export class FinalExamsService {
       );
     }
 
-    const language = dto.language ?? DEFAULT_LANGUAGE;
+    const language = isSearch
+      ? DEFAULT_LANGUAGE
+      : (dto.language ?? DEFAULT_LANGUAGE);
+
+    const questionCount = isSearch
+      ? phrases.length
+      : this.resolveCatalogQuestionCount(dto.questionCount);
 
     const availableUntilDate = this.normalizeAvailableUntilDate(
       dto.availableUntilDate,
@@ -76,7 +96,8 @@ export class FinalExamsService {
     }
 
     let categoryIds: string[] = [];
-    if (!hasFixedQuestions) {
+    let questionIds: string[] = [];
+    if (!isSearch && !hasFixedQuestions) {
       categoryIds = this.normalizeUniqueTextValues(dto.categoryIds!);
       const categories = await this.prisma.category.findMany({
         where: { id: { in: categoryIds } },
@@ -96,19 +117,16 @@ export class FinalExamsService {
           translations: { some: { language } },
         },
       });
-      if (availableQuestionCount < dto.questionCount) {
+      if (availableQuestionCount < questionCount) {
         throw new BadRequestException(
-          `Not enough ${language} questions for selected categories. Requested ${dto.questionCount}, available ${availableQuestionCount}`,
+          `Not enough ${language} questions for selected categories. Requested ${questionCount}, available ${availableQuestionCount}`,
         );
       }
-    }
-
-    let questionIds: string[] = [];
-    if (hasFixedQuestions) {
+    } else if (!isSearch && hasFixedQuestions) {
       questionIds = this.normalizeUniqueTextValues(dto.questionIds!);
-      if (questionIds.length !== dto.questionCount) {
+      if (questionIds.length !== questionCount) {
         throw new BadRequestException(
-          `questionIds length (${questionIds.length}) must equal questionCount (${dto.questionCount})`,
+          `questionIds length (${questionIds.length}) must equal questionCount (${questionCount})`,
         );
       }
       const questions = await this.prisma.question.findMany({
@@ -141,7 +159,7 @@ export class FinalExamsService {
     const created = await this.prisma.finalExamCatalog.create({
       data: {
         title: dto.title?.trim() || 'Examen',
-        questionCount: dto.questionCount,
+        questionCount,
         isTimed: dto.isTimed,
         totalTimeSeconds: dto.isTimed ? (dto.totalTimeSeconds ?? null) : null,
         availableUntilDate,
@@ -149,6 +167,7 @@ export class FinalExamsService {
         shuffleOptions: dto.shuffleOptions ?? true,
         passThresholdPercent: 80,
         language,
+        kind,
         status: FinalExamCatalogStatus.DRAFT,
         publishedAt: null,
         createdById: user.id,
@@ -194,6 +213,18 @@ export class FinalExamsService {
               },
             }
           : {}),
+        ...(phrases.length > 0
+          ? {
+              phrases: {
+                create: phrases.map((phrase, index) => ({
+                  position: index + 1,
+                  regulationPhrase: {
+                    create: { text: phrase.text, answer: phrase.answer },
+                  },
+                })),
+              },
+            }
+          : {}),
       },
       include: {
         categories: {
@@ -213,6 +244,14 @@ export class FinalExamsService {
         pairs: {
           select: { userAId: true, userBId: true },
         },
+        phrases: {
+          orderBy: { position: 'asc' },
+          include: {
+            regulationPhrase: {
+              select: { id: true, text: true, answer: true },
+            },
+          },
+        },
       },
     });
 
@@ -230,6 +269,7 @@ export class FinalExamsService {
       shuffleOptions: created.shuffleOptions,
       passThresholdPercent: created.passThresholdPercent,
       language: created.language,
+      kind: created.kind,
       publishedAt: created.publishedAt,
       createdAt: created.createdAt,
       categories: created.categories.map((item) => item.category),
@@ -238,6 +278,11 @@ export class FinalExamsService {
       pairs: created.pairs.map((item) => ({
         userAId: item.userAId,
         userBId: item.userBId,
+      })),
+      phrases: created.phrases.map((item) => ({
+        id: item.regulationPhrase.id,
+        text: item.regulationPhrase.text,
+        answer: item.regulationPhrase.answer,
       })),
     };
   }
@@ -329,6 +374,7 @@ export class FinalExamsService {
         shuffleOptions: catalog.shuffleOptions,
         passThresholdPercent: catalog.passThresholdPercent,
         language: catalog.language,
+        kind: catalog.kind,
         publishedAt: catalog.publishedAt,
         createdAt: catalog.createdAt,
         categories: catalog.categories.map((item) => item.category),
@@ -410,6 +456,7 @@ export class FinalExamsService {
         shuffleOptions: catalog.shuffleOptions,
         passThresholdPercent: catalog.passThresholdPercent,
         language: catalog.language,
+        kind: catalog.kind,
         publishedAt: catalog.publishedAt,
         createdAt: catalog.createdAt,
         categories: catalog.categories.map((item) => item.category),
@@ -651,13 +698,27 @@ export class FinalExamsService {
         pairs: {
           select: { userAId: true, userBId: true },
         },
+        phrases: {
+          orderBy: { position: 'asc' },
+          select: {
+            regulationPhrase: { select: { text: true, answer: true } },
+          },
+        },
       },
     });
 
     if (!catalog) throw new NotFoundException('Final exam catalog not found');
-    const hasFixedQuestions = catalog.fixedQuestions.length > 0;
-    if (!hasFixedQuestions && !catalog.categories.length) {
+    const isSearch = catalog.kind === FinalExamCatalogKind.SEARCH;
+    const hasFixedQuestions = !isSearch && catalog.fixedQuestions.length > 0;
+    if (
+      !isSearch &&
+      !hasFixedQuestions &&
+      !catalog.categories.length
+    ) {
       throw new BadRequestException('Final exam catalog has no categories');
+    }
+    if (isSearch && catalog.phrases.length === 0) {
+      throw new BadRequestException('Final exam catalog has no phrases');
     }
 
     if (catalog.status !== FinalExamCatalogStatus.PUBLISHED) {
@@ -767,6 +828,13 @@ export class FinalExamsService {
         finalExamCatalogId: catalog.id,
         attemptNumber: usedAttempts + 1,
         language: catalog.language,
+        catalogKind: catalog.kind,
+        phrases: isSearch
+          ? catalog.phrases.map((item) => ({
+              text: item.regulationPhrase.text,
+              answer: item.regulationPhrase.answer,
+            }))
+          : undefined,
       });
     } catch (error) {
       if (
@@ -814,6 +882,7 @@ export class FinalExamsService {
       shuffleOptions: catalog.shuffleOptions,
       passThresholdPercent: catalog.passThresholdPercent,
       language: catalog.language,
+      kind: catalog.kind,
       publishedAt: catalog.publishedAt,
       createdAt: catalog.createdAt,
       categories: catalog.categories.map((item) => item.category),
@@ -830,6 +899,15 @@ export class FinalExamsService {
         'totalTimeSeconds is required when isTimed is true',
       );
     }
+  }
+
+  private resolveCatalogQuestionCount(value?: number): number {
+    if (value == null || ![10, 15, 20, 30].includes(value)) {
+      throw new BadRequestException(
+        'questionCount must be one of: 10, 15, 20, 30',
+      );
+    }
+    return value;
   }
 
   private async validatePairs(

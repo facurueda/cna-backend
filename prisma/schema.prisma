@@ -48,6 +48,11 @@ enum Language {
   EN
 }
 
+enum FinalExamCatalogKind {
+  CATALOG
+  SEARCH
+}
+
 model User {
   id                     String  @id @default(uuid())
   firstName              String
@@ -209,24 +214,25 @@ model ClipCategory {
 }
 
 model Exam {
-  id                   String     @id @default(uuid()) @db.Uuid
+  id                   String               @id @default(uuid()) @db.Uuid
   userId               String
-  finalExamCatalogId   String?    @db.Uuid
+  finalExamCatalogId   String?              @db.Uuid
   attemptNumber        Int?
   questionCount        Int
-  isTimed              Boolean    @default(false)
+  isTimed              Boolean              @default(false)
   totalTimeSeconds     Int?
-  status               ExamStatus @default(PENDING)
+  status               ExamStatus           @default(PENDING)
   examType             ExamType
-  passThresholdPercent Int        @default(70)
-  language             Language   @default(ES)
+  passThresholdPercent Int                  @default(70)
+  language             Language             @default(ES)
+  catalogKind          FinalExamCatalogKind @default(CATALOG)
   correctCount         Int?
   wrongCount           Int?
   scorePercent         Float?
   isPassed             Boolean?
   finishedAt           DateTime?
-  createdAt            DateTime   @default(now())
-  updatedAt            DateTime   @updatedAt
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
 
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   finalExamCatalog FinalExamCatalog? @relation(fields: [finalExamCatalogId], references: [id], onDelete: SetNull)
@@ -240,12 +246,13 @@ model Exam {
 }
 
 model ExamQuestion {
-  id           String  @id @default(uuid()) @db.Uuid
-  examId       String  @db.Uuid
-  position     Int
-  questionCode String
-  questionText String
-  categoryName String?
+  id            String  @id @default(uuid()) @db.Uuid
+  examId        String  @db.Uuid
+  position      Int
+  questionCode  String
+  questionText  String
+  categoryName  String?
+  submittedText String?
 
   exam        Exam                     @relation(fields: [examId], references: [id], onDelete: Cascade)
   options     ExamQuestionOption[]
@@ -320,6 +327,7 @@ model FinalExamCatalog {
   shuffleOptions       Boolean                @default(true)
   passThresholdPercent Int                    @default(70)
   language             Language               @default(ES)
+  kind                 FinalExamCatalogKind   @default(CATALOG)
   status               FinalExamCatalogStatus @default(DRAFT)
   publishedAt          DateTime?
   createdById          String?
@@ -331,6 +339,7 @@ model FinalExamCatalog {
   groups         FinalExamCatalogGroup[]
   fixedQuestions FinalExamCatalogQuestion[]
   pairs          FinalExamCatalogPair[]
+  phrases        FinalExamCatalogPhrase[]
   exams          Exam[]
 
   @@index([status])
@@ -432,6 +441,28 @@ model Category {
 
   questions         Question[]
   finalExamCatalogs FinalExamCatalogCategory[]
+}
+
+model RegulationPhrase {
+  id        String   @id @default(uuid()) @db.Uuid
+  text      String
+  answer    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  finalExamCatalogs FinalExamCatalogPhrase[]
+}
+
+model FinalExamCatalogPhrase {
+  finalExamCatalogId String @db.Uuid
+  regulationPhraseId String @db.Uuid
+  position           Int
+
+  finalExamCatalog FinalExamCatalog @relation(fields: [finalExamCatalogId], references: [id], onDelete: Cascade)
+  regulationPhrase RegulationPhrase @relation(fields: [regulationPhraseId], references: [id], onDelete: Cascade)
+
+  @@id([finalExamCatalogId, regulationPhraseId])
+  @@index([finalExamCatalogId])
 }
 
 model QuestionCorrectAnswerKey {

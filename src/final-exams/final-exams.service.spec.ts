@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import {
   ExamStatus,
+  FinalExamCatalogKind,
   FinalExamCatalogStatus,
   Language,
   Role,
@@ -19,6 +20,7 @@ describe('FinalExamsService', () => {
     group: { findMany: jest.fn() },
     userGroup: { findFirst: jest.fn(), findMany: jest.fn() },
     question: { findMany: jest.fn(), count: jest.fn() },
+    regulationPhrase: { count: jest.fn() },
     user: { findUnique: jest.fn() },
     finalExamCatalog: {
       create: jest.fn(),
@@ -71,6 +73,7 @@ describe('FinalExamsService', () => {
       groups: [{ group: { id: 'group-1', name: 'Grupo A' } }],
       fixedQuestions: [],
       pairs: [],
+      phrases: [],
     });
 
     const result = await service.createCatalog(
@@ -118,6 +121,7 @@ describe('FinalExamsService', () => {
       groups: [{ group: { id: 'group-1', name: 'Grupo A' } }],
       fixedQuestions: [],
       pairs: [],
+      phrases: [],
     });
 
     await service.createCatalog(
@@ -138,6 +142,152 @@ describe('FinalExamsService', () => {
         }),
       }),
     );
+  });
+
+  it('creates a SEARCH catalog with inline phrases (no categories/questionCount needed)', async () => {
+    prisma.group.findMany.mockResolvedValue([
+      { id: 'group-1', name: 'Grupo A' },
+    ]);
+    const createdAt = new Date('2026-03-03T12:00:00.000Z');
+    prisma.finalExamCatalog.create.mockResolvedValue({
+      id: 'catalog-1',
+      title: 'Examen',
+      status: FinalExamCatalogStatus.DRAFT,
+      questionCount: 2,
+      isTimed: false,
+      totalTimeSeconds: null,
+      availableUntilDate: null,
+      maxRetries: 0,
+      shuffleOptions: true,
+      passThresholdPercent: 80,
+      language: Language.ES,
+      kind: FinalExamCatalogKind.SEARCH,
+      publishedAt: null,
+      createdAt,
+      categories: [],
+      groups: [{ group: { id: 'group-1', name: 'Grupo A' } }],
+      fixedQuestions: [],
+      pairs: [],
+      phrases: [
+        {
+          regulationPhrase: {
+            id: 'phrase-1',
+            text: 'Los saques de banda deben sacarse pisando la línea lateral',
+            answer: '7.8 b',
+          },
+        },
+        {
+          regulationPhrase: {
+            id: 'phrase-2',
+            text: 'El arquero puede jugar el balón con el pie dentro de su área',
+            answer: '14',
+          },
+        },
+      ],
+    });
+
+    const result = await service.createCatalog(
+      { id: 'admin-1', role: Role.ADMIN },
+      {
+        groupIds: ['group-1'],
+        isTimed: false,
+        kind: FinalExamCatalogKind.SEARCH,
+        phrases: [
+          {
+            text: 'Los saques de banda deben sacarse pisando la línea lateral',
+            answer: '7.8 b',
+          },
+          {
+            text: 'El arquero puede jugar el balón con el pie dentro de su área',
+            answer: '14',
+          },
+        ],
+      },
+    );
+
+    expect(prisma.category.findMany).not.toHaveBeenCalled();
+    expect(prisma.question.count).not.toHaveBeenCalled();
+    expect(prisma.finalExamCatalog.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          kind: FinalExamCatalogKind.SEARCH,
+          language: Language.ES,
+          questionCount: 2,
+          phrases: {
+            create: [
+              {
+                position: 1,
+                regulationPhrase: {
+                  create: {
+                    text: 'Los saques de banda deben sacarse pisando la línea lateral',
+                    answer: '7.8 b',
+                  },
+                },
+              },
+              {
+                position: 2,
+                regulationPhrase: {
+                  create: {
+                    text: 'El arquero puede jugar el balón con el pie dentro de su área',
+                    answer: '14',
+                  },
+                },
+              },
+            ],
+          },
+        }),
+      }),
+    );
+    expect(result.kind).toBe(FinalExamCatalogKind.SEARCH);
+    expect(result.phrases).toEqual([
+      {
+        id: 'phrase-1',
+        text: 'Los saques de banda deben sacarse pisando la línea lateral',
+        answer: '7.8 b',
+      },
+      {
+        id: 'phrase-2',
+        text: 'El arquero puede jugar el balón con el pie dentro de su área',
+        answer: '14',
+      },
+    ]);
+  });
+
+  it('requires at least one phrase for SEARCH catalogs', async () => {
+    prisma.group.findMany.mockResolvedValue([
+      { id: 'group-1', name: 'Grupo A' },
+    ]);
+
+    await expect(
+      service.createCatalog(
+        { id: 'admin-1', role: Role.ADMIN },
+        {
+          groupIds: ['group-1'],
+          isTimed: false,
+          kind: FinalExamCatalogKind.SEARCH,
+        },
+      ),
+    ).rejects.toBeInstanceOf(BadRequestException);
+    expect(prisma.finalExamCatalog.create).not.toHaveBeenCalled();
+  });
+
+  it('rejects an invalid questionCount for CATALOG catalogs', async () => {
+    prisma.group.findMany.mockResolvedValue([
+      { id: 'group-1', name: 'Grupo A' },
+    ]);
+
+    await expect(
+      service.createCatalog(
+        { id: 'admin-1', role: Role.ADMIN },
+        {
+          questionCount: 7,
+          categoryIds: ['cat-1'],
+          groupIds: ['group-1'],
+          isTimed: false,
+        },
+      ),
+    ).rejects.toBeInstanceOf(BadRequestException);
+    expect(prisma.finalExamCatalog.create).not.toHaveBeenCalled();
   });
 
   it('validates and persists pairs when creating a catalog', async () => {
@@ -169,6 +319,7 @@ describe('FinalExamsService', () => {
       groups: [{ group: { id: 'group-1', name: 'Grupo A' } }],
       fixedQuestions: [],
       pairs: [{ userAId: 'user-1', userBId: 'user-2' }],
+      phrases: [],
     });
 
     const result = await service.createCatalog(
