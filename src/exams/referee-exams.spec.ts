@@ -156,6 +156,7 @@ describe('RefereeExamsController', () => {
         status: true,
         examType: true,
         passThresholdPercent: true,
+        language: true,
         correctCount: true,
         wrongCount: true,
         scorePercent: true,

@@ -5,12 +5,19 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ExamStatus, ExamType, Role } from '@prisma/client';
+import {
+  ExamStatus,
+  ExamType,
+  FinalExamCatalogKind,
+  Language,
+  Role,
+} from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { AnswerExamQuestionDto } from './dto/answer-exam-question.dto';
 import { UserStatsService } from '../users/user-stats.service';
 import { isFinalExamCatalogClosed } from '../final-exams/final-exam-availability';
+import { isPhraseAnswerCorrect } from './phrase-answer-match';
 
 type AuthUserPayload = {
   id: string;
@@ -27,9 +34,14 @@ type CreateGeneratedExamInput = {
   finalExamCatalogId?: string;
   attemptNumber?: number;
   shuffleOptions?: boolean;
+  language: Language;
+  catalogKind?: FinalExamCatalogKind;
+  phrases?: { text: string; answer: string }[];
 };
 
 const DEFAULT_PASS_THRESHOLD = 80;
+const DEFAULT_LANGUAGE: Language = Language.ES;
+const DEFAULT_CATALOG_KIND: FinalExamCatalogKind = FinalExamCatalogKind.CATALOG;
 
 @Injectable()
 export class ExamsService {
@@ -51,6 +63,7 @@ export class ExamsService {
       categoryIds: dto.categoryIds,
       isTimed: dto.isTimed,
       totalTimeSeconds: dto.totalTimeSeconds ?? null,
+      language: dto.language ?? DEFAULT_LANGUAGE,
     });
   }
 
@@ -65,6 +78,63 @@ export class ExamsService {
       );
     }
 
+    const catalogKind = input.catalogKind ?? DEFAULT_CATALOG_KIND;
+
+    const examQuestions =
+      catalogKind === FinalExamCatalogKind.SEARCH
+        ? this.buildSearchExamQuestions(input)
+        : await this.buildCatalogExamQuestions(input);
+
+    const created = await this.prisma.exam.create({
+      data: {
+        userId: user.id,
+        finalExamCatalogId: input.finalExamCatalogId,
+        attemptNumber: input.attemptNumber,
+        questionCount: input.questionCount,
+        isTimed: input.isTimed,
+        totalTimeSeconds: input.isTimed
+          ? (input.totalTimeSeconds ?? null)
+          : null,
+        examType: input.examType,
+        status: ExamStatus.PENDING,
+        passThresholdPercent: DEFAULT_PASS_THRESHOLD,
+        language: input.language,
+        catalogKind,
+        correctCount: null,
+        wrongCount: null,
+        scorePercent: null,
+        isPassed: null,
+        ...(examQuestions.length > 0
+          ? {
+              questions: {
+                create: examQuestions,
+              },
+            }
+          : {}),
+      },
+      select: { id: true },
+    });
+
+    return this.findOne(created.id, user);
+  }
+
+  private buildSearchExamQuestions(input: CreateGeneratedExamInput) {
+    const phrases = input.phrases ?? [];
+    if (phrases.length === 0) {
+      throw new BadRequestException(
+        'Final exam catalog has no phrases configured',
+      );
+    }
+
+    return phrases.map((phrase, index) => ({
+      position: index + 1,
+      questionCode: `phrase-${index + 1}`,
+      questionText: phrase.text,
+      categoryName: phrase.answer,
+    }));
+  }
+
+  private async buildCatalogExamQuestions(input: CreateGeneratedExamInput) {
     let selectedQuestions: {
       id?: string;
       code: string;
@@ -81,11 +151,16 @@ export class ExamsService {
         select: {
           id: true,
           code: true,
-          text: true,
           category: { select: { name: true } },
-          answers: {
-            orderBy: [{ key: 'asc' }, { id: 'asc' }],
-            select: { key: true, text: true },
+          translations: {
+            where: { language: input.language },
+            select: {
+              text: true,
+              answers: {
+                orderBy: [{ key: 'asc' }, { id: 'asc' }],
+                select: { key: true, text: true },
+              },
+            },
           },
           correctAnswerKeys: {
             orderBy: [{ key: 'asc' }, { id: 'asc' }],
@@ -93,7 +168,31 @@ export class ExamsService {
           },
         },
       });
-      const byId = new Map(rows.map((q) => [q.id, q]));
+
+      const missingTranslation = rows.filter(
+        (q) => q.translations.length === 0,
+      );
+      if (missingTranslation.length > 0) {
+        throw new BadRequestException(
+          `Question(s) without a ${input.language} translation: ${missingTranslation
+            .map((q) => q.code)
+            .join(', ')}`,
+        );
+      }
+
+      const byId = new Map(
+        rows.map((q) => [
+          q.id,
+          {
+            id: q.id,
+            code: q.code,
+            text: q.translations[0].text,
+            category: q.category,
+            answers: q.translations[0].answers,
+            correctAnswerKeys: q.correctAnswerKeys,
+          },
+        ]),
+      );
       selectedQuestions = fixedIds
         .map((id) => byId.get(id))
         .filter((q): q is NonNullable<typeof q> => q != null);
@@ -107,18 +206,28 @@ export class ExamsService {
       if (categories.length !== categoryIds.length) {
         const existing = new Set(categories.map((category) => category.id));
         const missing = categoryIds.filter((id) => !existing.has(id));
-        throw new NotFoundException(`Category not found: ${missing.join(', ')}`);
+        throw new NotFoundException(
+          `Category not found: ${missing.join(', ')}`,
+        );
       }
 
-      const pool = await this.prisma.question.findMany({
-        where: { categoryId: { in: categoryIds } },
+      const rows = await this.prisma.question.findMany({
+        where: {
+          categoryId: { in: categoryIds },
+          translations: { some: { language: input.language } },
+        },
         select: {
           code: true,
-          text: true,
           category: { select: { name: true } },
-          answers: {
-            orderBy: [{ key: 'asc' }, { id: 'asc' }],
-            select: { key: true, text: true },
+          translations: {
+            where: { language: input.language },
+            select: {
+              text: true,
+              answers: {
+                orderBy: [{ key: 'asc' }, { id: 'asc' }],
+                select: { key: true, text: true },
+              },
+            },
           },
           correctAnswerKeys: {
             orderBy: [{ key: 'asc' }, { id: 'asc' }],
@@ -126,6 +235,14 @@ export class ExamsService {
           },
         },
       });
+
+      const pool = rows.map((q) => ({
+        code: q.code,
+        text: q.translations[0].text,
+        category: q.category,
+        answers: q.translations[0].answers,
+        correctAnswerKeys: q.correctAnswerKeys,
+      }));
 
       if (pool.length < input.questionCount) {
         throw new BadRequestException(
@@ -161,33 +278,7 @@ export class ExamsService {
       };
     });
 
-    const created = await this.prisma.exam.create({
-      data: {
-        userId: user.id,
-        finalExamCatalogId: input.finalExamCatalogId,
-        attemptNumber: input.attemptNumber,
-        questionCount: input.questionCount,
-        isTimed: input.isTimed,
-        totalTimeSeconds: input.isTimed ? (input.totalTimeSeconds ?? null) : null,
-        examType: input.examType,
-        status: ExamStatus.PENDING,
-        passThresholdPercent: DEFAULT_PASS_THRESHOLD,
-        correctCount: null,
-        wrongCount: null,
-        scorePercent: null,
-        isPassed: null,
-        ...(examQuestions.length > 0
-          ? {
-              questions: {
-                create: examQuestions,
-              },
-            }
-          : {}),
-      },
-      select: { id: true },
-    });
-
-    return this.findOne(created.id, user);
+    return examQuestions;
   }
 
   async findMyExams(user: AuthUserPayload) {
@@ -249,6 +340,8 @@ export class ExamsService {
       status: exam.status,
       examType: exam.examType,
       passThresholdPercent: exam.passThresholdPercent,
+      language: exam.language,
+      catalogKind: exam.catalogKind,
       correctCount: exam.correctCount,
       wrongCount: exam.wrongCount,
       scorePercent: exam.scorePercent,
@@ -263,6 +356,7 @@ export class ExamsService {
         categoryName: question.categoryName,
         options: question.options,
         selectedKeys: question.responses.map((response) => response.key),
+        submittedText: question.submittedText,
       })),
     };
   }
@@ -316,6 +410,7 @@ export class ExamsService {
       wrongCount,
       scorePercent,
       isPassed,
+      catalogKind: exam.catalogKind,
       examQuestions: exam.questions.map((question) => {
         const correctKeySet = new Set(
           this.normalizeUniqueKeys(
@@ -327,6 +422,15 @@ export class ExamsService {
           id: question.id,
           order: question.position,
           prompt: question.questionText,
+          categoryName: question.categoryName,
+          submittedText: question.submittedText,
+          isCorrect:
+            exam.catalogKind === FinalExamCatalogKind.SEARCH
+              ? isPhraseAnswerCorrect(
+                  question.categoryName,
+                  question.submittedText,
+                )
+              : undefined,
           options: question.options.map((option) => ({
             key: option.key,
             text: option.text,
@@ -351,6 +455,7 @@ export class ExamsService {
         userId: true,
         status: true,
         examType: true,
+        catalogKind: true,
         finalExamCatalog: {
           select: { availableUntilDate: true },
         },
@@ -369,6 +474,24 @@ export class ExamsService {
       throw new BadRequestException('Exam is already finished');
     }
 
+    if (exam.catalogKind === FinalExamCatalogKind.SEARCH) {
+      const searchQuestion = await this.prisma.examQuestion.findFirst({
+        where: { id: dto.examQuestionId, examId: exam.id },
+        select: { id: true },
+      });
+
+      if (!searchQuestion) {
+        throw new NotFoundException('Exam question not found for this exam');
+      }
+
+      await this.prisma.examQuestion.update({
+        where: { id: searchQuestion.id },
+        data: { submittedText: dto.freeText?.trim() || null },
+      });
+
+      return { ok: true };
+    }
+
     const question = await this.prisma.examQuestion.findFirst({
       where: { id: dto.examQuestionId, examId: exam.id },
       select: {
@@ -381,7 +504,7 @@ export class ExamsService {
       throw new NotFoundException('Exam question not found for this exam');
     }
 
-    const selectedKeys = this.normalizeUniqueKeys(dto.selectedKeys);
+    const selectedKeys = this.normalizeUniqueKeys(dto.selectedKeys ?? []);
     const allowedKeys = new Set(question.options.map((option) => option.key));
 
     for (const key of selectedKeys) {
@@ -420,6 +543,10 @@ export class ExamsService {
         },
         questions: {
           include: {
+            options: {
+              orderBy: [{ position: 'asc' }, { id: 'asc' }],
+              select: { position: true, key: true, text: true },
+            },
             correctKeys: { select: { key: true } },
             responses: { select: { key: true } },
           },
@@ -444,7 +571,12 @@ export class ExamsService {
     }
 
     const { correctCount, wrongCount, scorePercent, isPassed } =
-      this.calculateExamResults(exam.questions, exam.passThresholdPercent);
+      exam.catalogKind === FinalExamCatalogKind.SEARCH
+        ? this.calculatePhraseExamResults(
+            exam.questions,
+            exam.passThresholdPercent,
+          )
+        : this.calculateExamResults(exam.questions, exam.passThresholdPercent);
 
     const updated = await this.prisma.$transaction(async (tx) => {
       const finishedExam = await tx.exam.update({
@@ -478,6 +610,84 @@ export class ExamsService {
         },
         tx,
       );
+
+      if (exam.finalExamCatalogId && exam.attemptNumber === 1) {
+        const pair = await tx.finalExamCatalogPair.findFirst({
+          where: {
+            finalExamCatalogId: exam.finalExamCatalogId,
+            OR: [{ userAId: exam.userId }, { userBId: exam.userId }],
+          },
+          select: { userAId: true, userBId: true },
+        });
+
+        if (pair) {
+          const partnerId =
+            pair.userAId === exam.userId ? pair.userBId : pair.userAId;
+          const partnerAlreadyHasExam = await tx.exam.count({
+            where: {
+              userId: partnerId,
+              finalExamCatalogId: exam.finalExamCatalogId,
+            },
+          });
+
+          if (partnerAlreadyHasExam === 0) {
+            await tx.exam.create({
+              data: {
+                userId: partnerId,
+                finalExamCatalogId: exam.finalExamCatalogId,
+                attemptNumber: 1,
+                questionCount: exam.questionCount,
+                isTimed: exam.isTimed,
+                totalTimeSeconds: exam.totalTimeSeconds,
+                examType: exam.examType,
+                passThresholdPercent: exam.passThresholdPercent,
+                language: exam.language,
+                status: ExamStatus.FINISHED,
+                correctCount,
+                wrongCount,
+                scorePercent,
+                isPassed,
+                finishedAt: finishedExam.finishedAt,
+                questions: {
+                  create: exam.questions.map((question) => ({
+                    position: question.position,
+                    questionCode: question.questionCode,
+                    questionText: question.questionText,
+                    categoryName: question.categoryName,
+                    options: {
+                      create: question.options.map((option) => ({
+                        position: option.position,
+                        key: option.key,
+                        text: option.text,
+                      })),
+                    },
+                    correctKeys: {
+                      create: question.correctKeys.map((item) => ({
+                        key: item.key,
+                      })),
+                    },
+                    responses: {
+                      create: question.responses.map((item) => ({
+                        key: item.key,
+                      })),
+                    },
+                  })),
+                },
+              },
+            });
+
+            await this.userStatsService.registerFinishedExam(
+              {
+                userId: partnerId,
+                examType: exam.examType,
+                scorePercent,
+                isPassed,
+              },
+              tx,
+            );
+          }
+        }
+      }
 
       return finishedExam;
     });
@@ -543,6 +753,37 @@ export class ExamsService {
     };
   }
 
+  private calculatePhraseExamResults(
+    questions: {
+      categoryName: string | null;
+      submittedText: string | null;
+    }[],
+    passThresholdPercent: number,
+  ) {
+    let correctCount = 0;
+
+    for (const question of questions) {
+      if (isPhraseAnswerCorrect(question.categoryName, question.submittedText)) {
+        correctCount += 1;
+      }
+    }
+
+    const totalQuestions = questions.length;
+    const wrongCount = Math.max(0, totalQuestions - correctCount);
+    const scorePercent =
+      totalQuestions > 0
+        ? Number(((correctCount / totalQuestions) * 100).toFixed(2))
+        : 0;
+    const isPassed = scorePercent >= passThresholdPercent;
+
+    return {
+      correctCount,
+      wrongCount,
+      scorePercent,
+      isPassed,
+    };
+  }
+
   private validateTimerFields(dto: {
     isTimed: boolean;
     totalTimeSeconds?: number | null;
@@ -588,6 +829,7 @@ export class ExamsService {
           status: true,
           examType: true,
           passThresholdPercent: true,
+          language: true,
           correctCount: true,
           wrongCount: true,
           scorePercent: true,
@@ -613,6 +855,7 @@ export class ExamsService {
           status: exam.status,
           examType: exam.examType,
           passThresholdPercent: exam.passThresholdPercent,
+          language: exam.language,
           correctCount: exam.correctCount,
           wrongCount: exam.wrongCount,
           scorePercent: exam.scorePercent,
