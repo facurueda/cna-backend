@@ -17,6 +17,7 @@ import { CreateExamDto } from './dto/create-exam.dto';
 import { AnswerExamQuestionDto } from './dto/answer-exam-question.dto';
 import { UserStatsService } from '../users/user-stats.service';
 import { isFinalExamCatalogClosed } from '../final-exams/final-exam-availability';
+import { isPhraseAnswerCorrect } from './phrase-answer-match';
 
 type AuthUserPayload = {
   id: string;
@@ -425,9 +426,10 @@ export class ExamsService {
           submittedText: question.submittedText,
           isCorrect:
             exam.catalogKind === FinalExamCatalogKind.SEARCH
-              ? this.normalizePhraseAnswer(question.submittedText) !== null &&
-                this.normalizePhraseAnswer(question.submittedText) ===
-                  this.normalizePhraseAnswer(question.categoryName)
+              ? isPhraseAnswerCorrect(
+                  question.categoryName,
+                  question.submittedText,
+                )
               : undefined,
           options: question.options.map((option) => ({
             key: option.key,
@@ -761,9 +763,7 @@ export class ExamsService {
     let correctCount = 0;
 
     for (const question of questions) {
-      const expected = this.normalizePhraseAnswer(question.categoryName);
-      const submitted = this.normalizePhraseAnswer(question.submittedText);
-      if (expected !== null && expected === submitted) {
+      if (isPhraseAnswerCorrect(question.categoryName, question.submittedText)) {
         correctCount += 1;
       }
     }
@@ -782,12 +782,6 @@ export class ExamsService {
       scorePercent,
       isPassed,
     };
-  }
-
-  private normalizePhraseAnswer(value: string | null | undefined): string | null {
-    if (!value) return null;
-    const cleaned = value.toLowerCase().replace(/[^a-z0-9]/g, '');
-    return cleaned.length > 0 ? cleaned : null;
   }
 
   private validateTimerFields(dto: {
