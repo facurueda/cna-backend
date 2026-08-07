@@ -23,6 +23,7 @@ import * as bcrypt from 'bcrypt';
 import { AppCredentialsService } from './app-credentials.service';
 import { EVENTS_APP_CREDENTIAL_SCOPES } from './app-credentials.constants';
 import { MailService } from '../mail/mail.service';
+import { ProjectsService } from '../projects/projects.service';
 
 const TEMPORARY_PASSWORD = '123456';
 
@@ -36,6 +37,7 @@ export class AuthService {
     private readonly config: ConfigService,
     private readonly appCredentials: AppCredentialsService,
     private readonly mail: MailService,
+    private readonly projects: ProjectsService,
   ) {}
 
   private toPublicUser(
@@ -88,14 +90,18 @@ export class AuthService {
     );
   }
 
-  private async issueAuthTokens(user: User) {
+  private async issueAuthTokens(user: User, projectId?: string) {
     const requiresPasswordChange =
       await this.resolveRequiresPasswordChange(user);
+
+    const activeProjectId =
+      projectId ?? (await this.projects.resolveDefaultProjectId(user.id));
 
     const accessToken = this.jwt.sign({
       sub: user.id,
       role: user.role,
       email: user.email,
+      ...(activeProjectId ? { pid: activeProjectId } : {}),
     });
 
     const refreshToken = this.jwt.sign(
@@ -125,8 +131,20 @@ export class AuthService {
       accessToken,
       refreshToken,
       tokenType: 'Bearer',
+      activeProjectId,
+      projects: await this.projects.listForUser(user.id),
       user: this.toPublicUser(user, requiresPasswordChange),
     };
+  }
+
+  /** Cambia el proyecto activo emitiendo un token nuevo, previa validacion de membresia. */
+  async switchProject(userId: string, projectId: string) {
+    await this.projects.assertMembership(userId, projectId);
+
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new UnauthorizedException('Invalid token');
+
+    return this.issueAuthTokens(user, projectId);
   }
 
   async register(dto: RegisterDto) {
@@ -160,6 +178,8 @@ export class AuthService {
       }
       throw error;
     }
+
+    await this.projects.ensureDefaultMembership(user.id, user.role);
 
     return this.issueAuthTokens(user);
   }

@@ -1,34 +1,44 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Min,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateClipDto {
   @IsString()
   @IsNotEmpty()
-  collectionId!: string;
+  @MaxLength(200)
+  title!: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
 
   @IsString()
   @IsNotEmpty()
   categoryId!: string;
 
-  @IsString()
-  @IsNotEmpty()
-  title!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  description!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  videoUrl!: string;
-
+  /** Opcional: un clip puede vivir suelto en la galeria, sin coleccion. */
   @IsOptional()
   @IsString()
-  thumbnailUrl?: string;
+  @IsNotEmpty()
+  collectionId?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  fileName!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  contentType!: string;
 
   @IsOptional()
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  duration?: number;
+  size?: number;
 }

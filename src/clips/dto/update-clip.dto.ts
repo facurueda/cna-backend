@@ -19,17 +19,7 @@ export class UpdateClipDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
   description?: string;
-
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  videoUrl?: string;
-
-  @IsOptional()
-  @IsString()
-  thumbnailUrl?: string;
 
   @IsOptional()
   @Type(() => Number)

@@ -58,6 +58,12 @@ describe('AuthService', () => {
       config as never,
       appCredentials as never,
       { sendPasswordResetCode: jest.fn() } as never,
+      {
+        resolveDefaultProjectId: jest.fn().mockResolvedValue('project-a'),
+        listForUser: jest.fn().mockResolvedValue([]),
+        ensureDefaultMembership: jest.fn(),
+        assertMembership: jest.fn(),
+      } as never,
     );
   });
 
@@ -95,6 +101,8 @@ describe('AuthService', () => {
       accessToken: 'access-token',
       refreshToken: 'refresh-token',
       tokenType: 'Bearer',
+      activeProjectId: 'project-a',
+      projects: [],
       user: {
         id: baseUser.id,
         email: baseUser.email,

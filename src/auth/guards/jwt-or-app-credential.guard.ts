@@ -16,6 +16,8 @@ import { AuthenticatedUser } from '../auth-user.types';
 
 type JwtPayload = {
   sub?: string;
+  /** Proyecto activo. Ausente en tokens emitidos antes de multi-proyecto. */
+  pid?: string;
 };
 
 @Injectable()
@@ -91,8 +93,24 @@ export class JwtOrAppCredentialGuard implements CanActivate {
         return null;
       }
 
+      const memberships = await this.prisma.projectMember.findMany({
+        where: { userId: user.id, project: { isActive: true } },
+        select: { projectId: true, role: true },
+        orderBy: { createdAt: 'asc' },
+      });
+
+      const active = payload.pid
+        ? memberships.find((membership) => membership.projectId === payload.pid)
+        : memberships[0];
+
+      if (payload.pid && !active) {
+        return null;
+      }
+
       return {
         ...user,
+        projectId: active?.projectId ?? null,
+        role: active?.role ?? user.role,
         authType: 'jwt',
       };
     } catch {

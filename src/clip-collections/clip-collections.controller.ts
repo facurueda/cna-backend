@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
+import { ActiveProject } from '../auth/decorators/active-project.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Roles } from '../auth/roles/roles.decorator';
 import { RolesGuard } from '../auth/roles/roles.guard';
@@ -28,35 +29,47 @@ export class ClipCollectionsController {
 
   @Get()
   list(
+    @ActiveProject() projectId: string,
     @Query() query: ListClipCollectionsQueryDto,
     @AuthUser() user: AuthUserPayload,
   ) {
-    return this.collections.list(user, query.includeCounts);
+    return this.collections.list(projectId, user, query.includeCounts);
   }
 
   @Get(':id')
-  get(@Param('id') id: string, @AuthUser() user: AuthUserPayload) {
-    return this.collections.getById(id, user);
+  get(
+    @ActiveProject() projectId: string,
+    @Param('id') id: string,
+    @AuthUser() user: AuthUserPayload,
+  ) {
+    return this.collections.getById(projectId, id, user);
   }
 
   @UseGuards(RolesGuard)
   @Roles(Role.ADMIN)
   @Post()
-  create(@Body() dto: CreateClipCollectionDto) {
-    return this.collections.create(dto);
+  create(
+    @ActiveProject() projectId: string,
+    @Body() dto: CreateClipCollectionDto,
+  ) {
+    return this.collections.create(projectId, dto);
   }
 
   @UseGuards(RolesGuard)
   @Roles(Role.ADMIN)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateClipCollectionDto) {
-    return this.collections.update(id, dto);
+  update(
+    @ActiveProject() projectId: string,
+    @Param('id') id: string,
+    @Body() dto: UpdateClipCollectionDto,
+  ) {
+    return this.collections.update(projectId, id, dto);
   }
 
   @UseGuards(RolesGuard)
   @Roles(Role.ADMIN)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.collections.remove(id);
+  remove(@ActiveProject() projectId: string, @Param('id') id: string) {
+    return this.collections.remove(projectId, id);
   }
 }
