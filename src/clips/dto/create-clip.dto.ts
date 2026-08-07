@@ -41,4 +41,11 @@ export class CreateClipDto {
   @IsInt()
   @Min(1)
   size?: number;
+
+  /** Duracion en segundos, calculada en el browser al leer el archivo. */
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  duration?: number;
 }

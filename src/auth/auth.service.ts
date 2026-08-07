@@ -286,10 +286,20 @@ export class AuthService {
     const existing = await this.prisma.user.findUnique({ where: { email } });
     if (!existing) throw new BadRequestException('User not found');
 
-    const user = await this.prisma.user.update({
-      where: { email },
-      data: { role },
-    });
+    // El rol efectivo se resuelve desde ProjectMember (ver JwtStrategy), asi que
+    // actualizar solo User.role no tendria ningun efecto. Se actualizan ambos.
+    // TODO(multiproyecto): cuando haya mas de un proyecto esto tiene que recibir
+    // un projectId y afectar una sola membresia, no todas.
+    const [user] = await this.prisma.$transaction([
+      this.prisma.user.update({
+        where: { email },
+        data: { role },
+      }),
+      this.prisma.projectMember.updateMany({
+        where: { userId: existing.id },
+        data: { role },
+      }),
+    ]);
 
     return {
       ok: true,

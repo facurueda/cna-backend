@@ -100,6 +100,7 @@ export class ClipsService {
           description: dto.description?.trim() ?? '',
           status: ClipStatus.UPLOADING,
           sizeBytes: dto.size,
+          duration: dto.duration,
           createdById: user.id,
         },
         include: clipInclude,
@@ -120,7 +121,13 @@ export class ClipsService {
     return { clip: { ...clip, sourceKey }, upload };
   }
 
-  /** El browser avisa que termino el PUT a R2. */
+  /**
+   * El browser avisa que termino el PUT a R2.
+   *
+   * Pasa directo a READY: la compresion ocurre en el browser ANTES de subir, asi que
+   * el archivo que llego ya es el servible. No hay paso de transcodificacion del lado
+   * del servidor. (`PROCESSING` queda para que la UI muestre "comprimiendo".)
+   */
   async markUploaded(projectId: string, id: string, user: AuthUser) {
     const clip = await this.assertClipExists(projectId, id);
 
@@ -130,7 +137,12 @@ export class ClipsService {
 
     return this.prisma.clip.update({
       where: { id: clip.id },
-      data: { status: ClipStatus.PROCESSING, statusError: null },
+      data: {
+        status: ClipStatus.READY,
+        statusError: null,
+        // El archivo subido es el definitivo: no hay una version derivada aparte.
+        videoKey: clip.sourceKey,
+      },
       include: clipInclude,
     });
   }
