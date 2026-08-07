@@ -166,6 +166,32 @@ describe('ClipsService', () => {
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 
+  it('deja el clip READY al confirmar la subida', async () => {
+    // Si quedara en PROCESSING, ningun no-admin lo veria nunca: la compresion
+    // ocurre en el browser, asi que lo que llego a R2 ya es servible.
+    prisma.clip.findFirst.mockResolvedValue({
+      id: 'clip-9',
+      sourceKey: `${PROJECT_A}/clips/clip-9/source.mp4`,
+      videoKey: null,
+      thumbnailKey: null,
+    });
+    prisma.clip.update.mockResolvedValue({ id: 'clip-9' });
+
+    await service.markUploaded(PROJECT_A, 'clip-9', {
+      id: 'admin-1',
+      role: Role.ADMIN,
+    });
+
+    expect(prisma.clip.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          status: ClipStatus.READY,
+          videoKey: `${PROJECT_A}/clips/clip-9/source.mp4`,
+        }),
+      }),
+    );
+  });
+
   it('devuelve 404 al pedir un clip de otro proyecto', async () => {
     prisma.clip.findFirst.mockResolvedValue(null);
 

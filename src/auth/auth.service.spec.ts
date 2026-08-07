@@ -10,6 +10,10 @@ describe('AuthService', () => {
       create: jest.fn(),
       update: jest.fn(),
     },
+    projectMember: {
+      updateMany: jest.fn(),
+    },
+    $transaction: jest.fn((operations: unknown[]) => Promise.all(operations)),
   };
 
   const jwt = {
@@ -352,5 +356,23 @@ describe('AuthService', () => {
       }),
     ).rejects.toBeInstanceOf(BadRequestException);
     expect(appCredentials.issueForUser).not.toHaveBeenCalled();
+  });
+
+  it('propaga el cambio de rol a las membresias, no solo a User', async () => {
+    // El rol efectivo se lee de ProjectMember (ver JwtStrategy): si el cambio no
+    // se propaga, ascender a alguien a ADMIN no tiene ningun efecto.
+    prisma.user.findUnique.mockResolvedValue(baseUser);
+    prisma.user.update.mockResolvedValue({ ...baseUser, role: Role.ADMIN });
+    prisma.projectMember.updateMany.mockResolvedValue({ count: 1 });
+
+    await service.setUserRole({ email: baseUser.email, role: 'ADMIN' });
+
+    expect(prisma.user.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: { role: Role.ADMIN } }),
+    );
+    expect(prisma.projectMember.updateMany).toHaveBeenCalledWith({
+      where: { userId: baseUser.id },
+      data: { role: Role.ADMIN },
+    });
   });
 });
