@@ -7,7 +7,10 @@ export type AuthenticatedUser = {
   email: string;
   firstName: string;
   lastName: string;
+  /** Rol efectivo dentro del proyecto activo, no el rol global. */
   role: Role;
+  /** Proyecto activo de la sesion. null si el usuario no tiene membresias. */
+  projectId: string | null;
   requiresPasswordChange: boolean;
   authType: AuthType;
   appCredentialId?: string;

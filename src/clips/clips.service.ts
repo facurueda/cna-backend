@@ -3,10 +3,11 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ClipVisibility, Prisma, Role } from '@prisma/client';
+import { ClipStatus, ClipVisibility, Prisma, Role } from '@prisma/client';
+import { extname } from 'path';
 import { PrismaService } from '../prisma/prisma.service';
+import { R2Service } from '../storage/r2.service';
 import { UserStatsService } from '../users/user-stats.service';
-import { BatchCreateClipsDto } from './dto/batch-create-clips.dto';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { ListClipsQueryDto } from './dto/list-clips.query.dto';
 import { UpdateClipDto } from './dto/update-clip.dto';
@@ -25,18 +26,32 @@ const clipInclude = {
   },
 } as const;
 
+/** Lo que un no-admin puede ver: publicado y ya procesado. */
+const VISIBLE_TO_MEMBERS = {
+  visibility: ClipVisibility.PUBLIC,
+  status: ClipStatus.READY,
+} as const;
+
+const EXTENSION_BY_CONTENT_TYPE: Record<string, string> = {
+  'video/mp4': '.mp4',
+  'video/webm': '.webm',
+  'video/quicktime': '.mov',
+};
+
 @Injectable()
 export class ClipsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly userStatsService: UserStatsService,
+    private readonly r2: R2Service,
   ) {}
 
-  async list(query: ListClipsQueryDto, user: AuthUser) {
-    const where = this.buildListWhere(query, user);
+  async list(projectId: string, query: ListClipsQueryDto, user: AuthUser) {
+    const where = this.buildListWhere(projectId, query, user);
     const take = query.limit ?? this.normalizeTake(query.take);
     const page = query.page ?? 1;
-    const skip = query.page != null ? (page - 1) * take : this.normalizeSkip(query.skip);
+    const skip =
+      query.page != null ? (page - 1) * take : this.normalizeSkip(query.skip);
 
     const [data, total] = await this.prisma.$transaction([
       this.prisma.clip.findMany({
@@ -60,124 +75,116 @@ export class ClipsService {
     };
   }
 
-  async createBatch(dto: BatchCreateClipsDto, user: AuthUser) {
-    const created: {
-      id: string;
-      title: string;
-      thumbnailUrl: string | null;
-      status: string;
-      createdAt: Date;
-    }[] = [];
-    const failed: { index: number; reason: string }[] = [];
-
-    for (let i = 0; i < dto.clips.length; i++) {
-      const item = dto.clips[i];
-      try {
-        if (!dto.collectionId) {
-          throw new Error('collectionId es requerido');
-        }
-
-        const categoryId = item.categoryIds?.[0];
-        if (!categoryId) {
-          throw new Error('categoryIds debe tener al menos un elemento');
-        }
-
-        await this.assertCollectionExists(dto.collectionId);
-        await this.assertCategoryExists(categoryId);
-
-        const collectionId = dto.collectionId;
-
-        const clip = await this.prisma.$transaction(async (tx) => {
-          const newClip = await tx.clip.create({
-            data: {
-              collectionId,
-              categoryId,
-              title: item.title.trim(),
-              description: '',
-              videoUrl: item.videoUrl.trim(),
-              thumbnailUrl: item.thumbnailUrl?.trim(),
-              duration: item.duration,
-              createdById: user.id,
-            },
-            select: {
-              id: true,
-              title: true,
-              thumbnailUrl: true,
-              visibility: true,
-              createdAt: true,
-            },
-          });
-
-          await this.userStatsService.incrementClips(user.id, 1, tx);
-          return newClip;
-        });
-
-        created.push({
-          id: clip.id,
-          title: clip.title,
-          thumbnailUrl: clip.thumbnailUrl,
-          status: clip.visibility,
-          createdAt: clip.createdAt,
-        });
-      } catch (err: unknown) {
-        const reason =
-          err instanceof Error ? err.message : 'Error desconocido';
-        failed.push({ index: i, reason });
-      }
+  /**
+   * Crea el clip en estado UPLOADING y devuelve la URL firmada para que el browser
+   * suba el archivo directo a R2. El server nunca recibe el video.
+   */
+  async create(projectId: string, dto: CreateClipDto, user: AuthUser) {
+    await this.assertCategoryExists(projectId, dto.categoryId);
+    if (dto.collectionId) {
+      await this.assertCollectionExists(projectId, dto.collectionId);
     }
 
-    return { created, failed };
-  }
+    const extension =
+      extname(dto.fileName).toLowerCase() ||
+      EXTENSION_BY_CONTENT_TYPE[dto.contentType.toLowerCase()] ||
+      '.mp4';
 
-  async create(dto: CreateClipDto, user: AuthUser) {
-    await this.assertCollectionExists(dto.collectionId);
-    await this.assertCategoryExists(dto.categoryId);
-
-    return this.prisma.$transaction(async (tx) => {
-      const createdClip = await tx.clip.create({
+    const clip = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.clip.create({
         data: {
-          collectionId: dto.collectionId,
+          projectId,
+          collectionId: dto.collectionId ?? null,
           categoryId: dto.categoryId,
           title: dto.title.trim(),
-          description: dto.description.trim(),
-          videoUrl: dto.videoUrl.trim(),
-          thumbnailUrl: dto.thumbnailUrl?.trim(),
-          duration: dto.duration,
+          description: dto.description?.trim() ?? '',
+          status: ClipStatus.UPLOADING,
+          sizeBytes: dto.size,
           createdById: user.id,
         },
         include: clipInclude,
       });
 
       await this.userStatsService.incrementClips(user.id, 1, tx);
-      return createdClip;
+      return created;
+    });
+
+    const sourceKey = this.r2.buildSourceKey(projectId, clip.id, extension);
+    await this.prisma.clip.update({
+      where: { id: clip.id },
+      data: { sourceKey },
+    });
+
+    const upload = await this.r2.createUploadUrl(sourceKey, dto.contentType);
+
+    return { clip: { ...clip, sourceKey }, upload };
+  }
+
+  /** El browser avisa que termino el PUT a R2. */
+  async markUploaded(projectId: string, id: string, user: AuthUser) {
+    const clip = await this.assertClipExists(projectId, id);
+
+    if (!clip.sourceKey) {
+      throw new ForbiddenException('El clip no tiene un archivo asociado');
+    }
+
+    return this.prisma.clip.update({
+      where: { id: clip.id },
+      data: { status: ClipStatus.PROCESSING, statusError: null },
+      include: clipInclude,
     });
   }
 
-  async getById(id: string, user: AuthUser) {
-    const clip = await this.prisma.clip.findUnique({
-      where: { id },
+  async getById(projectId: string, id: string, user: AuthUser) {
+    const clip = await this.prisma.clip.findFirst({
+      where: { id, projectId },
       include: clipInclude,
     });
 
     if (!clip) throw new NotFoundException('Clip no encontrado');
-    this.assertCanAccessClip(clip.visibility, user);
+    this.assertCanAccessClip(clip, user);
 
     return clip;
   }
 
-  async update(id: string, dto: UpdateClipDto, user: AuthUser) {
+  /**
+   * URL firmada de reproduccion. Se genera al vuelo y expira: nunca se persiste.
+   */
+  async getPlaybackUrl(projectId: string, id: string, user: AuthUser) {
+    const clip = await this.getById(projectId, id, user);
+    const key = clip.videoKey ?? clip.sourceKey;
+
+    if (!key) {
+      if (clip.legacyVideoUrl) {
+        return { url: clip.legacyVideoUrl, expiresIn: null };
+      }
+      throw new NotFoundException('El clip todavía no tiene video disponible');
+    }
+
+    this.r2.assertKeyBelongsToProject(key, projectId);
+    const { readUrl, expiresIn } = await this.r2.createReadUrl(key);
+
+    return { url: readUrl, expiresIn };
+  }
+
+  async update(
+    projectId: string,
+    id: string,
+    dto: UpdateClipDto,
+    user: AuthUser,
+  ) {
     if (user.role !== Role.ADMIN) {
       throw new ForbiddenException('Solo admin puede editar clips');
     }
 
-    await this.assertClipExists(id);
+    await this.assertClipExists(projectId, id);
 
     if (dto.collectionId) {
-      await this.assertCollectionExists(dto.collectionId);
+      await this.assertCollectionExists(projectId, dto.collectionId);
     }
 
     if (dto.categoryId) {
-      await this.assertCategoryExists(dto.categoryId);
+      await this.assertCategoryExists(projectId, dto.categoryId);
     }
 
     return this.prisma.clip.update({
@@ -187,30 +194,41 @@ export class ClipsService {
         categoryId: dto.categoryId,
         title: dto.title?.trim(),
         description: dto.description?.trim(),
-        videoUrl: dto.videoUrl?.trim(),
-        thumbnailUrl: dto.thumbnailUrl?.trim(),
         duration: dto.duration,
       },
       include: clipInclude,
     });
   }
 
-  async remove(id: string, user: AuthUser) {
+  async remove(projectId: string, id: string, user: AuthUser) {
     if (user.role !== Role.ADMIN) {
       throw new ForbiddenException('Solo admin puede borrar clips');
     }
 
-    await this.assertClipExists(id);
+    const clip = await this.assertClipExists(projectId, id);
+
     await this.prisma.clip.delete({ where: { id } });
+
+    // Los objetos se borran despues de la fila: si falla, quedan huerfanos en R2
+    // pero la operacion del usuario no se rompe.
+    for (const key of [clip.sourceKey, clip.videoKey, clip.thumbnailKey]) {
+      if (key) await this.r2.deleteObject(key);
+    }
+
     return { ok: true };
   }
 
-  async setVisibility(id: string, visibility: ClipVisibility, user: AuthUser) {
+  async setVisibility(
+    projectId: string,
+    id: string,
+    visibility: ClipVisibility,
+    user: AuthUser,
+  ) {
     if (user.role !== Role.ADMIN) {
       throw new ForbiddenException('Solo admin puede cambiar visibilidad');
     }
 
-    await this.assertClipExists(id);
+    await this.assertClipExists(projectId, id);
 
     return this.prisma.clip.update({
       where: { id },
@@ -223,10 +241,12 @@ export class ClipsService {
   }
 
   private buildListWhere(
+    projectId: string,
     query: ListClipsQueryDto,
     user: AuthUser,
   ): Prisma.ClipWhereInput {
-    const where: Prisma.ClipWhereInput = {};
+    // projectId va siempre primero y no es sobreescribible por la query.
+    const where: Prisma.ClipWhereInput = { projectId };
 
     if (query.collectionId?.trim()) {
       where.collectionId = query.collectionId.trim();
@@ -247,11 +267,13 @@ export class ClipsService {
       if (query.visibility) {
         where.visibility = query.visibility;
       }
+      if (query.status) {
+        where.status = query.status;
+      }
       return where;
     }
 
-    where.visibility = ClipVisibility.PUBLIC;
-    return where;
+    return { ...where, ...VISIBLE_TO_MEMBERS };
   }
 
   private normalizeSkip(value?: number) {
@@ -264,34 +286,47 @@ export class ClipsService {
     return Math.min(100, Math.max(1, Math.trunc(value)));
   }
 
-  private assertCanAccessClip(visibility: ClipVisibility, user: AuthUser) {
+  private assertCanAccessClip(
+    clip: { visibility: ClipVisibility; status: ClipStatus },
+    user: AuthUser,
+  ) {
     if (user.role === Role.ADMIN) return;
-    if (visibility === ClipVisibility.PUBLIC) return;
+    if (
+      clip.visibility === ClipVisibility.PUBLIC &&
+      clip.status === ClipStatus.READY
+    ) {
+      return;
+    }
     throw new ForbiddenException('No tenés acceso a este clip');
   }
 
-  private async assertClipExists(id: string) {
-    const clip = await this.prisma.clip.findUnique({
-      where: { id },
-      select: { id: true },
+  private async assertClipExists(projectId: string, id: string) {
+    const clip = await this.prisma.clip.findFirst({
+      where: { id, projectId },
+      select: {
+        id: true,
+        sourceKey: true,
+        videoKey: true,
+        thumbnailKey: true,
+      },
     });
 
     if (!clip) throw new NotFoundException('Clip no encontrado');
     return clip;
   }
 
-  private async assertCollectionExists(collectionId: string) {
-    const collection = await this.prisma.clipCollection.findUnique({
-      where: { id: collectionId },
+  private async assertCollectionExists(projectId: string, collectionId: string) {
+    const collection = await this.prisma.clipCollection.findFirst({
+      where: { id: collectionId, projectId },
       select: { id: true },
     });
 
     if (!collection) throw new NotFoundException('Colección no encontrada');
   }
 
-  private async assertCategoryExists(categoryId: string) {
-    const category = await this.prisma.clipCategory.findUnique({
-      where: { id: categoryId },
+  private async assertCategoryExists(projectId: string, categoryId: string) {
+    const category = await this.prisma.clipCategory.findFirst({
+      where: { id: categoryId, projectId },
       select: { id: true },
     });
 

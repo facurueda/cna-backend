@@ -10,11 +10,13 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { AuthService } from './auth.service';
 import { AppCredentialsService } from './app-credentials.service';
 import { MailModule } from '../mail/mail.module';
+import { ProjectsModule } from '../projects/projects.module';
 
 @Module({
   imports: [
     ConfigModule,
     MailModule,
+    ProjectsModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       inject: [ConfigService],

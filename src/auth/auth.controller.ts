@@ -23,6 +23,7 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { VerifyResetCodeDto } from './dto/verify-reset-code.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { SwitchProjectDto } from './dto/switch-project.dto';
 import { AuthenticatedUser } from './auth-user.types';
 
 @Controller('auth')
@@ -47,6 +48,15 @@ export class AuthController {
   @Post('refresh')
   refresh(@Body() dto: RefreshTokenDto) {
     return this.auth.refresh(dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('switch-project')
+  switchProject(
+    @AuthUser() user: AuthenticatedUser,
+    @Body() dto: SwitchProjectDto,
+  ) {
+    return this.auth.switchProject(user.id, dto.projectId);
   }
 
   @Post('forgot-password')

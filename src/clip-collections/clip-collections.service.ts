@@ -4,24 +4,31 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ClipVisibility, Role } from '@prisma/client';
+import { ClipStatus, ClipVisibility, Role } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateClipCollectionDto } from './dto/create-clip-collection.dto';
 import { UpdateClipCollectionDto } from './dto/update-clip-collection.dto';
 
 type AuthUser = { id: string; role: Role };
 
+/** Un no-admin solo "ve" clips publicos y ya procesados. */
+const VISIBLE_TO_MEMBERS = {
+  visibility: ClipVisibility.PUBLIC,
+  status: ClipStatus.READY,
+} as const;
+
 @Injectable()
 export class ClipCollectionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async list(user: AuthUser, includeCounts = false) {
+  async list(projectId: string, user: AuthUser, includeCounts = false) {
     const isAdmin = user.role === Role.ADMIN;
 
     return this.prisma.clipCollection.findMany({
-      where: isAdmin
-        ? undefined
-        : { clips: { some: { visibility: ClipVisibility.PUBLIC } } },
+      where: {
+        projectId,
+        ...(isAdmin ? {} : { clips: { some: VISIBLE_TO_MEMBERS } }),
+      },
       orderBy: [{ name: 'asc' }],
       select: {
         id: true,
@@ -33,9 +40,7 @@ export class ClipCollectionsService {
           ? {
               _count: {
                 select: {
-                  clips: isAdmin
-                    ? true
-                    : { where: { visibility: ClipVisibility.PUBLIC } },
+                  clips: isAdmin ? true : { where: VISIBLE_TO_MEMBERS },
                 },
               },
             }
@@ -44,9 +49,9 @@ export class ClipCollectionsService {
     });
   }
 
-  async getById(id: string, user: AuthUser) {
-    const collection = await this.prisma.clipCollection.findUnique({
-      where: { id },
+  async getById(projectId: string, id: string, user: AuthUser) {
+    const collection = await this.prisma.clipCollection.findFirst({
+      where: { id, projectId },
       select: {
         id: true,
         name: true,
@@ -64,23 +69,21 @@ export class ClipCollectionsService {
       return collection;
     }
 
-    const publicClipsCount = await this.prisma.clip.count({
-      where: {
-        collectionId: id,
-        visibility: ClipVisibility.PUBLIC,
-      },
+    const visibleClipsCount = await this.prisma.clip.count({
+      where: { collectionId: id, ...VISIBLE_TO_MEMBERS },
     });
 
-    if (publicClipsCount === 0) {
+    if (visibleClipsCount === 0) {
       throw new ForbiddenException('No tenés acceso a esta colección');
     }
 
     return collection;
   }
 
-  async create(dto: CreateClipCollectionDto) {
+  async create(projectId: string, dto: CreateClipCollectionDto) {
     return this.prisma.clipCollection.create({
       data: {
+        projectId,
         name: dto.name.trim(),
         description: dto.description?.trim() || null,
       },
@@ -94,8 +97,8 @@ export class ClipCollectionsService {
     });
   }
 
-  async update(id: string, dto: UpdateClipCollectionDto) {
-    await this.assertCollectionExists(id);
+  async update(projectId: string, id: string, dto: UpdateClipCollectionDto) {
+    await this.assertCollectionExists(projectId, id);
 
     return this.prisma.clipCollection.update({
       where: { id },
@@ -114,8 +117,8 @@ export class ClipCollectionsService {
     });
   }
 
-  async remove(id: string) {
-    await this.assertCollectionExists(id);
+  async remove(projectId: string, id: string) {
+    await this.assertCollectionExists(projectId, id);
 
     const clipsCount = await this.prisma.clip.count({
       where: { collectionId: id },
@@ -131,9 +134,10 @@ export class ClipCollectionsService {
     return { ok: true };
   }
 
-  private async assertCollectionExists(id: string) {
-    const collection = await this.prisma.clipCollection.findUnique({
-      where: { id },
+  /** Acota por proyecto: una coleccion de otro proyecto es un 404, no un 403. */
+  private async assertCollectionExists(projectId: string, id: string) {
+    const collection = await this.prisma.clipCollection.findFirst({
+      where: { id, projectId },
       select: { id: true },
     });
 

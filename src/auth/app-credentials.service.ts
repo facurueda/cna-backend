@@ -128,8 +128,17 @@ export class AppCredentialsService {
       data: { lastUsedAt },
     });
 
+    const membership = await this.prisma.projectMember.findFirst({
+      where: { userId: credential.user.id, project: { isActive: true } },
+      select: { projectId: true, role: true },
+      orderBy: { createdAt: 'asc' },
+    });
+
     return {
       ...credential.user,
+      // Las credenciales de app no eligen proyecto: operan sobre la primera membresia.
+      projectId: membership?.projectId ?? null,
+      role: membership?.role ?? credential.user.role,
       authType: 'app_credential',
       appCredentialId: credential.id,
       appCredentialPlatform: credential.platform,

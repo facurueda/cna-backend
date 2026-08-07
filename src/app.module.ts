@@ -19,6 +19,8 @@ import { ButtonLayoutsModule } from './button-layouts/button-layouts.module';
 import { GroupsModule } from './groups/groups.module';
 import { StudyMaterialsModule } from './study-materials/study-materials.module';
 import { RegulationPhrasesModule } from './regulation-phrases/regulation-phrases.module';
+import { ProjectsModule } from './projects/projects.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import { RegulationPhrasesModule } from './regulation-phrases/regulation-phrases
     GroupsModule,
     StudyMaterialsModule,
     RegulationPhrasesModule,
+    ProjectsModule,
+    StorageModule,
   ],
 })
 export class AppModule {}

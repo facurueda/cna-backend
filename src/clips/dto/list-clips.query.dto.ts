@@ -1,8 +1,12 @@
 import { Type } from 'class-transformer';
-import { ClipVisibility } from '@prisma/client';
+import { ClipStatus, ClipVisibility } from '@prisma/client';
 import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class ListClipsQueryDto {
+  @IsOptional()
+  @IsEnum(ClipStatus)
+  status?: ClipStatus;
+
   @IsOptional()
   @IsString()
   collectionId?: string;

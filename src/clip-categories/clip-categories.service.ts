@@ -12,37 +12,38 @@ import { UpdateClipCategoryDto } from './dto/update-clip-category.dto';
 export class ClipCategoriesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async list() {
+  async list(projectId: string) {
     return this.prisma.clipCategory.findMany({
+      where: { projectId },
       orderBy: { name: 'asc' },
       select: { id: true, name: true },
     });
   }
 
-  async bulkCreate(dto: BulkCreateClipCategoryDto) {
-    const data = dto.categories.map((c) => ({ name: c.name.trim() }));
+  async bulkCreate(projectId: string, dto: BulkCreateClipCategoryDto) {
+    const names = dto.categories.map((category) => category.name.trim());
 
     await this.prisma.clipCategory.createMany({
-      data,
+      data: names.map((name) => ({ name, projectId })),
       skipDuplicates: true,
     });
 
     return this.prisma.clipCategory.findMany({
-      where: { name: { in: data.map((c) => c.name) } },
+      where: { projectId, name: { in: names } },
       orderBy: { name: 'asc' },
       select: { id: true, name: true },
     });
   }
 
-  async create(dto: CreateClipCategoryDto) {
+  async create(projectId: string, dto: CreateClipCategoryDto) {
     return this.prisma.clipCategory.create({
-      data: { name: dto.name.trim() },
+      data: { name: dto.name.trim(), projectId },
       select: { id: true, name: true },
     });
   }
 
-  async update(id: string, dto: UpdateClipCategoryDto) {
-    await this.assertExists(id);
+  async update(projectId: string, id: string, dto: UpdateClipCategoryDto) {
+    await this.assertExists(projectId, id);
 
     return this.prisma.clipCategory.update({
       where: { id },
@@ -51,8 +52,8 @@ export class ClipCategoriesService {
     });
   }
 
-  async remove(id: string) {
-    await this.assertExists(id);
+  async remove(projectId: string, id: string) {
+    await this.assertExists(projectId, id);
 
     const clipsCount = await this.prisma.clip.count({
       where: { categoryId: id },
@@ -68,9 +69,10 @@ export class ClipCategoriesService {
     return { ok: true };
   }
 
-  private async assertExists(id: string) {
-    const category = await this.prisma.clipCategory.findUnique({
-      where: { id },
+  /** Busca siempre acotando por proyecto: una categoria de otro proyecto es un 404. */
+  private async assertExists(projectId: string, id: string) {
+    const category = await this.prisma.clipCategory.findFirst({
+      where: { id, projectId },
       select: { id: true },
     });
 
