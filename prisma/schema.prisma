@@ -28,6 +28,13 @@ enum ClipVisibility {
   PUBLIC
 }
 
+enum ClipStatus {
+  UPLOADING
+  PROCESSING
+  READY
+  ERROR
+}
+
 enum ExamStatus {
   PENDING
   FINISHED
@@ -53,6 +60,39 @@ enum FinalExamCatalogKind {
   SEARCH
 }
 
+model Project {
+  id       String  @id @default(cuid())
+  slug     String  @unique
+  name     String
+  isActive Boolean @default(true)
+
+  /// Bucket de R2 propio del proyecto. `null` usa el bucket por defecto
+  /// (`R2_BUCKET_VIDEOS`), lo que permite sumar proyectos nuevos con bucket
+  /// dedicado sin mover un solo objeto de los que ya existen.
+  storageBucket String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members     ProjectMember[]
+  clips       Clip[]
+  collections ClipCollection[]
+  categories  ClipCategory[]
+}
+
+model ProjectMember {
+  projectId String
+  userId    String
+  role      Role     @default(GENERAL)
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, userId])
+  @@index([userId])
+}
+
 model User {
   id                     String  @id @default(uuid())
   firstName              String
@@ -76,6 +116,7 @@ model User {
   userEvents               UserEvent[]
   buttonLayouts            ButtonLayout[]
   groups                   UserGroup[]
+  projectMemberships       ProjectMember[]
   passwordResetTokens      PasswordResetToken[]
   finalExamPairsAsUserA    FinalExamCatalogPair[] @relation("FinalExamCatalogPairAsUserA")
   finalExamPairsAsUserB    FinalExamCatalogPair[] @relation("FinalExamCatalogPairAsUserB")
@@ -103,6 +144,7 @@ model Group {
 
   members           UserGroup[]
   finalExamCatalogs FinalExamCatalogGroup[]
+  clipCollections   ClipCollectionGroup[]
 
   @@index([name])
 }
@@ -171,46 +213,87 @@ model CompetitionReferee {
 
 model ClipCollection {
   id          String   @id @default(cuid())
-  name        String   @unique
+  projectId   String
+  name        String
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  clips Clip[]
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  clips   Clip[]
+  groups  ClipCollectionGroup[]
+
+  @@unique([projectId, name])
+  @@index([projectId])
+}
+
+/// Grupos que pueden ver la coleccion. **Sin filas = visible para todos los
+/// arbitros** (asi las colecciones que ya existian no cambian de comportamiento).
+/// Los grupos solo achican el alcance: nunca vuelven visible un clip PRIVADO.
+model ClipCollectionGroup {
+  collectionId String
+  groupId      String
+
+  collection ClipCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  group      Group          @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@id([collectionId, groupId])
+  @@index([groupId])
 }
 
 model Clip {
-  id           String         @id @default(uuid())
-  collectionId String
+  id           String  @id @default(uuid())
+  projectId    String
+  collectionId String?
   categoryId   String
   title        String
-  description  String
-  videoUrl     String
-  thumbnailUrl String?
-  duration     Int?
-  visibility   ClipVisibility @default(PRIVATE)
-  publishedAt  DateTime?
+  description  String  @default("")
+
+  // Storage: se guardan keys de R2, nunca URLs firmadas (expiran).
+  // sourceKey es el original subido y se borra una vez transformado.
+  sourceKey    String?
+  videoKey     String?
+  thumbnailKey String?
+
+  // Legacy del esquema anterior basado en URLs. A borrar una vez migrados los datos.
+  legacyVideoUrl     String?
+  legacyThumbnailUrl String?
+
+  duration    Int?
+  sizeBytes   Int?
+  status      ClipStatus @default(UPLOADING)
+  statusError String?
+
+  visibility  ClipVisibility @default(PRIVATE)
+  publishedAt DateTime?
 
   createdById String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  collection ClipCollection @relation(fields: [collectionId], references: [id], onDelete: Restrict)
-  category   ClipCategory   @relation(fields: [categoryId], references: [id], onDelete: Restrict)
-  createdBy  User           @relation("ClipCreator", fields: [createdById], references: [id])
+  project    Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  collection ClipCollection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  category   ClipCategory    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdBy  User            @relation("ClipCreator", fields: [createdById], references: [id])
 
+  @@index([projectId, visibility, createdAt])
+  @@index([projectId, createdAt])
   @@index([collectionId])
   @@index([categoryId])
-  @@index([visibility, createdAt])
-  @@index([createdAt])
+  @@index([status])
   @@index([publishedAt])
 }
 
 model ClipCategory {
-  id   String @id @default(cuid())
-  name String @unique
+  id        String @id @default(cuid())
+  projectId String
+  name      String
 
-  clips Clip[]
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  clips   Clip[]
+
+  @@unique([projectId, name])
+  @@index([projectId])
 }
 
 model Exam {

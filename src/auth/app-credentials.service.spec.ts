@@ -12,6 +12,9 @@ describe('AppCredentialsService', () => {
       findFirst: jest.fn(),
       update: jest.fn(),
     },
+    projectMember: {
+      findFirst: jest.fn().mockResolvedValue(null),
+    },
   };
 
   let service: AppCredentialsService;
@@ -118,6 +121,7 @@ describe('AppCredentialsService', () => {
       firstName: 'User',
       lastName: 'Test',
       role: Role.ADMIN,
+      projectId: null,
       requiresPasswordChange: false,
       authType: 'app_credential',
       appCredentialId: 'cred-1',

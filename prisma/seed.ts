@@ -10,6 +10,15 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
+  const project = await prisma.project.upsert({
+    where: { slug: process.env.DEFAULT_PROJECT_SLUG?.trim() || 'cna' },
+    update: {},
+    create: {
+      slug: process.env.DEFAULT_PROJECT_SLUG?.trim() || 'cna',
+      name: process.env.DEFAULT_PROJECT_NAME?.trim() || 'CNA',
+    },
+  });
+
   const clipCategories = [
     '7 metros',
     'Faltas tecnicas',
@@ -23,22 +32,24 @@ async function main() {
   ];
 
   await prisma.clipCategory.createMany({
-    data: clipCategories.map((name) => ({ name })),
+    data: clipCategories.map((name) => ({ name, projectId: project.id })),
     skipDuplicates: true,
   });
 
   const clipCollection = await prisma.clipCollection.upsert({
-    where: { name: 'Oficial' },
+    where: { projectId_name: { projectId: project.id, name: 'Oficial' } },
     update: {
       description: 'Colección principal de clips formativos.',
     },
     create: {
+      projectId: project.id,
       name: 'Oficial',
       description: 'Colección principal de clips formativos.',
     },
   });
 
   const firstCategory = await prisma.clipCategory.findFirst({
+    where: { projectId: project.id },
     orderBy: { name: 'asc' },
     select: { id: true },
   });
@@ -102,14 +113,25 @@ async function main() {
     },
   });
 
+  await prisma.projectMember.createMany({
+    data: [
+      { projectId: project.id, userId: admin.id, role: Role.ADMIN },
+      { projectId: project.id, userId: user1.id, role: Role.GENERAL },
+      { projectId: project.id, userId: user2.id, role: Role.GENERAL },
+    ],
+    skipDuplicates: true,
+  });
+
   await prisma.clip.create({
     data: {
+      projectId: project.id,
       collectionId: clipCollection.id,
       categoryId: firstCategory!.id,
       title: 'Contacto en suspensión - 2 minutos',
       description:
         'Decisión final: sanción progresiva por contacto peligroso en zona alta.',
-      videoUrl: 'https://example.com/dummy.mp4',
+      videoKey: `${project.id}/clips/seed/video.mp4`,
+      status: 'READY' as any,
       visibility: 'PUBLIC' as any,
       publishedAt: new Date(),
       createdById: admin.id,

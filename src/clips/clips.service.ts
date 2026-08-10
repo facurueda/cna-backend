@@ -3,19 +3,32 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ClipVisibility, Prisma, Role } from '@prisma/client';
+import { ClipStatus, ClipVisibility, Prisma, Role } from '@prisma/client';
+import { extname } from 'path';
 import { PrismaService } from '../prisma/prisma.service';
+import { R2Service } from '../storage/r2.service';
+import {
+  canReachCollection,
+  getUserGroupIds,
+  memberClipWhere,
+} from './clip-access';
 import { UserStatsService } from '../users/user-stats.service';
-import { BatchCreateClipsDto } from './dto/batch-create-clips.dto';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { ListClipsQueryDto } from './dto/list-clips.query.dto';
+import { MarkUploadedDto } from './dto/mark-uploaded.dto';
 import { UpdateClipDto } from './dto/update-clip.dto';
 
 type AuthUser = { id: string; role: Role };
 
 const clipInclude = {
   collection: {
-    select: { id: true, name: true, description: true },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      // Necesarios para resolver el acceso por grupo sin una query extra.
+      groups: { select: { groupId: true } },
+    },
   },
   category: {
     select: { id: true, name: true },
@@ -25,18 +38,37 @@ const clipInclude = {
   },
 } as const;
 
+const EXTENSION_BY_CONTENT_TYPE: Record<string, string> = {
+  'video/mp4': '.mp4',
+  'video/webm': '.webm',
+  'video/quicktime': '.mov',
+};
+
+const THUMBNAIL_CONTENT_TYPE = 'image/jpeg';
+
+/**
+ * Las miniaturas se firman por mas tiempo que el video: una grilla puede quedar
+ * abierta un rato largo y no hay forma de renovar la URL de un `background-image`
+ * sin recargar. Son livianas y de bajo riesgo, el video sigue con TTL corto.
+ */
+const THUMBNAIL_URL_TTL_SECONDS = 6 * 3600;
+
 @Injectable()
 export class ClipsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly userStatsService: UserStatsService,
+    private readonly r2: R2Service,
   ) {}
 
-  async list(query: ListClipsQueryDto, user: AuthUser) {
-    const where = this.buildListWhere(query, user);
+  async list(projectId: string, query: ListClipsQueryDto, user: AuthUser) {
+    const groupIds =
+      user.role === Role.ADMIN ? [] : await getUserGroupIds(this.prisma, user.id);
+    const where = this.buildListWhere(projectId, query, user, groupIds);
     const take = query.limit ?? this.normalizeTake(query.take);
     const page = query.page ?? 1;
-    const skip = query.page != null ? (page - 1) * take : this.normalizeSkip(query.skip);
+    const skip =
+      query.page != null ? (page - 1) * take : this.normalizeSkip(query.skip);
 
     const [data, total] = await this.prisma.$transaction([
       this.prisma.clip.findMany({
@@ -50,7 +82,7 @@ export class ClipsService {
     ]);
 
     return {
-      data,
+      data: await this.withThumbnailUrls(projectId, data),
       meta: {
         total,
         page,
@@ -60,88 +92,31 @@ export class ClipsService {
     };
   }
 
-  async createBatch(dto: BatchCreateClipsDto, user: AuthUser) {
-    const created: {
-      id: string;
-      title: string;
-      thumbnailUrl: string | null;
-      status: string;
-      createdAt: Date;
-    }[] = [];
-    const failed: { index: number; reason: string }[] = [];
-
-    for (let i = 0; i < dto.clips.length; i++) {
-      const item = dto.clips[i];
-      try {
-        if (!dto.collectionId) {
-          throw new Error('collectionId es requerido');
-        }
-
-        const categoryId = item.categoryIds?.[0];
-        if (!categoryId) {
-          throw new Error('categoryIds debe tener al menos un elemento');
-        }
-
-        await this.assertCollectionExists(dto.collectionId);
-        await this.assertCategoryExists(categoryId);
-
-        const collectionId = dto.collectionId;
-
-        const clip = await this.prisma.$transaction(async (tx) => {
-          const newClip = await tx.clip.create({
-            data: {
-              collectionId,
-              categoryId,
-              title: item.title.trim(),
-              description: '',
-              videoUrl: item.videoUrl.trim(),
-              thumbnailUrl: item.thumbnailUrl?.trim(),
-              duration: item.duration,
-              createdById: user.id,
-            },
-            select: {
-              id: true,
-              title: true,
-              thumbnailUrl: true,
-              visibility: true,
-              createdAt: true,
-            },
-          });
-
-          await this.userStatsService.incrementClips(user.id, 1, tx);
-          return newClip;
-        });
-
-        created.push({
-          id: clip.id,
-          title: clip.title,
-          thumbnailUrl: clip.thumbnailUrl,
-          status: clip.visibility,
-          createdAt: clip.createdAt,
-        });
-      } catch (err: unknown) {
-        const reason =
-          err instanceof Error ? err.message : 'Error desconocido';
-        failed.push({ index: i, reason });
-      }
+  /**
+   * Crea el clip en estado UPLOADING y devuelve la URL firmada para que el browser
+   * suba el archivo directo a R2. El server nunca recibe el video.
+   */
+  async create(projectId: string, dto: CreateClipDto, user: AuthUser) {
+    await this.assertCategoryExists(projectId, dto.categoryId);
+    if (dto.collectionId) {
+      await this.assertCollectionExists(projectId, dto.collectionId);
     }
 
-    return { created, failed };
-  }
+    const extension =
+      extname(dto.fileName).toLowerCase() ||
+      EXTENSION_BY_CONTENT_TYPE[dto.contentType.toLowerCase()] ||
+      '.mp4';
 
-  async create(dto: CreateClipDto, user: AuthUser) {
-    await this.assertCollectionExists(dto.collectionId);
-    await this.assertCategoryExists(dto.categoryId);
-
-    return this.prisma.$transaction(async (tx) => {
-      const createdClip = await tx.clip.create({
+    const clip = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.clip.create({
         data: {
-          collectionId: dto.collectionId,
+          projectId,
+          collectionId: dto.collectionId ?? null,
           categoryId: dto.categoryId,
           title: dto.title.trim(),
-          description: dto.description.trim(),
-          videoUrl: dto.videoUrl.trim(),
-          thumbnailUrl: dto.thumbnailUrl?.trim(),
+          description: dto.description?.trim() ?? '',
+          status: ClipStatus.UPLOADING,
+          sizeBytes: dto.size,
           duration: dto.duration,
           createdById: user.id,
         },
@@ -149,70 +124,174 @@ export class ClipsService {
       });
 
       await this.userStatsService.incrementClips(user.id, 1, tx);
-      return createdClip;
+      return created;
     });
+
+    const sourceKey = this.r2.buildSourceKey(projectId, clip.id, extension);
+    await this.prisma.clip.update({
+      where: { id: clip.id },
+      data: { sourceKey },
+    });
+
+    const bucket = await this.resolveProjectBucket(projectId);
+    const upload = await this.r2.createUploadUrl(sourceKey, dto.contentType, {
+      bucket,
+    });
+
+    // La miniatura la genera el browser junto con la compresion, asi que se firma
+    // ahora y viaja en la misma respuesta: evita un roundtrip extra por clip.
+    // La key queda reservada aunque no se use; `thumbnailKey` recien se persiste
+    // cuando el browser confirma que la subio.
+    const thumbnail = await this.r2.createUploadUrl(
+      this.r2.buildThumbnailKey(projectId, clip.id),
+      THUMBNAIL_CONTENT_TYPE,
+      { bucket },
+    );
+
+    return {
+      clip: { ...clip, sourceKey },
+      upload: {
+        ...upload,
+        thumbnailUploadUrl: thumbnail.uploadUrl,
+        thumbnailKey: thumbnail.key,
+        thumbnailContentType: THUMBNAIL_CONTENT_TYPE,
+      },
+    };
   }
 
-  async getById(id: string, user: AuthUser) {
-    const clip = await this.prisma.clip.findUnique({
-      where: { id },
+  /**
+   * El browser avisa que termino el PUT a R2.
+   *
+   * Pasa directo a READY: la compresion ocurre en el browser ANTES de subir, asi que
+   * el archivo que llego ya es el servible. No hay paso de transcodificacion del lado
+   * del servidor. (`PROCESSING` queda para que la UI muestre "comprimiendo".)
+   */
+  async markUploaded(
+    projectId: string,
+    id: string,
+    dto: MarkUploadedDto,
+    user: AuthUser,
+  ) {
+    const clip = await this.assertClipExists(projectId, id);
+
+    if (!clip.sourceKey) {
+      throw new ForbiddenException('El clip no tiene un archivo asociado');
+    }
+
+    const updated = await this.prisma.clip.update({
+      where: { id: clip.id },
+      data: {
+        status: ClipStatus.READY,
+        statusError: null,
+        // El archivo subido es el definitivo: no hay una version derivada aparte.
+        videoKey: clip.sourceKey,
+        // Solo se persiste si el browser confirmo el PUT de la miniatura: si
+        // guardaramos la key sin el objeto detras, la grilla pediria una URL
+        // firmada que devuelve 404 en vez de caer al degradado.
+        thumbnailKey: dto.hasThumbnail
+          ? this.r2.buildThumbnailKey(projectId, clip.id)
+          : undefined,
+      },
       include: clipInclude,
     });
 
-    if (!clip) throw new NotFoundException('Clip no encontrado');
-    this.assertCanAccessClip(clip.visibility, user);
-
-    return clip;
+    return this.withThumbnailUrl(projectId, updated);
   }
 
-  async update(id: string, dto: UpdateClipDto, user: AuthUser) {
+  async getById(projectId: string, id: string, user: AuthUser) {
+    const clip = await this.findAccessibleClip(projectId, id, user);
+    return this.withThumbnailUrl(projectId, clip);
+  }
+
+  /**
+   * URL firmada de reproduccion. Se genera al vuelo y expira: nunca se persiste.
+   */
+  async getPlaybackUrl(projectId: string, id: string, user: AuthUser) {
+    const clip = await this.findAccessibleClip(projectId, id, user);
+    const key = clip.videoKey ?? clip.sourceKey;
+
+    if (!key) {
+      if (clip.legacyVideoUrl) {
+        return { url: clip.legacyVideoUrl, expiresIn: null };
+      }
+      throw new NotFoundException('El clip todavía no tiene video disponible');
+    }
+
+    this.r2.assertKeyBelongsToProject(key, projectId);
+    const { readUrl, expiresIn } = await this.r2.createReadUrl(key, {
+      bucket: await this.resolveProjectBucket(projectId),
+    });
+
+    return { url: readUrl, expiresIn };
+  }
+
+  async update(
+    projectId: string,
+    id: string,
+    dto: UpdateClipDto,
+    user: AuthUser,
+  ) {
     if (user.role !== Role.ADMIN) {
       throw new ForbiddenException('Solo admin puede editar clips');
     }
 
-    await this.assertClipExists(id);
+    await this.assertClipExists(projectId, id);
 
     if (dto.collectionId) {
-      await this.assertCollectionExists(dto.collectionId);
+      await this.assertCollectionExists(projectId, dto.collectionId);
     }
 
     if (dto.categoryId) {
-      await this.assertCategoryExists(dto.categoryId);
+      await this.assertCategoryExists(projectId, dto.categoryId);
     }
 
-    return this.prisma.clip.update({
+    const updated = await this.prisma.clip.update({
       where: { id },
       data: {
         collectionId: dto.collectionId,
         categoryId: dto.categoryId,
         title: dto.title?.trim(),
         description: dto.description?.trim(),
-        videoUrl: dto.videoUrl?.trim(),
-        thumbnailUrl: dto.thumbnailUrl?.trim(),
         duration: dto.duration,
       },
       include: clipInclude,
     });
+
+    return this.withThumbnailUrl(projectId, updated);
   }
 
-  async remove(id: string, user: AuthUser) {
+  async remove(projectId: string, id: string, user: AuthUser) {
     if (user.role !== Role.ADMIN) {
       throw new ForbiddenException('Solo admin puede borrar clips');
     }
 
-    await this.assertClipExists(id);
+    const clip = await this.assertClipExists(projectId, id);
+    const bucket = await this.resolveProjectBucket(projectId);
+
     await this.prisma.clip.delete({ where: { id } });
+
+    // Los objetos se borran despues de la fila: si falla, quedan huerfanos en R2
+    // pero la operacion del usuario no se rompe.
+    for (const key of [clip.sourceKey, clip.videoKey, clip.thumbnailKey]) {
+      if (key) await this.r2.deleteObject(key, bucket);
+    }
+
     return { ok: true };
   }
 
-  async setVisibility(id: string, visibility: ClipVisibility, user: AuthUser) {
+  async setVisibility(
+    projectId: string,
+    id: string,
+    visibility: ClipVisibility,
+    user: AuthUser,
+  ) {
     if (user.role !== Role.ADMIN) {
       throw new ForbiddenException('Solo admin puede cambiar visibilidad');
     }
 
-    await this.assertClipExists(id);
+    await this.assertClipExists(projectId, id);
 
-    return this.prisma.clip.update({
+    const updated = await this.prisma.clip.update({
       where: { id },
       data: {
         visibility,
@@ -220,13 +299,18 @@ export class ClipsService {
       },
       include: clipInclude,
     });
+
+    return this.withThumbnailUrl(projectId, updated);
   }
 
   private buildListWhere(
+    projectId: string,
     query: ListClipsQueryDto,
     user: AuthUser,
+    groupIds: string[],
   ): Prisma.ClipWhereInput {
-    const where: Prisma.ClipWhereInput = {};
+    // projectId va siempre primero y no es sobreescribible por la query.
+    const where: Prisma.ClipWhereInput = { projectId };
 
     if (query.collectionId?.trim()) {
       where.collectionId = query.collectionId.trim();
@@ -247,11 +331,13 @@ export class ClipsService {
       if (query.visibility) {
         where.visibility = query.visibility;
       }
+      if (query.status) {
+        where.status = query.status;
+      }
       return where;
     }
 
-    where.visibility = ClipVisibility.PUBLIC;
-    return where;
+    return { ...where, ...memberClipWhere(groupIds) };
   }
 
   private normalizeSkip(value?: number) {
@@ -264,34 +350,145 @@ export class ClipsService {
     return Math.min(100, Math.max(1, Math.trunc(value)));
   }
 
-  private assertCanAccessClip(visibility: ClipVisibility, user: AuthUser) {
+  private async assertCanAccessClip(
+    clip: {
+      visibility: ClipVisibility;
+      status: ClipStatus;
+      collection: { groups: { groupId: string }[] } | null;
+    },
+    user: AuthUser,
+  ) {
     if (user.role === Role.ADMIN) return;
-    if (visibility === ClipVisibility.PUBLIC) return;
-    throw new ForbiddenException('No tenés acceso a este clip');
+
+    if (
+      clip.visibility !== ClipVisibility.PUBLIC ||
+      clip.status !== ClipStatus.READY
+    ) {
+      throw new ForbiddenException('No tenés acceso a este clip');
+    }
+
+    // Los grupos de la coleccion solo achican: un clip PRIVADO no se vuelve
+    // visible por pertenecer a un grupo, ya se rechazo arriba.
+    const collectionGroupIds = (clip.collection?.groups ?? []).map(
+      (item) => item.groupId,
+    );
+    if (!collectionGroupIds.length) return;
+
+    const groupIds = await getUserGroupIds(this.prisma, user.id);
+    if (!canReachCollection(collectionGroupIds, groupIds)) {
+      throw new ForbiddenException('No tenés acceso a este clip');
+    }
   }
 
-  private async assertClipExists(id: string) {
-    const clip = await this.prisma.clip.findUnique({
-      where: { id },
-      select: { id: true },
+  private async findAccessibleClip(
+    projectId: string,
+    id: string,
+    user: AuthUser,
+  ) {
+    const clip = await this.prisma.clip.findFirst({
+      where: { id, projectId },
+      include: clipInclude,
+    });
+
+    if (!clip) throw new NotFoundException('Clip no encontrado');
+    await this.assertCanAccessClip(clip, user);
+
+    return clip;
+  }
+
+  /**
+   * Agrega la URL firmada de la miniatura. Va resuelta en el listado y no en un
+   * endpoint aparte: una grilla de 20 clips serian 20 requests extra, y firmar
+   * es solo un HMAC local (no pega contra R2).
+   */
+  private async withThumbnailUrls<T extends { thumbnailKey: string | null }>(
+    projectId: string,
+    clips: T[],
+  ) {
+    if (!clips.some((clip) => clip.thumbnailKey)) {
+      return clips.map((clip) => ({ ...clip, thumbnailUrl: null }));
+    }
+
+    const bucket = await this.resolveProjectBucket(projectId);
+
+    return Promise.all(
+      clips.map((clip) => this.signThumbnail(projectId, clip, bucket)),
+    );
+  }
+
+  /**
+   * **Todo endpoint que devuelva un Clip tiene que pasar por acá.** Si uno lo
+   * saltea, el cliente recibe el clip sin `thumbnailUrl` y al usar la respuesta
+   * para actualizar la vista la miniatura desaparece hasta el próximo listado.
+   */
+  private async withThumbnailUrl<T extends { thumbnailKey: string | null }>(
+    projectId: string,
+    clip: T,
+  ) {
+    if (!clip.thumbnailKey) return { ...clip, thumbnailUrl: null };
+    return this.signThumbnail(
+      projectId,
+      clip,
+      await this.resolveProjectBucket(projectId),
+    );
+  }
+
+  private async signThumbnail<T extends { thumbnailKey: string | null }>(
+    projectId: string,
+    clip: T,
+    bucket: string | null,
+  ) {
+    if (!clip.thumbnailKey) return { ...clip, thumbnailUrl: null };
+
+    this.r2.assertKeyBelongsToProject(clip.thumbnailKey, projectId);
+    const { readUrl } = await this.r2.createReadUrl(clip.thumbnailKey, {
+      bucket,
+      expiresIn: THUMBNAIL_URL_TTL_SECONDS,
+    });
+
+    return { ...clip, thumbnailUrl: readUrl };
+  }
+
+  /**
+   * Bucket del proyecto activo. `null` significa "usar el default del entorno":
+   * es lo que permite que los proyectos ya existentes no tengan que migrar.
+   */
+  private async resolveProjectBucket(projectId: string) {
+    const project = await this.prisma.project.findUnique({
+      where: { id: projectId },
+      select: { storageBucket: true },
+    });
+
+    return project?.storageBucket ?? null;
+  }
+
+  private async assertClipExists(projectId: string, id: string) {
+    const clip = await this.prisma.clip.findFirst({
+      where: { id, projectId },
+      select: {
+        id: true,
+        sourceKey: true,
+        videoKey: true,
+        thumbnailKey: true,
+      },
     });
 
     if (!clip) throw new NotFoundException('Clip no encontrado');
     return clip;
   }
 
-  private async assertCollectionExists(collectionId: string) {
-    const collection = await this.prisma.clipCollection.findUnique({
-      where: { id: collectionId },
+  private async assertCollectionExists(projectId: string, collectionId: string) {
+    const collection = await this.prisma.clipCollection.findFirst({
+      where: { id: collectionId, projectId },
       select: { id: true },
     });
 
     if (!collection) throw new NotFoundException('Colección no encontrada');
   }
 
-  private async assertCategoryExists(categoryId: string) {
-    const category = await this.prisma.clipCategory.findUnique({
-      where: { id: categoryId },
+  private async assertCategoryExists(projectId: string, categoryId: string) {
+    const category = await this.prisma.clipCategory.findFirst({
+      where: { id: categoryId, projectId },
       select: { id: true },
     });
 

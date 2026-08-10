@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateClipCollectionDto {
   @IsString()
@@ -8,4 +8,10 @@ export class CreateClipCollectionDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  /** Grupos que pueden ver la colección. Vacío u omitido = todos los árbitros. */
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  groupIds?: string[];
 }
