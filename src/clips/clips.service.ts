@@ -116,7 +116,9 @@ export class ClipsService {
       data: { sourceKey },
     });
 
-    const upload = await this.r2.createUploadUrl(sourceKey, dto.contentType);
+    const upload = await this.r2.createUploadUrl(sourceKey, dto.contentType, {
+      bucket: await this.resolveProjectBucket(projectId),
+    });
 
     return { clip: { ...clip, sourceKey }, upload };
   }
@@ -174,7 +176,9 @@ export class ClipsService {
     }
 
     this.r2.assertKeyBelongsToProject(key, projectId);
-    const { readUrl, expiresIn } = await this.r2.createReadUrl(key);
+    const { readUrl, expiresIn } = await this.r2.createReadUrl(key, {
+      bucket: await this.resolveProjectBucket(projectId),
+    });
 
     return { url: readUrl, expiresIn };
   }
@@ -218,13 +222,14 @@ export class ClipsService {
     }
 
     const clip = await this.assertClipExists(projectId, id);
+    const bucket = await this.resolveProjectBucket(projectId);
 
     await this.prisma.clip.delete({ where: { id } });
 
     // Los objetos se borran despues de la fila: si falla, quedan huerfanos en R2
     // pero la operacion del usuario no se rompe.
     for (const key of [clip.sourceKey, clip.videoKey, clip.thumbnailKey]) {
-      if (key) await this.r2.deleteObject(key);
+      if (key) await this.r2.deleteObject(key, bucket);
     }
 
     return { ok: true };
@@ -310,6 +315,19 @@ export class ClipsService {
       return;
     }
     throw new ForbiddenException('No tenés acceso a este clip');
+  }
+
+  /**
+   * Bucket del proyecto activo. `null` significa "usar el default del entorno":
+   * es lo que permite que los proyectos ya existentes no tengan que migrar.
+   */
+  private async resolveProjectBucket(projectId: string) {
+    const project = await this.prisma.project.findUnique({
+      where: { id: projectId },
+      select: { storageBucket: true },
+    });
+
+    return project?.storageBucket ?? null;
   }
 
   private async assertClipExists(projectId: string, id: string) {

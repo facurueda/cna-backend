@@ -61,10 +61,16 @@ enum FinalExamCatalogKind {
 }
 
 model Project {
-  id        String   @id @default(cuid())
-  slug      String   @unique
-  name      String
-  isActive  Boolean  @default(true)
+  id       String  @id @default(cuid())
+  slug     String  @unique
+  name     String
+  isActive Boolean @default(true)
+
+  /// Bucket de R2 propio del proyecto. `null` usa el bucket por defecto
+  /// (`R2_BUCKET_VIDEOS`), lo que permite sumar proyectos nuevos con bucket
+  /// dedicado sin mover un solo objeto de los que ya existen.
+  storageBucket String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
