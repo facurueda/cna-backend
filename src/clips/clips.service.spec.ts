@@ -23,6 +23,7 @@ describe('ClipsService', () => {
     },
     clipCollection: { findFirst: jest.fn() },
     clipCategory: { findFirst: jest.fn() },
+    project: { findUnique: jest.fn() },
     $transaction: jest.fn(),
   };
 
@@ -53,6 +54,8 @@ describe('ClipsService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    // Por defecto el proyecto no define bucket propio: cae al default del entorno.
+    prisma.project.findUnique.mockResolvedValue({ storageBucket: null });
     prisma.$transaction.mockImplementation(async (arg: any) =>
       typeof arg === 'function'
         ? arg(tx)
@@ -164,6 +167,52 @@ describe('ClipsService', () => {
         { id: 'admin-1', role: Role.ADMIN },
       ),
     ).rejects.toBeInstanceOf(NotFoundException);
+  });
+
+  it('firma la subida contra el bucket propio del proyecto', async () => {
+    prisma.project.findUnique.mockResolvedValue({
+      storageBucket: 'acab-clips-staging',
+    });
+    prisma.clipCategory.findFirst.mockResolvedValue({ id: 'category-1' });
+    tx.clip.create.mockResolvedValue({ id: 'clip-10', title: 'Clip 10' });
+    prisma.clip.update.mockResolvedValue({ id: 'clip-10' });
+
+    await service.create(
+      PROJECT_A,
+      {
+        title: 'Clip 10',
+        categoryId: 'category-1',
+        fileName: 'x.mp4',
+        contentType: 'video/mp4',
+      },
+      { id: 'admin-1', role: Role.ADMIN },
+    );
+
+    expect(r2.createUploadUrl).toHaveBeenCalledWith(
+      expect.any(String),
+      'video/mp4',
+      { bucket: 'acab-clips-staging' },
+    );
+  });
+
+  it('cae al bucket por defecto si el proyecto no define uno', async () => {
+    prisma.project.findUnique.mockResolvedValue({ storageBucket: null });
+    prisma.clip.findFirst.mockResolvedValue({
+      id: 'clip-11',
+      visibility: ClipVisibility.PUBLIC,
+      status: ClipStatus.READY,
+      videoKey: `${PROJECT_A}/clips/clip-11/video.mp4`,
+      sourceKey: null,
+    });
+
+    await service.getPlaybackUrl(PROJECT_A, 'clip-11', {
+      id: 'user-1',
+      role: Role.GENERAL,
+    });
+
+    expect(r2.createReadUrl).toHaveBeenCalledWith(expect.any(String), {
+      bucket: null,
+    });
   });
 
   it('deja el clip READY al confirmar la subida', async () => {
