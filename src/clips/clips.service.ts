@@ -245,7 +245,7 @@ export class ClipsService {
       await this.assertCategoryExists(projectId, dto.categoryId);
     }
 
-    return this.prisma.clip.update({
+    const updated = await this.prisma.clip.update({
       where: { id },
       data: {
         collectionId: dto.collectionId,
@@ -256,6 +256,8 @@ export class ClipsService {
       },
       include: clipInclude,
     });
+
+    return this.withThumbnailUrl(projectId, updated);
   }
 
   async remove(projectId: string, id: string, user: AuthUser) {
@@ -289,7 +291,7 @@ export class ClipsService {
 
     await this.assertClipExists(projectId, id);
 
-    return this.prisma.clip.update({
+    const updated = await this.prisma.clip.update({
       where: { id },
       data: {
         visibility,
@@ -297,6 +299,8 @@ export class ClipsService {
       },
       include: clipInclude,
     });
+
+    return this.withThumbnailUrl(projectId, updated);
   }
 
   private buildListWhere(
@@ -412,6 +416,11 @@ export class ClipsService {
     );
   }
 
+  /**
+   * **Todo endpoint que devuelva un Clip tiene que pasar por acá.** Si uno lo
+   * saltea, el cliente recibe el clip sin `thumbnailUrl` y al usar la respuesta
+   * para actualizar la vista la miniatura desaparece hasta el próximo listado.
+   */
   private async withThumbnailUrl<T extends { thumbnailKey: string | null }>(
     projectId: string,
     clip: T,
