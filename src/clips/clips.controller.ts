@@ -18,6 +18,7 @@ import { RolesGuard } from '../auth/roles/roles.guard';
 import { ClipsService } from './clips.service';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { ListClipsQueryDto } from './dto/list-clips.query.dto';
+import { MarkUploadedDto } from './dto/mark-uploaded.dto';
 import { UpdateClipDto } from './dto/update-clip.dto';
 
 type AuthUserPayload = { id: string; role: Role };
@@ -53,9 +54,10 @@ export class ClipsController {
   markUploaded(
     @ActiveProject() projectId: string,
     @Param('id') id: string,
+    @Body() dto: MarkUploadedDto,
     @AuthUser() user: AuthUserPayload,
   ) {
-    return this.clipsService.markUploaded(projectId, id, user);
+    return this.clipsService.markUploaded(projectId, id, dto, user);
   }
 
   @Get(':id')

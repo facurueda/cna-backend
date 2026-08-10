@@ -36,6 +36,10 @@ describe('ClipsService', () => {
       (projectId: string, clipId: string, ext: string) =>
         `${projectId}/clips/${clipId}/source${ext}`,
     ),
+    buildThumbnailKey: jest.fn(
+      (projectId: string, clipId: string) =>
+        `${projectId}/clips/${clipId}/thumbnail.jpg`,
+    ),
     createUploadUrl: jest.fn().mockResolvedValue({
       uploadUrl: 'https://r2.example.com/signed-put',
       key: 'key',
@@ -78,7 +82,7 @@ describe('ClipsService', () => {
       { id: 'admin-1', role: Role.ADMIN },
     );
 
-    expect(result.data).toEqual([{ id: 'clip-1' }]);
+    expect(result.data).toEqual([{ id: 'clip-1', thumbnailUrl: null }]);
     expect(prisma.clip.findMany).toHaveBeenCalledWith(
       expect.objectContaining({ where: { projectId: PROJECT_A } }),
     );
@@ -226,10 +230,12 @@ describe('ClipsService', () => {
     });
     prisma.clip.update.mockResolvedValue({ id: 'clip-9' });
 
-    await service.markUploaded(PROJECT_A, 'clip-9', {
-      id: 'admin-1',
-      role: Role.ADMIN,
-    });
+    await service.markUploaded(
+      PROJECT_A,
+      'clip-9',
+      {},
+      { id: 'admin-1', role: Role.ADMIN },
+    );
 
     expect(prisma.clip.update).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -239,6 +245,79 @@ describe('ClipsService', () => {
         }),
       }),
     );
+  });
+
+  it('no guarda thumbnailKey si el browser no confirmo la miniatura', async () => {
+    // Guardar la key sin el objeto detras haria que la grilla firme una URL que
+    // devuelve 404, en vez de caer al degradado.
+    prisma.clip.findFirst.mockResolvedValue({
+      id: 'clip-12',
+      sourceKey: `${PROJECT_A}/clips/clip-12/source.mp4`,
+      videoKey: null,
+      thumbnailKey: null,
+    });
+    prisma.clip.update.mockResolvedValue({ id: 'clip-12', thumbnailKey: null });
+
+    await service.markUploaded(
+      PROJECT_A,
+      'clip-12',
+      {},
+      { id: 'admin-1', role: Role.ADMIN },
+    );
+
+    expect(prisma.clip.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ thumbnailKey: undefined }),
+      }),
+    );
+  });
+
+  it('guarda la thumbnailKey cuando el browser confirmo la subida', async () => {
+    prisma.clip.findFirst.mockResolvedValue({
+      id: 'clip-13',
+      sourceKey: `${PROJECT_A}/clips/clip-13/source.mp4`,
+      videoKey: null,
+      thumbnailKey: null,
+    });
+    prisma.clip.update.mockResolvedValue({
+      id: 'clip-13',
+      thumbnailKey: `${PROJECT_A}/clips/clip-13/thumbnail.jpg`,
+    });
+
+    const result = await service.markUploaded(
+      PROJECT_A,
+      'clip-13',
+      { hasThumbnail: true },
+      { id: 'admin-1', role: Role.ADMIN },
+    );
+
+    expect(prisma.clip.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          thumbnailKey: `${PROJECT_A}/clips/clip-13/thumbnail.jpg`,
+        }),
+      }),
+    );
+    expect(result.thumbnailUrl).toBe('https://r2.example.com/signed-get');
+  });
+
+  it('devuelve thumbnailUrl null en el listado cuando el clip no tiene miniatura', async () => {
+    prisma.clip.findMany.mockResolvedValue([
+      { id: 'clip-14', thumbnailKey: null },
+    ]);
+    prisma.clip.count.mockResolvedValue(1);
+
+    const result = await service.list(
+      PROJECT_A,
+      {},
+      { id: 'admin-1', role: Role.ADMIN },
+    );
+
+    expect(result.data).toEqual([
+      { id: 'clip-14', thumbnailKey: null, thumbnailUrl: null },
+    ]);
+    // Sin miniaturas no se firma nada: ni siquiera se resuelve el bucket.
+    expect(r2.createReadUrl).not.toHaveBeenCalled();
   });
 
   it('devuelve 404 al pedir un clip de otro proyecto', async () => {

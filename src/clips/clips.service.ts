@@ -10,6 +10,7 @@ import { R2Service } from '../storage/r2.service';
 import { UserStatsService } from '../users/user-stats.service';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { ListClipsQueryDto } from './dto/list-clips.query.dto';
+import { MarkUploadedDto } from './dto/mark-uploaded.dto';
 import { UpdateClipDto } from './dto/update-clip.dto';
 
 type AuthUser = { id: string; role: Role };
@@ -38,6 +39,15 @@ const EXTENSION_BY_CONTENT_TYPE: Record<string, string> = {
   'video/quicktime': '.mov',
 };
 
+const THUMBNAIL_CONTENT_TYPE = 'image/jpeg';
+
+/**
+ * Las miniaturas se firman por mas tiempo que el video: una grilla puede quedar
+ * abierta un rato largo y no hay forma de renovar la URL de un `background-image`
+ * sin recargar. Son livianas y de bajo riesgo, el video sigue con TTL corto.
+ */
+const THUMBNAIL_URL_TTL_SECONDS = 6 * 3600;
+
 @Injectable()
 export class ClipsService {
   constructor(
@@ -65,7 +75,7 @@ export class ClipsService {
     ]);
 
     return {
-      data,
+      data: await this.withThumbnailUrls(projectId, data),
       meta: {
         total,
         page,
@@ -116,11 +126,30 @@ export class ClipsService {
       data: { sourceKey },
     });
 
+    const bucket = await this.resolveProjectBucket(projectId);
     const upload = await this.r2.createUploadUrl(sourceKey, dto.contentType, {
-      bucket: await this.resolveProjectBucket(projectId),
+      bucket,
     });
 
-    return { clip: { ...clip, sourceKey }, upload };
+    // La miniatura la genera el browser junto con la compresion, asi que se firma
+    // ahora y viaja en la misma respuesta: evita un roundtrip extra por clip.
+    // La key queda reservada aunque no se use; `thumbnailKey` recien se persiste
+    // cuando el browser confirma que la subio.
+    const thumbnail = await this.r2.createUploadUrl(
+      this.r2.buildThumbnailKey(projectId, clip.id),
+      THUMBNAIL_CONTENT_TYPE,
+      { bucket },
+    );
+
+    return {
+      clip: { ...clip, sourceKey },
+      upload: {
+        ...upload,
+        thumbnailUploadUrl: thumbnail.uploadUrl,
+        thumbnailKey: thumbnail.key,
+        thumbnailContentType: THUMBNAIL_CONTENT_TYPE,
+      },
+    };
   }
 
   /**
@@ -130,42 +159,48 @@ export class ClipsService {
    * el archivo que llego ya es el servible. No hay paso de transcodificacion del lado
    * del servidor. (`PROCESSING` queda para que la UI muestre "comprimiendo".)
    */
-  async markUploaded(projectId: string, id: string, user: AuthUser) {
+  async markUploaded(
+    projectId: string,
+    id: string,
+    dto: MarkUploadedDto,
+    user: AuthUser,
+  ) {
     const clip = await this.assertClipExists(projectId, id);
 
     if (!clip.sourceKey) {
       throw new ForbiddenException('El clip no tiene un archivo asociado');
     }
 
-    return this.prisma.clip.update({
+    const updated = await this.prisma.clip.update({
       where: { id: clip.id },
       data: {
         status: ClipStatus.READY,
         statusError: null,
         // El archivo subido es el definitivo: no hay una version derivada aparte.
         videoKey: clip.sourceKey,
+        // Solo se persiste si el browser confirmo el PUT de la miniatura: si
+        // guardaramos la key sin el objeto detras, la grilla pediria una URL
+        // firmada que devuelve 404 en vez de caer al degradado.
+        thumbnailKey: dto.hasThumbnail
+          ? this.r2.buildThumbnailKey(projectId, clip.id)
+          : undefined,
       },
       include: clipInclude,
     });
+
+    return this.withThumbnailUrl(projectId, updated);
   }
 
   async getById(projectId: string, id: string, user: AuthUser) {
-    const clip = await this.prisma.clip.findFirst({
-      where: { id, projectId },
-      include: clipInclude,
-    });
-
-    if (!clip) throw new NotFoundException('Clip no encontrado');
-    this.assertCanAccessClip(clip, user);
-
-    return clip;
+    const clip = await this.findAccessibleClip(projectId, id, user);
+    return this.withThumbnailUrl(projectId, clip);
   }
 
   /**
    * URL firmada de reproduccion. Se genera al vuelo y expira: nunca se persiste.
    */
   async getPlaybackUrl(projectId: string, id: string, user: AuthUser) {
-    const clip = await this.getById(projectId, id, user);
+    const clip = await this.findAccessibleClip(projectId, id, user);
     const key = clip.videoKey ?? clip.sourceKey;
 
     if (!key) {
@@ -315,6 +350,70 @@ export class ClipsService {
       return;
     }
     throw new ForbiddenException('No tenés acceso a este clip');
+  }
+
+  private async findAccessibleClip(
+    projectId: string,
+    id: string,
+    user: AuthUser,
+  ) {
+    const clip = await this.prisma.clip.findFirst({
+      where: { id, projectId },
+      include: clipInclude,
+    });
+
+    if (!clip) throw new NotFoundException('Clip no encontrado');
+    this.assertCanAccessClip(clip, user);
+
+    return clip;
+  }
+
+  /**
+   * Agrega la URL firmada de la miniatura. Va resuelta en el listado y no en un
+   * endpoint aparte: una grilla de 20 clips serian 20 requests extra, y firmar
+   * es solo un HMAC local (no pega contra R2).
+   */
+  private async withThumbnailUrls<T extends { thumbnailKey: string | null }>(
+    projectId: string,
+    clips: T[],
+  ) {
+    if (!clips.some((clip) => clip.thumbnailKey)) {
+      return clips.map((clip) => ({ ...clip, thumbnailUrl: null }));
+    }
+
+    const bucket = await this.resolveProjectBucket(projectId);
+
+    return Promise.all(
+      clips.map((clip) => this.signThumbnail(projectId, clip, bucket)),
+    );
+  }
+
+  private async withThumbnailUrl<T extends { thumbnailKey: string | null }>(
+    projectId: string,
+    clip: T,
+  ) {
+    if (!clip.thumbnailKey) return { ...clip, thumbnailUrl: null };
+    return this.signThumbnail(
+      projectId,
+      clip,
+      await this.resolveProjectBucket(projectId),
+    );
+  }
+
+  private async signThumbnail<T extends { thumbnailKey: string | null }>(
+    projectId: string,
+    clip: T,
+    bucket: string | null,
+  ) {
+    if (!clip.thumbnailKey) return { ...clip, thumbnailUrl: null };
+
+    this.r2.assertKeyBelongsToProject(clip.thumbnailKey, projectId);
+    const { readUrl } = await this.r2.createReadUrl(clip.thumbnailKey, {
+      bucket,
+      expiresIn: THUMBNAIL_URL_TTL_SECONDS,
+    });
+
+    return { ...clip, thumbnailUrl: readUrl };
   }
 
   /**
