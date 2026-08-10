@@ -24,6 +24,7 @@ describe('ClipsService', () => {
     clipCollection: { findFirst: jest.fn() },
     clipCategory: { findFirst: jest.fn() },
     project: { findUnique: jest.fn() },
+    userGroup: { findMany: jest.fn() },
     $transaction: jest.fn(),
   };
 
@@ -60,6 +61,8 @@ describe('ClipsService', () => {
     jest.clearAllMocks();
     // Por defecto el proyecto no define bucket propio: cae al default del entorno.
     prisma.project.findUnique.mockResolvedValue({ storageBucket: null });
+    // Por defecto el usuario no pertenece a ningun grupo.
+    prisma.userGroup.findMany.mockResolvedValue([]);
     prisma.$transaction.mockImplementation(async (arg: any) =>
       typeof arg === 'function'
         ? arg(tx)
@@ -100,9 +103,132 @@ describe('ClipsService', () => {
           projectId: PROJECT_A,
           visibility: ClipVisibility.PUBLIC,
           status: ClipStatus.READY,
+          // Sin grupos propios solo alcanza lo que no esta restringido.
+          OR: [{ collectionId: null }, { collection: { groups: { none: {} } } }],
         },
       }),
     );
+  });
+
+  it('suma las colecciones de los grupos del usuario al filtro', async () => {
+    prisma.userGroup.findMany.mockResolvedValue([
+      { groupId: 'group-primera' },
+      { groupId: 'group-segunda' },
+    ]);
+    prisma.clip.findMany.mockResolvedValue([]);
+    prisma.clip.count.mockResolvedValue(0);
+
+    await service.list(PROJECT_A, {}, { id: 'user-1', role: Role.GENERAL });
+
+    expect(prisma.clip.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          OR: [
+            { collectionId: null },
+            { collection: { groups: { none: {} } } },
+            {
+              collection: {
+                groups: {
+                  some: { groupId: { in: ['group-primera', 'group-segunda'] } },
+                },
+              },
+            },
+          ],
+        }),
+      }),
+    );
+  });
+
+  it('un admin no queda acotado por grupos', async () => {
+    prisma.clip.findMany.mockResolvedValue([]);
+    prisma.clip.count.mockResolvedValue(0);
+
+    await service.list(PROJECT_A, {}, { id: 'admin-1', role: Role.ADMIN });
+
+    expect(prisma.userGroup.findMany).not.toHaveBeenCalled();
+    expect(prisma.clip.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { projectId: PROJECT_A } }),
+    );
+  });
+
+  it('bloquea el playback de un clip de una coleccion de otro grupo', async () => {
+    // El caso que importa: sin esto, con el id del clip se baja el video igual.
+    prisma.clip.findFirst.mockResolvedValue({
+      id: 'clip-20',
+      visibility: ClipVisibility.PUBLIC,
+      status: ClipStatus.READY,
+      videoKey: `${PROJECT_A}/clips/clip-20/video.mp4`,
+      sourceKey: null,
+      collection: { groups: [{ groupId: 'group-primera' }] },
+    });
+    prisma.userGroup.findMany.mockResolvedValue([{ groupId: 'group-otra' }]);
+
+    await expect(
+      service.getPlaybackUrl(PROJECT_A, 'clip-20', {
+        id: 'user-1',
+        role: Role.GENERAL,
+      }),
+    ).rejects.toBeInstanceOf(ForbiddenException);
+    expect(r2.createReadUrl).not.toHaveBeenCalled();
+  });
+
+  it('permite el playback si el usuario pertenece a un grupo de la coleccion', async () => {
+    prisma.clip.findFirst.mockResolvedValue({
+      id: 'clip-21',
+      visibility: ClipVisibility.PUBLIC,
+      status: ClipStatus.READY,
+      videoKey: `${PROJECT_A}/clips/clip-21/video.mp4`,
+      sourceKey: null,
+      collection: { groups: [{ groupId: 'group-primera' }] },
+    });
+    prisma.userGroup.findMany.mockResolvedValue([
+      { groupId: 'group-primera' },
+    ]);
+
+    const result = await service.getPlaybackUrl(PROJECT_A, 'clip-21', {
+      id: 'user-1',
+      role: Role.GENERAL,
+    });
+
+    expect(result.url).toBe('https://r2.example.com/signed-get');
+  });
+
+  it('una coleccion sin grupos no restringe a nadie', async () => {
+    prisma.clip.findFirst.mockResolvedValue({
+      id: 'clip-22',
+      visibility: ClipVisibility.PUBLIC,
+      status: ClipStatus.READY,
+      videoKey: `${PROJECT_A}/clips/clip-22/video.mp4`,
+      sourceKey: null,
+      collection: { groups: [] },
+    });
+
+    await service.getPlaybackUrl(PROJECT_A, 'clip-22', {
+      id: 'user-1',
+      role: Role.GENERAL,
+    });
+
+    // Ni siquiera se consultan los grupos del usuario: no hay nada que comparar.
+    expect(prisma.userGroup.findMany).not.toHaveBeenCalled();
+  });
+
+  it('los grupos no vuelven visible un clip privado', async () => {
+    prisma.clip.findFirst.mockResolvedValue({
+      id: 'clip-23',
+      visibility: ClipVisibility.PRIVATE,
+      status: ClipStatus.READY,
+      collection: { groups: [{ groupId: 'group-primera' }] },
+    });
+    prisma.userGroup.findMany.mockResolvedValue([
+      { groupId: 'group-primera' },
+    ]);
+
+    await expect(
+      service.getById(PROJECT_A, 'clip-23', {
+        id: 'user-1',
+        role: Role.GENERAL,
+      }),
+    ).rejects.toBeInstanceOf(ForbiddenException);
   });
 
   it('no deja que la query pise el proyecto activo', async () => {

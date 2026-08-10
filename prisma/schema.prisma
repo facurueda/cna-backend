@@ -144,6 +144,7 @@ model Group {
 
   members           UserGroup[]
   finalExamCatalogs FinalExamCatalogGroup[]
+  clipCollections   ClipCollectionGroup[]
 
   @@index([name])
 }
@@ -220,9 +221,24 @@ model ClipCollection {
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   clips   Clip[]
+  groups  ClipCollectionGroup[]
 
   @@unique([projectId, name])
   @@index([projectId])
+}
+
+/// Grupos que pueden ver la coleccion. **Sin filas = visible para todos los
+/// arbitros** (asi las colecciones que ya existian no cambian de comportamiento).
+/// Los grupos solo achican el alcance: nunca vuelven visible un clip PRIVADO.
+model ClipCollectionGroup {
+  collectionId String
+  groupId      String
+
+  collection ClipCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  group      Group          @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@id([collectionId, groupId])
+  @@index([groupId])
 }
 
 model Clip {

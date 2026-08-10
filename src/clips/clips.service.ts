@@ -7,6 +7,11 @@ import { ClipStatus, ClipVisibility, Prisma, Role } from '@prisma/client';
 import { extname } from 'path';
 import { PrismaService } from '../prisma/prisma.service';
 import { R2Service } from '../storage/r2.service';
+import {
+  canReachCollection,
+  getUserGroupIds,
+  memberClipWhere,
+} from './clip-access';
 import { UserStatsService } from '../users/user-stats.service';
 import { CreateClipDto } from './dto/create-clip.dto';
 import { ListClipsQueryDto } from './dto/list-clips.query.dto';
@@ -17,7 +22,13 @@ type AuthUser = { id: string; role: Role };
 
 const clipInclude = {
   collection: {
-    select: { id: true, name: true, description: true },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      // Necesarios para resolver el acceso por grupo sin una query extra.
+      groups: { select: { groupId: true } },
+    },
   },
   category: {
     select: { id: true, name: true },
@@ -25,12 +36,6 @@ const clipInclude = {
   createdBy: {
     select: { id: true, firstName: true, lastName: true, role: true },
   },
-} as const;
-
-/** Lo que un no-admin puede ver: publicado y ya procesado. */
-const VISIBLE_TO_MEMBERS = {
-  visibility: ClipVisibility.PUBLIC,
-  status: ClipStatus.READY,
 } as const;
 
 const EXTENSION_BY_CONTENT_TYPE: Record<string, string> = {
@@ -57,7 +62,9 @@ export class ClipsService {
   ) {}
 
   async list(projectId: string, query: ListClipsQueryDto, user: AuthUser) {
-    const where = this.buildListWhere(projectId, query, user);
+    const groupIds =
+      user.role === Role.ADMIN ? [] : await getUserGroupIds(this.prisma, user.id);
+    const where = this.buildListWhere(projectId, query, user, groupIds);
     const take = query.limit ?? this.normalizeTake(query.take);
     const page = query.page ?? 1;
     const skip =
@@ -296,6 +303,7 @@ export class ClipsService {
     projectId: string,
     query: ListClipsQueryDto,
     user: AuthUser,
+    groupIds: string[],
   ): Prisma.ClipWhereInput {
     // projectId va siempre primero y no es sobreescribible por la query.
     const where: Prisma.ClipWhereInput = { projectId };
@@ -325,7 +333,7 @@ export class ClipsService {
       return where;
     }
 
-    return { ...where, ...VISIBLE_TO_MEMBERS };
+    return { ...where, ...memberClipWhere(groupIds) };
   }
 
   private normalizeSkip(value?: number) {
@@ -338,18 +346,34 @@ export class ClipsService {
     return Math.min(100, Math.max(1, Math.trunc(value)));
   }
 
-  private assertCanAccessClip(
-    clip: { visibility: ClipVisibility; status: ClipStatus },
+  private async assertCanAccessClip(
+    clip: {
+      visibility: ClipVisibility;
+      status: ClipStatus;
+      collection: { groups: { groupId: string }[] } | null;
+    },
     user: AuthUser,
   ) {
     if (user.role === Role.ADMIN) return;
+
     if (
-      clip.visibility === ClipVisibility.PUBLIC &&
-      clip.status === ClipStatus.READY
+      clip.visibility !== ClipVisibility.PUBLIC ||
+      clip.status !== ClipStatus.READY
     ) {
-      return;
+      throw new ForbiddenException('No tenés acceso a este clip');
     }
-    throw new ForbiddenException('No tenés acceso a este clip');
+
+    // Los grupos de la coleccion solo achican: un clip PRIVADO no se vuelve
+    // visible por pertenecer a un grupo, ya se rechazo arriba.
+    const collectionGroupIds = (clip.collection?.groups ?? []).map(
+      (item) => item.groupId,
+    );
+    if (!collectionGroupIds.length) return;
+
+    const groupIds = await getUserGroupIds(this.prisma, user.id);
+    if (!canReachCollection(collectionGroupIds, groupIds)) {
+      throw new ForbiddenException('No tenés acceso a este clip');
+    }
   }
 
   private async findAccessibleClip(
@@ -363,7 +387,7 @@ export class ClipsService {
     });
 
     if (!clip) throw new NotFoundException('Clip no encontrado');
-    this.assertCanAccessClip(clip, user);
+    await this.assertCanAccessClip(clip, user);
 
     return clip;
   }
