@@ -320,6 +320,26 @@ describe('ClipsService', () => {
     expect(r2.createReadUrl).not.toHaveBeenCalled();
   });
 
+  it('saca el clip de su coleccion con collectionId null', async () => {
+    prisma.clip.findFirst.mockResolvedValue({ id: 'clip-15' });
+    prisma.clip.update.mockResolvedValue({ id: 'clip-15', collectionId: null });
+
+    await service.update(
+      PROJECT_A,
+      'clip-15',
+      { collectionId: null },
+      { id: 'admin-1', role: Role.ADMIN },
+    );
+
+    // No hay coleccion que validar cuando se esta limpiando el campo.
+    expect(prisma.clipCollection.findFirst).not.toHaveBeenCalled();
+    expect(prisma.clip.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ collectionId: null }),
+      }),
+    );
+  });
+
   it('devuelve 404 al pedir un clip de otro proyecto', async () => {
     prisma.clip.findFirst.mockResolvedValue(null);
 
