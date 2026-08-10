@@ -527,6 +527,41 @@ describe('ClipsService', () => {
     );
   });
 
+  it.each([
+    [
+      'update',
+      (service: ClipsService) =>
+        service.update(
+          PROJECT_A,
+          'clip-30',
+          { collectionId: 'collection-1' },
+          { id: 'admin-1', role: Role.ADMIN },
+        ),
+    ],
+    [
+      'setVisibility',
+      (service: ClipsService) =>
+        service.setVisibility(PROJECT_A, 'clip-30', ClipVisibility.PUBLIC, {
+          id: 'admin-1',
+          role: Role.ADMIN,
+        }),
+    ],
+  ])(
+    'devuelve thumbnailUrl desde %s, para no borrar la miniatura al parchear la vista',
+    async (_name, call) => {
+      prisma.clip.findFirst.mockResolvedValue({ id: 'clip-30' });
+      prisma.clipCollection.findFirst.mockResolvedValue({ id: 'collection-1' });
+      prisma.clip.update.mockResolvedValue({
+        id: 'clip-30',
+        thumbnailKey: `${PROJECT_A}/clips/clip-30/thumbnail.jpg`,
+      });
+
+      const result = await call(service);
+
+      expect(result.thumbnailUrl).toBe('https://r2.example.com/signed-get');
+    },
+  );
+
   it('publica seteando visibilidad y publishedAt', async () => {
     prisma.clip.findFirst.mockResolvedValue({ id: 'clip-6' });
     prisma.clip.update.mockResolvedValue({
