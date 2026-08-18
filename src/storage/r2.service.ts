@@ -189,6 +189,10 @@ export class R2Service {
         secretAccessKey: this.getRequiredEnv('R2_SECRET_ACCESS_KEY'),
       },
       forcePathStyle: true,
+      // Sin esto el SDK agrega x-amz-checksum-* a las URLs prefirmadas por
+      // default (desde SDK v3 fines de 2024). R2 no los tiene habilitados
+      // en su config CORS y el PUT del browser se cae en el preflight.
+      requestChecksumCalculation: 'WHEN_REQUIRED',
     });
 
     return this.client;

@@ -207,6 +207,10 @@ export class UploadsService {
       endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
       credentials: { accessKeyId, secretAccessKey },
       forcePathStyle: true,
+      // Sin esto el SDK agrega x-amz-checksum-* a las URLs prefirmadas por
+      // default (desde SDK v3 fines de 2024). R2 no los tiene habilitados
+      // en su config CORS y el PUT del browser se cae en el preflight.
+      requestChecksumCalculation: 'WHEN_REQUIRED',
     });
 
     return this.s3;
