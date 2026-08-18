@@ -74,6 +74,16 @@ export class ProjectsService {
     return project.id;
   }
 
+  /** Rol de membresia del usuario en el proyecto, o null si no es miembro. */
+  async resolveRole(userId: string, projectId: string): Promise<Role | null> {
+    const membership = await this.prisma.projectMember.findUnique({
+      where: { projectId_userId: { projectId, userId } },
+      select: { role: true },
+    });
+
+    return membership?.role ?? null;
+  }
+
   /** Proyecto por defecto al iniciar sesion: la membresia mas antigua. */
   async resolveDefaultProjectId(userId: string) {
     const membership = await this.prisma.projectMember.findFirst({

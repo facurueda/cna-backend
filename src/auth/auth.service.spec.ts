@@ -64,6 +64,7 @@ describe('AuthService', () => {
       { sendPasswordResetCode: jest.fn() } as never,
       {
         resolveDefaultProjectId: jest.fn().mockResolvedValue('project-a'),
+        resolveRole: jest.fn().mockResolvedValue(null),
         listForUser: jest.fn().mockResolvedValue([]),
         ensureDefaultMembership: jest.fn(),
         assertMembership: jest.fn(),

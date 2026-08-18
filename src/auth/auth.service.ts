@@ -97,9 +97,17 @@ export class AuthService {
     const activeProjectId =
       projectId ?? (await this.projects.resolveDefaultProjectId(user.id));
 
+    // El rol efectivo es el de la membresia del proyecto activo (ver JwtStrategy):
+    // firmar `user.role` a secas desincroniza el claim del token de lo que
+    // RolesGuard termina autorizando en cada request.
+    const effectiveRole = activeProjectId
+      ? ((await this.projects.resolveRole(user.id, activeProjectId)) ??
+        user.role)
+      : user.role;
+
     const accessToken = this.jwt.sign({
       sub: user.id,
-      role: user.role,
+      role: effectiveRole,
       email: user.email,
       ...(activeProjectId ? { pid: activeProjectId } : {}),
     });
