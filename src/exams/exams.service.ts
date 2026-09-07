@@ -15,6 +15,8 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateExamDto } from './dto/create-exam.dto';
 import { AnswerExamQuestionDto } from './dto/answer-exam-question.dto';
+import { FinishExamDto } from './dto/finish-exam.dto';
+import { SubmitExamAnswersDto } from './dto/submit-exam-answers.dto';
 import { UserStatsService } from '../users/user-stats.service';
 import { isFinalExamCatalogClosed } from '../final-exams/final-exam-availability';
 import { isPhraseAnswerCorrect } from './phrase-answer-match';
@@ -534,7 +536,118 @@ export class ExamsService {
     return { ok: true };
   }
 
-  async finish(id: string, user: AuthUserPayload) {
+  /**
+   * Upsert many answers for a still-open exam in a single transaction.
+   *
+   * The frontend calls this to reconcile answers it stored locally while the
+   * connection was flaky (periodic retry, on reconnect, and right before
+   * finishing). It is idempotent: re-sending the same answers is a no-op.
+   */
+  async answerBulk(
+    id: string,
+    user: AuthUserPayload,
+    dto: SubmitExamAnswersDto,
+  ) {
+    const exam = await this.prisma.exam.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        userId: true,
+        status: true,
+        examType: true,
+        catalogKind: true,
+        finalExamCatalog: {
+          select: { availableUntilDate: true },
+        },
+      },
+    });
+
+    if (!exam) throw new NotFoundException('Exam not found');
+    this.ensureExamAccess(exam.userId, user);
+    this.ensurePendingFinalExamIsOpen(
+      exam.examType,
+      exam.status,
+      exam.finalExamCatalog?.availableUntilDate,
+    );
+
+    if (exam.status !== ExamStatus.PENDING) {
+      throw new BadRequestException('Exam is already finished');
+    }
+
+    // Last write wins if the same question shows up twice in the payload.
+    const answersByQuestionId = new Map<string, AnswerExamQuestionDto>();
+    for (const answer of dto.answers) {
+      answersByQuestionId.set(answer.examQuestionId, answer);
+    }
+
+    const questionIds = [...answersByQuestionId.keys()];
+    const questions = await this.prisma.examQuestion.findMany({
+      where: { id: { in: questionIds }, examId: exam.id },
+      select: { id: true, options: { select: { key: true } } },
+    });
+    const questionById = new Map(questions.map((q) => [q.id, q]));
+
+    const missing = questionIds.filter((qid) => !questionById.has(qid));
+    if (missing.length > 0) {
+      throw new NotFoundException(
+        `Exam question(s) not found for this exam: ${missing.join(', ')}`,
+      );
+    }
+
+    if (exam.catalogKind === FinalExamCatalogKind.SEARCH) {
+      await this.prisma.$transaction(
+        [...answersByQuestionId.values()].map((answer) =>
+          this.prisma.examQuestion.update({
+            where: { id: answer.examQuestionId },
+            data: { submittedText: answer.freeText?.trim() || null },
+          }),
+        ),
+      );
+
+      return { ok: true, saved: answersByQuestionId.size };
+    }
+
+    // Validate every answer before touching the database.
+    const normalizedByQuestionId = new Map<string, string[]>();
+    for (const [questionId, answer] of answersByQuestionId) {
+      const selectedKeys = this.normalizeUniqueKeys(answer.selectedKeys ?? []);
+      const allowedKeys = new Set(
+        questionById.get(questionId)!.options.map((option) => option.key),
+      );
+
+      for (const key of selectedKeys) {
+        if (!allowedKeys.has(key)) {
+          throw new BadRequestException(
+            `Invalid selected key "${key}" for question ${questionId}`,
+          );
+        }
+      }
+
+      normalizedByQuestionId.set(questionId, selectedKeys);
+    }
+
+    await this.prisma.$transaction(async (tx) => {
+      for (const [questionId, selectedKeys] of normalizedByQuestionId) {
+        await tx.examQuestionResponse.deleteMany({
+          where: { examQuestionId: questionId },
+        });
+
+        if (selectedKeys.length > 0) {
+          await tx.examQuestionResponse.createMany({
+            data: selectedKeys.map((key) => ({
+              examQuestionId: questionId,
+              key,
+            })),
+            skipDuplicates: true,
+          });
+        }
+      }
+    });
+
+    return { ok: true, saved: normalizedByQuestionId.size };
+  }
+
+  async finish(id: string, user: AuthUserPayload, dto: FinishExamDto = {}) {
     const exam = await this.prisma.exam.findUnique({
       where: { id },
       include: {
@@ -569,6 +682,13 @@ export class ExamsService {
     if (!exam.questions.length) {
       throw new BadRequestException('Exam has no questions');
     }
+
+    // `finish` never rejects an open exam for being incomplete: unanswered
+    // questions are graded as wrong (see calculate*ExamResults). A timeout must
+    // always be able to close the exam, and the UI already keeps the manual
+    // "Finalizar" button disabled until every question is answered. `dto.reason`
+    // is accepted for telemetry and future use.
+    void dto;
 
     const { correctCount, wrongCount, scorePercent, isPassed } =
       exam.catalogKind === FinalExamCatalogKind.SEARCH

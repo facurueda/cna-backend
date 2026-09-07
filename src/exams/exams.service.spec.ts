@@ -47,7 +47,12 @@ describe('ExamsService', () => {
     },
     examQuestion: {
       findFirst: jest.fn(),
+      findMany: jest.fn(),
       update: jest.fn(),
+    },
+    examQuestionResponse: {
+      deleteMany: jest.fn(),
+      createMany: jest.fn(),
     },
   };
 
@@ -59,7 +64,15 @@ describe('ExamsService', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    prisma.$transaction.mockImplementation(async (callback) => callback(tx));
+    prisma.$transaction.mockImplementation((arg: unknown) =>
+      typeof arg === 'function'
+        ? (arg as (t: typeof tx) => unknown)(tx)
+        : Promise.all(arg as unknown[]),
+    );
+    prisma.examQuestionResponse.deleteMany.mockResolvedValue({ count: 0 });
+    prisma.examQuestionResponse.createMany.mockResolvedValue({ count: 0 });
+    tx.examQuestionResponse.deleteMany.mockResolvedValue({ count: 0 });
+    tx.examQuestionResponse.createMany.mockResolvedValue({ count: 0 });
     service = new ExamsService(
       prisma as unknown as PrismaService,
       userStatsService as unknown as UserStatsService,
@@ -526,5 +539,218 @@ describe('ExamsService', () => {
         }),
       }),
     );
+  });
+
+  describe('answerBulk', () => {
+    const user = { id: 'user-1', role: Role.GENERAL };
+
+    it('upserts every catalog answer in one pass', async () => {
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.PENDING,
+        examType: ExamType.PRACTICE,
+        catalogKind: FinalExamCatalogKind.CATALOG,
+        finalExamCatalog: null,
+      });
+      prisma.examQuestion.findMany.mockResolvedValue([
+        { id: 'q1', options: [{ key: 'a' }, { key: 'b' }] },
+        { id: 'q2', options: [{ key: 'a' }, { key: 'b' }, { key: 'c' }] },
+      ]);
+
+      const result = await service.answerBulk('exam-1', user, {
+        answers: [
+          { examQuestionId: 'q1', selectedKeys: ['a'] },
+          { examQuestionId: 'q2', selectedKeys: ['b', 'c'] },
+        ],
+      });
+
+      expect(result).toEqual({ ok: true, saved: 2 });
+      expect(tx.examQuestionResponse.deleteMany).toHaveBeenCalledTimes(2);
+      expect(tx.examQuestionResponse.createMany).toHaveBeenCalledWith({
+        data: [
+          { examQuestionId: 'q2', key: 'b' },
+          { examQuestionId: 'q2', key: 'c' },
+        ],
+        skipDuplicates: true,
+      });
+    });
+
+    it('clears the response when selectedKeys is empty (idempotent deselect)', async () => {
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.PENDING,
+        examType: ExamType.PRACTICE,
+        catalogKind: FinalExamCatalogKind.CATALOG,
+        finalExamCatalog: null,
+      });
+      prisma.examQuestion.findMany.mockResolvedValue([
+        { id: 'q1', options: [{ key: 'a' }, { key: 'b' }] },
+      ]);
+
+      await service.answerBulk('exam-1', user, {
+        answers: [{ examQuestionId: 'q1', selectedKeys: [] }],
+      });
+
+      expect(tx.examQuestionResponse.deleteMany).toHaveBeenCalledWith({
+        where: { examQuestionId: 'q1' },
+      });
+      expect(tx.examQuestionResponse.createMany).not.toHaveBeenCalled();
+    });
+
+    it('rejects an unknown option key without writing anything', async () => {
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.PENDING,
+        examType: ExamType.PRACTICE,
+        catalogKind: FinalExamCatalogKind.CATALOG,
+        finalExamCatalog: null,
+      });
+      prisma.examQuestion.findMany.mockResolvedValue([
+        { id: 'q1', options: [{ key: 'a' }, { key: 'b' }] },
+      ]);
+
+      await expect(
+        service.answerBulk('exam-1', user, {
+          answers: [{ examQuestionId: 'q1', selectedKeys: ['z'] }],
+        }),
+      ).rejects.toThrow('Invalid selected key "z"');
+      expect(tx.examQuestionResponse.deleteMany).not.toHaveBeenCalled();
+    });
+
+    it('rejects when a question does not belong to the exam', async () => {
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.PENDING,
+        examType: ExamType.PRACTICE,
+        catalogKind: FinalExamCatalogKind.CATALOG,
+        finalExamCatalog: null,
+      });
+      prisma.examQuestion.findMany.mockResolvedValue([]);
+
+      await expect(
+        service.answerBulk('exam-1', user, {
+          answers: [{ examQuestionId: 'ghost', selectedKeys: ['a'] }],
+        }),
+      ).rejects.toThrow('Exam question(s) not found');
+    });
+
+    it('rejects when the exam is already finished', async () => {
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.FINISHED,
+        examType: ExamType.PRACTICE,
+        catalogKind: FinalExamCatalogKind.CATALOG,
+        finalExamCatalog: null,
+      });
+
+      await expect(
+        service.answerBulk('exam-1', user, {
+          answers: [{ examQuestionId: 'q1', selectedKeys: ['a'] }],
+        }),
+      ).rejects.toThrow('Exam is already finished');
+    });
+
+    it('stores free-text for SEARCH exams', async () => {
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.PENDING,
+        examType: ExamType.FINAL,
+        catalogKind: FinalExamCatalogKind.SEARCH,
+        finalExamCatalog: { availableUntilDate: null },
+      });
+      prisma.examQuestion.findMany.mockResolvedValue([
+        { id: 'q1', options: [] },
+        { id: 'q2', options: [] },
+      ]);
+
+      const result = await service.answerBulk('exam-1', user, {
+        answers: [
+          { examQuestionId: 'q1', freeText: '  7.8 b ' },
+          { examQuestionId: 'q2', freeText: '' },
+        ],
+      });
+
+      expect(result).toEqual({ ok: true, saved: 2 });
+      expect(prisma.examQuestion.update).toHaveBeenCalledWith({
+        where: { id: 'q1' },
+        data: { submittedText: '7.8 b' },
+      });
+      expect(prisma.examQuestion.update).toHaveBeenCalledWith({
+        where: { id: 'q2' },
+        data: { submittedText: null },
+      });
+    });
+  });
+
+  describe('finish reason', () => {
+    it('closes a timed-out exam even with unanswered questions (graded as wrong)', async () => {
+      const finishedAt = new Date('2026-05-02T10:00:00.000Z');
+      jest.useFakeTimers().setSystemTime(finishedAt);
+
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.PENDING,
+        examType: ExamType.PRACTICE,
+        catalogKind: FinalExamCatalogKind.CATALOG,
+        passThresholdPercent: 80,
+        finalExamCatalogId: null,
+        attemptNumber: null,
+        finalExamCatalog: null,
+        questions: [
+          {
+            position: 1,
+            questionCode: 'c1',
+            questionText: 't1',
+            categoryName: null,
+            options: [{ position: 1, key: 'a', text: 'A' }],
+            correctKeys: [{ key: 'a' }],
+            responses: [{ key: 'a' }],
+          },
+          {
+            position: 2,
+            questionCode: 'c2',
+            questionText: 't2',
+            categoryName: null,
+            options: [{ position: 1, key: 'a', text: 'A' }],
+            correctKeys: [{ key: 'a' }],
+            responses: [],
+          },
+        ],
+      });
+      tx.exam.update.mockResolvedValue({
+        id: 'exam-1',
+        status: ExamStatus.FINISHED,
+        questionCount: 2,
+        correctCount: 1,
+        wrongCount: 1,
+        scorePercent: 50,
+        isPassed: false,
+        finishedAt,
+      });
+
+      const result = await service.finish(
+        'exam-1',
+        { id: 'user-1', role: Role.GENERAL },
+        { reason: 'TIMEOUT' },
+      );
+
+      expect(result.status).toBe(ExamStatus.FINISHED);
+      expect(tx.exam.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            correctCount: 1,
+            wrongCount: 1,
+            scorePercent: 50,
+          }),
+        }),
+      );
+    });
   });
 });
