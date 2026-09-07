@@ -60,6 +60,17 @@ export class ClipsController {
     return this.clipsService.markUploaded(projectId, id, dto, user);
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN)
+  @Post(':id/thumbnail-upload-url')
+  createThumbnailUploadUrl(
+    @ActiveProject() projectId: string,
+    @Param('id') id: string,
+    @AuthUser() user: AuthUserPayload,
+  ) {
+    return this.clipsService.createThumbnailUploadUrl(projectId, id, user);
+  }
+
   @Get(':id')
   get(
     @ActiveProject() projectId: string,
