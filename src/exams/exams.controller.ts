@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AnswerExamQuestionDto } from './dto/answer-exam-question.dto';
 import { CreateExamDto } from './dto/create-exam.dto';
+import { FinishExamDto } from './dto/finish-exam.dto';
+import { SubmitExamAnswersDto } from './dto/submit-exam-answers.dto';
 import { ExamsService } from './exams.service';
 
 type AuthUserPayload = {
@@ -48,8 +58,21 @@ export class ExamsController {
     return this.examsService.answer(id, user, dto);
   }
 
+  @Put(':id/answers')
+  answerBulk(
+    @Param('id') id: string,
+    @AuthUser() user: AuthUserPayload,
+    @Body() dto: SubmitExamAnswersDto,
+  ) {
+    return this.examsService.answerBulk(id, user, dto);
+  }
+
   @Post(':id/finish')
-  finish(@Param('id') id: string, @AuthUser() user: AuthUserPayload) {
-    return this.examsService.finish(id, user);
+  finish(
+    @Param('id') id: string,
+    @AuthUser() user: AuthUserPayload,
+    @Body() dto: FinishExamDto = {},
+  ) {
+    return this.examsService.finish(id, user, dto);
   }
 }
