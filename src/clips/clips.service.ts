@@ -198,6 +198,37 @@ export class ClipsService {
     return this.withThumbnailUrl(projectId, updated);
   }
 
+  /**
+   * Re-firma el PUT de la miniatura sobre la key existente del clip, para
+   * reprocesar un thumbnail ya subido (por ej. si salio en negro) sin recrear
+   * el clip entero. El objeto en R2 queda sobreescrito apenas el caller hace
+   * el PUT; no hay paso de confirmacion aparte porque el clip ya esta READY.
+   */
+  async createThumbnailUploadUrl(projectId: string, id: string, user: AuthUser) {
+    const clip = await this.assertClipExists(projectId, id);
+    const bucket = await this.resolveProjectBucket(projectId);
+    const key = clip.thumbnailKey ?? this.r2.buildThumbnailKey(projectId, clip.id);
+    this.r2.assertKeyBelongsToProject(key, projectId);
+
+    const upload = await this.r2.createUploadUrl(key, THUMBNAIL_CONTENT_TYPE, {
+      bucket,
+    });
+
+    if (!clip.thumbnailKey) {
+      await this.prisma.clip.update({
+        where: { id: clip.id },
+        data: { thumbnailKey: key },
+      });
+    }
+
+    return {
+      thumbnailUploadUrl: upload.uploadUrl,
+      thumbnailKey: upload.key,
+      thumbnailContentType: THUMBNAIL_CONTENT_TYPE,
+      expiresIn: upload.expiresIn,
+    };
+  }
+
   async getById(projectId: string, id: string, user: AuthUser) {
     const clip = await this.findAccessibleClip(projectId, id, user);
     return this.withThumbnailUrl(projectId, clip);
