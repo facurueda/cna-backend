@@ -314,6 +314,23 @@ export class FinalExamsService {
     return this.getCatalogById(id);
   }
 
+  async deleteCatalog(id: string) {
+    const catalog = await this.prisma.finalExamCatalog.findUnique({
+      where: { id },
+      select: { id: true },
+    });
+
+    if (!catalog) throw new NotFoundException('Final exam catalog not found');
+
+    // Las tablas puente (categories, groups, fixedQuestions, pairs, phrases)
+    // tienen onDelete: Cascade, así que se borran solas.
+    // Los intentos ya rendidos (Exam) NO se borran: la relación es
+    // onDelete: SetNull, por lo que quedan en la DB desvinculados del catálogo.
+    await this.prisma.finalExamCatalog.delete({ where: { id } });
+
+    return { id };
+  }
+
   async listAllCatalogs() {
     const catalogs = await this.prisma.finalExamCatalog.findMany({
       orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],

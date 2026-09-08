@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { Role } from '@prisma/client';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -32,6 +40,13 @@ export class FinalExamsController {
   @Post(':id/publish')
   publishCatalog(@Param('id') id: string) {
     return this.finalExamsService.publishCatalog(id);
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN)
+  @Delete(':id')
+  deleteCatalog(@Param('id') id: string) {
+    return this.finalExamsService.deleteCatalog(id);
   }
 
   @UseGuards(RolesGuard)
