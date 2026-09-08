@@ -27,6 +27,7 @@ describe('FinalExamsService', () => {
       findUnique: jest.fn(),
       findMany: jest.fn(),
       update: jest.fn(),
+      delete: jest.fn(),
     },
     exam: { findFirst: jest.fn(), findMany: jest.fn(), count: jest.fn() },
   };
@@ -759,6 +760,27 @@ describe('FinalExamsService', () => {
     await expect(
       service.startAttempt('catalog-1', { id: 'user-1', role: Role.GENERAL }),
     ).rejects.toBeInstanceOf(ConflictException);
+  });
+
+  it('deletes an existing catalog', async () => {
+    prisma.finalExamCatalog.findUnique.mockResolvedValue({ id: 'catalog-1' });
+    prisma.finalExamCatalog.delete.mockResolvedValue({ id: 'catalog-1' });
+
+    const result = await service.deleteCatalog('catalog-1');
+
+    expect(prisma.finalExamCatalog.delete).toHaveBeenCalledWith({
+      where: { id: 'catalog-1' },
+    });
+    expect(result).toEqual({ id: 'catalog-1' });
+  });
+
+  it('throws not found when deleting a missing catalog', async () => {
+    prisma.finalExamCatalog.findUnique.mockResolvedValue(null);
+
+    await expect(service.deleteCatalog('missing')).rejects.toBeInstanceOf(
+      NotFoundException,
+    );
+    expect(prisma.finalExamCatalog.delete).not.toHaveBeenCalled();
   });
 
   it('lists linked referees with their final exam progress', async () => {
