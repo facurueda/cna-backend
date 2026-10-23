@@ -25,7 +25,11 @@ type FinishView = {
   correctCount: number;
   wrongCount: number;
 };
-type BulkView = { ok: boolean; saved: number };
+type BulkView = {
+  ok: boolean;
+  saved: number;
+  rejected: { examQuestionId: string; reason: string }[];
+};
 
 const body = <T>(res: request.Response): T => res.body as T;
 
@@ -150,7 +154,7 @@ describe('Exam offline sync (e2e)', () => {
       ],
     });
     expect(bulk.status).toBe(200);
-    expect(body<BulkView>(bulk)).toEqual({ ok: true, saved: 2 });
+    expect(body<BulkView>(bulk)).toEqual({ ok: true, saved: 2, rejected: [] });
 
     // retry worker re-sends everything it still has: must be idempotent
     const resend = await authedPut(`/exams/${examId}/answers`).send({
@@ -160,7 +164,7 @@ describe('Exam offline sync (e2e)', () => {
       })),
     });
     expect(resend.status).toBe(200);
-    expect(body<BulkView>(resend)).toEqual({ ok: true, saved: 4 });
+    expect(body<BulkView>(resend)).toEqual({ ok: true, saved: 4, rejected: [] });
 
     // an invalid option key is rejected and writes nothing
     const bad = await authedPut(`/exams/${examId}/answers`).send({

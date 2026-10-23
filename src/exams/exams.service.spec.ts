@@ -565,7 +565,7 @@ describe('ExamsService', () => {
         ],
       });
 
-      expect(result).toEqual({ ok: true, saved: 2 });
+      expect(result).toEqual({ ok: true, saved: 2, rejected: [] });
       expect(tx.examQuestionResponse.deleteMany).toHaveBeenCalledTimes(2);
       expect(tx.examQuestionResponse.createMany).toHaveBeenCalledWith({
         data: [
@@ -599,7 +599,7 @@ describe('ExamsService', () => {
       expect(tx.examQuestionResponse.createMany).not.toHaveBeenCalled();
     });
 
-    it('rejects an unknown option key without writing anything', async () => {
+    it('reports an unknown option key as rejected and saves the valid answers', async () => {
       prisma.exam.findUnique.mockResolvedValue({
         id: 'exam-1',
         userId: 'user-1',
@@ -610,17 +610,28 @@ describe('ExamsService', () => {
       });
       prisma.examQuestion.findMany.mockResolvedValue([
         { id: 'q1', options: [{ key: 'a' }, { key: 'b' }] },
+        { id: 'q2', options: [{ key: 'a' }, { key: 'b' }] },
       ]);
 
-      await expect(
-        service.answerBulk('exam-1', user, {
-          answers: [{ examQuestionId: 'q1', selectedKeys: ['z'] }],
-        }),
-      ).rejects.toThrow('Invalid selected key "z"');
-      expect(tx.examQuestionResponse.deleteMany).not.toHaveBeenCalled();
+      const result = await service.answerBulk('exam-1', user, {
+        answers: [
+          { examQuestionId: 'q1', selectedKeys: ['z'] },
+          { examQuestionId: 'q2', selectedKeys: ['b'] },
+        ],
+      });
+
+      expect(result).toEqual({
+        ok: true,
+        saved: 1,
+        rejected: [{ examQuestionId: 'q1', reason: 'INVALID_KEY' }],
+      });
+      expect(tx.examQuestionResponse.deleteMany).toHaveBeenCalledTimes(1);
+      expect(tx.examQuestionResponse.deleteMany).toHaveBeenCalledWith({
+        where: { examQuestionId: 'q2' },
+      });
     });
 
-    it('rejects when a question does not belong to the exam', async () => {
+    it('reports a question that does not belong to the exam as rejected', async () => {
       prisma.exam.findUnique.mockResolvedValue({
         id: 'exam-1',
         userId: 'user-1',
@@ -631,11 +642,16 @@ describe('ExamsService', () => {
       });
       prisma.examQuestion.findMany.mockResolvedValue([]);
 
-      await expect(
-        service.answerBulk('exam-1', user, {
-          answers: [{ examQuestionId: 'ghost', selectedKeys: ['a'] }],
-        }),
-      ).rejects.toThrow('Exam question(s) not found');
+      const result = await service.answerBulk('exam-1', user, {
+        answers: [{ examQuestionId: 'ghost', selectedKeys: ['a'] }],
+      });
+
+      expect(result).toEqual({
+        ok: true,
+        saved: 0,
+        rejected: [{ examQuestionId: 'ghost', reason: 'QUESTION_NOT_FOUND' }],
+      });
+      expect(tx.examQuestionResponse.deleteMany).not.toHaveBeenCalled();
     });
 
     it('rejects when the exam is already finished', async () => {
@@ -676,7 +692,7 @@ describe('ExamsService', () => {
         ],
       });
 
-      expect(result).toEqual({ ok: true, saved: 2 });
+      expect(result).toEqual({ ok: true, saved: 2, rejected: [] });
       expect(prisma.examQuestion.update).toHaveBeenCalledWith({
         where: { id: 'q1' },
         data: { submittedText: '7.8 b' },
