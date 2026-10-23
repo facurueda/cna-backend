@@ -587,16 +587,21 @@ export class ExamsService {
     });
     const questionById = new Map(questions.map((q) => [q.id, q]));
 
-    const missing = questionIds.filter((qid) => !questionById.has(qid));
-    if (missing.length > 0) {
-      throw new NotFoundException(
-        `Exam question(s) not found for this exam: ${missing.join(', ')}`,
-      );
+    // Permanent per-answer problems are reported back instead of failing the
+    // whole batch, so one bad answer can never block the valid ones.
+    const rejected: { examQuestionId: string; reason: string }[] = [];
+    for (const qid of questionIds) {
+      if (!questionById.has(qid)) {
+        rejected.push({ examQuestionId: qid, reason: 'QUESTION_NOT_FOUND' });
+      }
     }
 
     if (exam.catalogKind === FinalExamCatalogKind.SEARCH) {
+      const valid = [...answersByQuestionId.values()].filter((answer) =>
+        questionById.has(answer.examQuestionId),
+      );
       await this.prisma.$transaction(
-        [...answersByQuestionId.values()].map((answer) =>
+        valid.map((answer) =>
           this.prisma.examQuestion.update({
             where: { id: answer.examQuestionId },
             data: { submittedText: answer.freeText?.trim() || null },
@@ -604,23 +609,20 @@ export class ExamsService {
         ),
       );
 
-      return { ok: true, saved: answersByQuestionId.size };
+      return { ok: true, saved: valid.length, rejected };
     }
 
-    // Validate every answer before touching the database.
     const normalizedByQuestionId = new Map<string, string[]>();
     for (const [questionId, answer] of answersByQuestionId) {
-      const selectedKeys = this.normalizeUniqueKeys(answer.selectedKeys ?? []);
-      const allowedKeys = new Set(
-        questionById.get(questionId)!.options.map((option) => option.key),
-      );
+      const question = questionById.get(questionId);
+      if (!question) continue;
 
-      for (const key of selectedKeys) {
-        if (!allowedKeys.has(key)) {
-          throw new BadRequestException(
-            `Invalid selected key "${key}" for question ${questionId}`,
-          );
-        }
+      const selectedKeys = this.normalizeUniqueKeys(answer.selectedKeys ?? []);
+      const allowedKeys = new Set(question.options.map((option) => option.key));
+
+      if (selectedKeys.some((key) => !allowedKeys.has(key))) {
+        rejected.push({ examQuestionId: questionId, reason: 'INVALID_KEY' });
+        continue;
       }
 
       normalizedByQuestionId.set(questionId, selectedKeys);
@@ -644,7 +646,7 @@ export class ExamsService {
       }
     });
 
-    return { ok: true, saved: normalizedByQuestionId.size };
+    return { ok: true, saved: normalizedByQuestionId.size, rejected };
   }
 
   async finish(id: string, user: AuthUserPayload, dto: FinishExamDto = {}) {
