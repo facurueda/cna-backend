@@ -625,6 +625,14 @@ export class FinalExamsService {
 
       return {
         user,
+        // NOT_STARTED: sin intentos; IN_PROGRESS: tiene un examen abierto ahora
+        // (aunque ya haya terminado uno anterior); FINISHED: todo lo iniciado
+        // fue enviado.
+        attemptState: pendingAttempt
+          ? ('IN_PROGRESS' as const)
+          : userExams.length > 0
+            ? ('FINISHED' as const)
+            : ('NOT_STARTED' as const),
         date: lastFinished?.finishedAt ?? null,
         result: {
           scorePercent: lastFinished?.scorePercent ?? null,
@@ -635,13 +643,13 @@ export class FinalExamsService {
           max: maxAttempts,
           remaining: remainingAttempts,
         },
+        // Intento unico: una vez enviado el examen el resultado es definitivo
+        // (aprobado o desaprobado), sin importar los reintentos que queden.
         status: hasPassed
           ? 'APPROVED'
-          : isClosed
+          : lastFinished || isClosed
             ? 'FAILED'
-            : pendingAttempt || usedAttempts < maxAttempts
-              ? 'PENDING'
-              : 'FAILED',
+            : 'PENDING',
       };
     });
 
@@ -656,8 +664,10 @@ export class FinalExamsService {
     const approvedCount = referees.filter(
       (referee) => referee.status === 'APPROVED',
     ).length;
+    // Pendiente = todavia no empezo; el que lo esta resolviendo va en `inProgress`.
     const pendingCount = referees.filter(
-      (referee) => referee.status === 'PENDING',
+      (referee) =>
+        referee.status === 'PENDING' && referee.attemptState === 'NOT_STARTED',
     ).length;
     const averageScoreOnTen =
       completedReferees.length > 0
@@ -693,6 +703,9 @@ export class FinalExamsService {
           totalResolved: completedReferees.length,
         },
         pending: pendingCount,
+        inProgress: referees.filter(
+          (referee) => referee.attemptState === 'IN_PROGRESS',
+        ).length,
       },
       referees,
     };

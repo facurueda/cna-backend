@@ -1,4 +1,5 @@
 import {
+  Optional,
   BadRequestException,
   ConflictException,
   ForbiddenException,
@@ -20,6 +21,7 @@ import { SubmitExamAnswersDto } from './dto/submit-exam-answers.dto';
 import { UserStatsService } from '../users/user-stats.service';
 import { isFinalExamCatalogClosed } from '../final-exams/final-exam-availability';
 import { isPhraseAnswerCorrect } from './phrase-answer-match';
+import { ExamActivityBus } from './exam-activity.bus';
 
 type AuthUserPayload = {
   id: string;
@@ -50,6 +52,7 @@ export class ExamsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly userStatsService: UserStatsService,
+    @Optional() private readonly activityBus?: ExamActivityBus,
   ) {}
 
   async create(user: AuthUserPayload, dto: CreateExamDto) {
@@ -116,6 +119,15 @@ export class ExamsService {
       },
       select: { id: true },
     });
+
+    if (input.finalExamCatalogId) {
+      this.activityBus?.publish({
+        catalogId: input.finalExamCatalogId,
+        userId: user.id,
+        examId: created.id,
+        kind: 'STARTED',
+      });
+    }
 
     return this.findOne(created.id, user);
   }
@@ -813,6 +825,15 @@ export class ExamsService {
 
       return finishedExam;
     });
+
+    if (exam.finalExamCatalogId) {
+      this.activityBus?.publish({
+        catalogId: exam.finalExamCatalogId,
+        userId: exam.userId,
+        examId: exam.id,
+        kind: 'FINISHED',
+      });
+    }
 
     return updated;
   }

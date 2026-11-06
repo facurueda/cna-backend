@@ -886,7 +886,8 @@ describe('FinalExamsService', () => {
         resolutions: { resolved: 1, total: 3 },
         averageScoreOnTen: 8,
         approved: { count: 1, totalResolved: 1 },
-        pending: 2,
+        pending: 1,
+        inProgress: 1,
       },
       referees: [
         {
@@ -896,6 +897,7 @@ describe('FinalExamsService', () => {
             lastName: 'Admin',
             email: 'admin@example.com',
           },
+          attemptState: 'NOT_STARTED',
           date: null,
           result: { scorePercent: null, scoreOnTen: null },
           retries: { used: 0, max: 2, remaining: 2 },
@@ -908,6 +910,7 @@ describe('FinalExamsService', () => {
             lastName: 'González',
             email: 'juan@example.com',
           },
+          attemptState: 'FINISHED',
           date: finishedAt,
           result: { scorePercent: 80, scoreOnTen: 8 },
           retries: { used: 1, max: 2, remaining: 0 },
@@ -920,6 +923,7 @@ describe('FinalExamsService', () => {
             lastName: 'Rodríguez',
             email: 'maria@example.com',
           },
+          attemptState: 'IN_PROGRESS',
           date: null,
           result: { scorePercent: null, scoreOnTen: null },
           retries: { used: 1, max: 2, remaining: 1 },
@@ -927,5 +931,52 @@ describe('FinalExamsService', () => {
         },
       ],
     });
+  });
+
+  it('marks a submitted failed exam as FAILED even with retries left', async () => {
+    const finishedAt = new Date('2026-03-03T10:00:00.000Z');
+    prisma.finalExamCatalog.findUnique.mockResolvedValue({
+      id: 'catalog-1',
+      title: 'Final febrero',
+      status: FinalExamCatalogStatus.PUBLISHED,
+      questionCount: 20,
+      availableUntilDate: null,
+      maxRetries: 2,
+      createdAt: new Date('2026-03-01T10:00:00.000Z'),
+      groups: [
+        { groupId: 'group-1', group: { id: 'group-1', name: 'Grupo A' } },
+      ],
+    });
+    prisma.userGroup.findMany.mockResolvedValue([
+      {
+        userId: 'user-1',
+        user: {
+          id: 'user-1',
+          firstName: 'Juan',
+          lastName: 'González',
+          email: 'juan@example.com',
+        },
+      },
+    ]);
+    prisma.exam.findMany.mockResolvedValue([
+      {
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.FINISHED,
+        isPassed: false,
+        scorePercent: 40,
+        attemptNumber: 1,
+        createdAt: finishedAt,
+        finishedAt,
+      },
+    ]);
+
+    const result = await service.listCatalogReferees('catalog-1');
+
+    expect(result.referees[0]).toMatchObject({
+      attemptState: 'FINISHED',
+      status: 'FAILED',
+    });
+    expect(result.summary).toMatchObject({ pending: 0, inProgress: 0 });
   });
 });
