@@ -8,6 +8,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Role } from '@prisma/client';
+import { Roles } from '../auth/roles/roles.decorator';
+import { RolesGuard } from '../auth/roles/roles.guard';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { AnswerExamQuestionDto } from './dto/answer-exam-question.dto';
@@ -39,6 +41,13 @@ export class ExamsController {
   @Get(':id')
   findOne(@Param('id') id: string, @AuthUser() user: AuthUserPayload) {
     return this.examsService.findOne(id, user);
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN)
+  @Get(':id/live')
+  findLive(@Param('id') id: string) {
+    return this.examsService.findLive(id);
   }
 
   @Get(':examId/review')

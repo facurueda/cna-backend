@@ -74,6 +74,7 @@ describe('FinalExamsGateway', () => {
     await expect(received).resolves.toEqual({
       catalogId: 'c1',
       userId: 'u1',
+      examId: 'e1',
       kind: 'FINISHED',
     });
   });
@@ -99,5 +100,36 @@ describe('FinalExamsGateway', () => {
     expect(prisma.user.findUnique).not.toHaveBeenCalledWith(
       expect.objectContaining({ where: { id: 'basura' } }),
     );
+  });
+
+  it('reenvia el progreso con las respuestas que cambiaron', async () => {
+    prisma.user.findUnique.mockResolvedValue({ id: 'a1', role: 'ADMIN' });
+    const socket = connect(await jwt.signAsync({ sub: 'a1' }));
+    await new Promise<void>((resolve) => socket.on('connect', () => resolve()));
+    await socket.emitWithAck('subscribe', { catalogId: 'c9' });
+
+    const received = new Promise((resolve) => socket.on('progress', resolve));
+    bus.publish({
+      catalogId: 'c9',
+      userId: 'u1',
+      examId: 'e1',
+      kind: 'PROGRESS',
+      progress: {
+        answered: 3,
+        total: 10,
+        scorePercent: 30,
+        answers: [{ examQuestionId: 'q1', selectedKeys: ['a'] }],
+      },
+    });
+
+    await expect(received).resolves.toEqual({
+      catalogId: 'c9',
+      userId: 'u1',
+      examId: 'e1',
+      answered: 3,
+      total: 10,
+      scorePercent: 30,
+      answers: [{ examQuestionId: 'q1', selectedKeys: ['a'] }],
+    });
   });
 });

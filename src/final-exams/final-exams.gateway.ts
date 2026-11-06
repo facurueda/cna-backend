@@ -56,9 +56,19 @@ export class FinalExamsGateway
 
   onModuleInit() {
     this.subscription = this.bus.events$.subscribe((event) => {
+      if (event.kind === 'PROGRESS') {
+        this.server?.to(roomOf(event.catalogId)).emit('progress', {
+          catalogId: event.catalogId,
+          userId: event.userId,
+          examId: event.examId,
+          ...event.progress,
+        });
+        return;
+      }
       this.server?.to(roomOf(event.catalogId)).emit('activity', {
         catalogId: event.catalogId,
         userId: event.userId,
+        examId: event.examId,
         kind: event.kind,
       });
     });
