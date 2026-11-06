@@ -502,6 +502,7 @@ export class FinalExamsService {
         availableUntilDate: true,
         maxRetries: true,
         createdAt: true,
+        kind: true,
         groups: {
           select: {
             groupId: true,
@@ -541,10 +542,81 @@ export class FinalExamsService {
         isPassed: true,
         scorePercent: true,
         attemptNumber: true,
+        questionCount: true,
         createdAt: true,
         finishedAt: true,
       },
     });
+
+    // Progreso de los examenes abiertos: cuantas preguntas respondio cada uno.
+    const openExamIds = exams
+      .filter((exam) => exam.status === ExamStatus.PENDING)
+      .map((exam) => exam.id);
+    const openQuestions = openExamIds.length
+      ? await this.prisma.examQuestion.findMany({
+          where: { examId: { in: openExamIds } },
+          select: {
+            examId: true,
+            categoryName: true,
+            submittedText: true,
+            responses: { select: { key: true } },
+            correctKeys: { select: { key: true } },
+          },
+        })
+      : [];
+    const openQuestionsByExamId = new Map<string, typeof openQuestions>();
+    for (const question of openQuestions) {
+      const current = openQuestionsByExamId.get(question.examId) ?? [];
+      current.push(question);
+      openQuestionsByExamId.set(question.examId, current);
+    }
+
+    // Progreso de los examenes ya enviados (el ultimo de cada arbitro): cuantas
+    // preguntas llego a responder. Consulta liviana: no hace falta la correccion.
+    const lastFinishedByUserId = new Map<string, (typeof exams)[number]>();
+    for (const exam of exams) {
+      if (
+        exam.status === ExamStatus.FINISHED &&
+        !lastFinishedByUserId.has(exam.userId)
+      ) {
+        lastFinishedByUserId.set(exam.userId, exam);
+      }
+    }
+    const finishedExamIds = Array.from(lastFinishedByUserId.values()).map(
+      (exam) => exam.id,
+    );
+    const finishedQuestions = finishedExamIds.length
+      ? await this.prisma.examQuestion.findMany({
+          where: { examId: { in: finishedExamIds } },
+          select: {
+            examId: true,
+            submittedText: true,
+            responses: { select: { id: true }, take: 1 },
+          },
+        })
+      : [];
+    const answeredByFinishedExamId = new Map<string, number>();
+    for (const question of finishedQuestions) {
+      if (question.responses.length > 0 || question.submittedText) {
+        answeredByFinishedExamId.set(
+          question.examId,
+          (answeredByFinishedExamId.get(question.examId) ?? 0) + 1,
+        );
+      }
+    }
+
+    const liveStatsOf = (examId: string) => {
+      const questions = openQuestionsByExamId.get(examId) ?? [];
+      return {
+        answered: questions.filter(
+          (q) => q.responses.length > 0 || Boolean(q.submittedText),
+        ).length,
+        scorePercent: this.examsService.partialScorePercent(
+          catalog.kind,
+          questions,
+        ),
+      };
+    };
 
     let users: {
       id: string;
@@ -623,8 +695,22 @@ export class FinalExamsService {
       const remainingAttempts =
         hasPassed || isClosed ? 0 : Math.max(0, maxAttempts - usedAttempts);
 
+      // Progreso: preguntas respondidas / total del examen que corresponde (el
+      // abierto, si lo esta resolviendo; si no, el ultimo enviado).
+      const live = pendingAttempt ? liveStatsOf(pendingAttempt.id) : null;
+      const progress =
+        pendingAttempt && live
+          ? { answered: live.answered, total: pendingAttempt.questionCount }
+          : lastFinished
+            ? {
+                answered: answeredByFinishedExamId.get(lastFinished.id) ?? 0,
+                total: lastFinished.questionCount,
+              }
+            : { answered: 0, total: catalog.questionCount };
+
       return {
         user,
+        progress,
         // NOT_STARTED: sin intentos; IN_PROGRESS: tiene un examen abierto ahora
         // (aunque ya haya terminado uno anterior); FINISHED: todo lo iniciado
         // fue enviado.
@@ -633,6 +719,14 @@ export class FinalExamsService {
           : userExams.length > 0
             ? ('FINISHED' as const)
             : ('NOT_STARTED' as const),
+        liveExam: pendingAttempt
+          ? {
+              examId: pendingAttempt.id,
+              ...live,
+              total: pendingAttempt.questionCount,
+              startedAt: pendingAttempt.createdAt,
+            }
+          : null,
         date: lastFinished?.finishedAt ?? null,
         result: {
           scorePercent: lastFinished?.scorePercent ?? null,
@@ -740,11 +834,7 @@ export class FinalExamsService {
     if (!catalog) throw new NotFoundException('Final exam catalog not found');
     const isSearch = catalog.kind === FinalExamCatalogKind.SEARCH;
     const hasFixedQuestions = !isSearch && catalog.fixedQuestions.length > 0;
-    if (
-      !isSearch &&
-      !hasFixedQuestions &&
-      !catalog.categories.length
-    ) {
+    if (!isSearch && !hasFixedQuestions && !catalog.categories.length) {
       throw new BadRequestException('Final exam catalog has no categories');
     }
     if (isSearch && catalog.phrases.length === 0) {

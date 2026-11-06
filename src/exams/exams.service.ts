@@ -21,7 +21,10 @@ import { SubmitExamAnswersDto } from './dto/submit-exam-answers.dto';
 import { UserStatsService } from '../users/user-stats.service';
 import { isFinalExamCatalogClosed } from '../final-exams/final-exam-availability';
 import { isPhraseAnswerCorrect } from './phrase-answer-match';
-import { ExamActivityBus } from './exam-activity.bus';
+import {
+  ExamActivityBus,
+  FinalExamProgressAnswer,
+} from './exam-activity.bus';
 
 type AuthUserPayload = {
   id: string;
@@ -470,6 +473,7 @@ export class ExamsService {
         status: true,
         examType: true,
         catalogKind: true,
+        finalExamCatalogId: true,
         finalExamCatalog: {
           select: { availableUntilDate: true },
         },
@@ -502,6 +506,14 @@ export class ExamsService {
         where: { id: searchQuestion.id },
         data: { submittedText: dto.freeText?.trim() || null },
       });
+
+      void this.publishProgress(exam, [
+        {
+          examQuestionId: searchQuestion.id,
+          selectedKeys: [],
+          freeText: dto.freeText?.trim() || null,
+        },
+      ]);
 
       return { ok: true };
     }
@@ -545,6 +557,10 @@ export class ExamsService {
       }
     });
 
+    void this.publishProgress(exam, [
+      { examQuestionId: question.id, selectedKeys },
+    ]);
+
     return { ok: true };
   }
 
@@ -568,6 +584,7 @@ export class ExamsService {
         status: true,
         examType: true,
         catalogKind: true,
+        finalExamCatalogId: true,
         finalExamCatalog: {
           select: { availableUntilDate: true },
         },
@@ -621,6 +638,15 @@ export class ExamsService {
         ),
       );
 
+      void this.publishProgress(
+        exam,
+        valid.map((answer) => ({
+          examQuestionId: answer.examQuestionId,
+          selectedKeys: [],
+          freeText: answer.freeText?.trim() || null,
+        })),
+      );
+
       return { ok: true, saved: valid.length, rejected };
     }
 
@@ -657,6 +683,14 @@ export class ExamsService {
         }
       }
     });
+
+    void this.publishProgress(
+      exam,
+      [...normalizedByQuestionId].map(([examQuestionId, selectedKeys]) => ({
+        examQuestionId,
+        selectedKeys,
+      })),
+    );
 
     return { ok: true, saved: normalizedByQuestionId.size, rejected };
   }
@@ -698,7 +732,8 @@ export class ExamsService {
     }
 
     // `finish` never rejects an open exam for being incomplete: unanswered
-    // questions are graded as wrong (see calculate*ExamResults). A timeout must
+    // questions score 0 points (they neither add nor subtract, see
+    // calculateExamResults). A timeout must
     // always be able to close the exam, and the UI already keeps the manual
     // "Finalizar" button disabled until every question is answered. `dto.reason`
     // is accepted for telemetry and future use.
@@ -838,6 +873,177 @@ export class ExamsService {
     return updated;
   }
 
+  /**
+   * Avisa a los admins que estan mirando el examen de que un arbitro guardo
+   * respuestas. Va "fire and forget": el tiempo real nunca debe demorar ni romper
+   * el guardado de una respuesta.
+   */
+  private async publishProgress(
+    exam: {
+      id: string;
+      userId: string;
+      finalExamCatalogId: string | null;
+      catalogKind: FinalExamCatalogKind;
+    },
+    changed: FinalExamProgressAnswer[],
+  ) {
+    if (!this.activityBus || !exam.finalExamCatalogId || changed.length === 0) {
+      return;
+    }
+
+    try {
+      const questions = await this.prisma.examQuestion.findMany({
+        where: { examId: exam.id },
+        select: {
+          id: true,
+          categoryName: true,
+          submittedText: true,
+          responses: { select: { key: true } },
+          correctKeys: { select: { key: true } },
+        },
+      });
+
+      const isSearch = exam.catalogKind === FinalExamCatalogKind.SEARCH;
+      const questionById = new Map(questions.map((q) => [q.id, q]));
+      const answers = changed.map((answer) => {
+        if (!isSearch) return answer;
+        const question = questionById.get(answer.examQuestionId);
+        return {
+          ...answer,
+          isCorrect: isPhraseAnswerCorrect(
+            question?.categoryName,
+            answer.freeText,
+          ),
+        };
+      });
+
+      this.activityBus.publish({
+        catalogId: exam.finalExamCatalogId,
+        userId: exam.userId,
+        examId: exam.id,
+        kind: 'PROGRESS',
+        progress: {
+          answered: questions.filter(
+            (q) => q.responses.length > 0 || Boolean(q.submittedText),
+          ).length,
+          total: questions.length,
+          scorePercent: this.partialScorePercent(exam.catalogKind, questions),
+          answers,
+        },
+      });
+    } catch {
+      // Se ignora a proposito: la proxima sincronizacion vuelve a avisar.
+    }
+  }
+
+  /**
+   * Nota que tendria un examen abierto si se cerrara ahora: es la nota final, no
+   * el avance. Usa la regla de `calculateExamResults`: lo que todavia no se marco
+   * no suma ni resta, pero el total sigue siendo el de todo el examen, asi que el
+   * porcentaje sube a medida que el arbitro acierta.
+   */
+  partialScorePercent(
+    catalogKind: FinalExamCatalogKind,
+    questions: {
+      categoryName: string | null;
+      submittedText: string | null;
+      correctKeys: { key: string }[];
+      responses: { key: string }[];
+    }[],
+  ): number {
+    return (
+      catalogKind === FinalExamCatalogKind.SEARCH
+        ? this.calculatePhraseExamResults(questions, 0)
+        : this.calculateExamResults(questions, 0)
+    ).scorePercent;
+  }
+
+  /** Vista en vivo para admins: examen con respuestas (parciales) y correccion. */
+  async findLive(id: string) {
+    const exam = await this.prisma.exam.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
+        questions: {
+          orderBy: [{ position: 'asc' }, { id: 'asc' }],
+          include: {
+            options: {
+              orderBy: [{ position: 'asc' }, { id: 'asc' }],
+              select: { key: true, text: true },
+            },
+            correctKeys: { select: { key: true } },
+            responses: { select: { key: true } },
+          },
+        },
+      },
+    });
+
+    if (!exam) throw new NotFoundException('Exam not found');
+
+    const isSearch = exam.catalogKind === FinalExamCatalogKind.SEARCH;
+    const questions = exam.questions.map((question) => {
+      const correctKeys = new Set(question.correctKeys.map((item) => item.key));
+      const selectedKeys = this.normalizeUniqueKeys(
+        question.responses.map((response) => response.key),
+      );
+      return {
+        id: question.id,
+        position: question.position,
+        prompt: question.questionText,
+        categoryName: question.categoryName,
+        options: question.options.map((option) => ({
+          key: option.key,
+          text: option.text,
+          isCorrect: correctKeys.has(option.key),
+        })),
+        selectedKeys,
+        submittedText: question.submittedText,
+        isCorrect: isSearch
+          ? isPhraseAnswerCorrect(question.categoryName, question.submittedText)
+          : undefined,
+      };
+    });
+
+    return {
+      id: exam.id,
+      status: exam.status,
+      referee: exam.user,
+      catalogKind: exam.catalogKind,
+      questionCount: exam.questionCount,
+      isTimed: exam.isTimed,
+      totalTimeSeconds: exam.totalTimeSeconds,
+      createdAt: exam.createdAt,
+      finishedAt: exam.finishedAt,
+      scorePercent: exam.scorePercent,
+      isPassed: exam.isPassed,
+      answeredCount: questions.filter(
+        (q) => q.selectedKeys.length > 0 || Boolean(q.submittedText),
+      ).length,
+      partialScorePercent: this.partialScorePercent(
+        exam.catalogKind,
+        exam.questions,
+      ),
+      questions,
+    };
+  }
+
+  /**
+   * NOTA DEL EXAMEN (examenes de preguntas). Es la unica fuente de la nota; el
+   * parcial en vivo (`partialScorePercent`) usa esta misma funcion.
+   *
+   *  - El total es la cantidad de respuestas correctas de TODO el examen: la suma,
+   *    pregunta por pregunta, de sus respuestas correctas (ej.: 25).
+   *  - Cada respuesta correcta marcada suma 1 punto.
+   *  - Cada respuesta incorrecta marcada resta 1 punto, pero una pregunta nunca
+   *    baja de 0: se puede sumar 0, nunca restar de otras preguntas.
+   *    Por pregunta: puntos = clamp(aciertos - errores, 0, respuestas correctas).
+   *  - Lo que no se marca no suma ni resta (vale 0), pero igual cuenta en el total.
+   *  - nota % = puntos obtenidos / total * 100.
+   *
+   * Ej.: total 25, el arbitro obtiene 15 puntos -> 60 %.
+   */
   private calculateExamResults(
     questions: {
       correctKeys: { key: string }[];

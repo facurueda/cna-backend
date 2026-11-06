@@ -1,13 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { Observable, Subject } from 'rxjs';
 
-export type FinalExamActivityKind = 'STARTED' | 'FINISHED';
+export type FinalExamActivityKind = 'STARTED' | 'FINISHED' | 'PROGRESS';
+
+/** Respuestas que cambiaron en una sincronizacion (no el examen completo). */
+export type FinalExamProgressAnswer = {
+  examQuestionId: string;
+  selectedKeys: string[];
+  freeText?: string | null;
+  /** Solo en examenes de frases, donde el cliente no puede calcularlo. */
+  isCorrect?: boolean;
+};
+
+export type FinalExamProgress = {
+  answered: number;
+  total: number;
+  /** Resultado parcial: lo que daria el examen si se cerrara ahora. */
+  scorePercent: number;
+  answers: FinalExamProgressAnswer[];
+};
 
 export type FinalExamActivityEvent = {
   catalogId: string;
   userId: string;
   examId: string;
   kind: FinalExamActivityKind;
+  progress?: FinalExamProgress;
 };
 
 /**

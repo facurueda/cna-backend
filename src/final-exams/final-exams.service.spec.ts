@@ -30,11 +30,13 @@ describe('FinalExamsService', () => {
       delete: jest.fn(),
     },
     exam: { findFirst: jest.fn(), findMany: jest.fn(), count: jest.fn() },
+    examQuestion: { findMany: jest.fn() },
   };
 
   const examsService = {
     findOne: jest.fn(),
     createGeneratedExam: jest.fn(),
+    partialScorePercent: jest.fn(),
   };
 
   let service: FinalExamsService;
@@ -843,6 +845,29 @@ describe('FinalExamsService', () => {
         },
       },
     ]);
+    prisma.examQuestion.findMany.mockResolvedValueOnce([
+      {
+        examId: 'exam-2',
+        categoryName: null,
+        submittedText: null,
+        responses: [{ key: 'a' }],
+        correctKeys: [{ key: 'a' }],
+      },
+      {
+        examId: 'exam-2',
+        categoryName: null,
+        submittedText: null,
+        responses: [],
+        correctKeys: [{ key: 'a' }],
+      },
+    ]);
+    // Segunda consulta: examenes ya enviados (cuantas respondio).
+    prisma.examQuestion.findMany.mockResolvedValueOnce([
+      { examId: 'exam-1', submittedText: null, responses: [{ id: 'r' }] },
+      { examId: 'exam-1', submittedText: null, responses: [{ id: 'r' }] },
+      { examId: 'exam-1', submittedText: null, responses: [] },
+    ]);
+    examsService.partialScorePercent.mockReturnValue(50);
     prisma.exam.findMany.mockResolvedValue([
       {
         id: 'exam-2',
@@ -851,6 +876,7 @@ describe('FinalExamsService', () => {
         isPassed: null,
         scorePercent: null,
         attemptNumber: 1,
+        questionCount: 10,
         createdAt: new Date('2026-03-04T10:00:00.000Z'),
         finishedAt: null,
       },
@@ -861,6 +887,7 @@ describe('FinalExamsService', () => {
         isPassed: true,
         scorePercent: 80,
         attemptNumber: 1,
+        questionCount: 20,
         createdAt: finishedAt,
         finishedAt,
       },
@@ -897,7 +924,9 @@ describe('FinalExamsService', () => {
             lastName: 'Admin',
             email: 'admin@example.com',
           },
+          progress: { answered: 0, total: 20 },
           attemptState: 'NOT_STARTED',
+          liveExam: null,
           date: null,
           result: { scorePercent: null, scoreOnTen: null },
           retries: { used: 0, max: 2, remaining: 2 },
@@ -910,7 +939,9 @@ describe('FinalExamsService', () => {
             lastName: 'González',
             email: 'juan@example.com',
           },
+          progress: { answered: 2, total: 20 },
           attemptState: 'FINISHED',
+          liveExam: null,
           date: finishedAt,
           result: { scorePercent: 80, scoreOnTen: 8 },
           retries: { used: 1, max: 2, remaining: 0 },
@@ -923,7 +954,15 @@ describe('FinalExamsService', () => {
             lastName: 'Rodríguez',
             email: 'maria@example.com',
           },
+          progress: { answered: 1, total: 10 },
           attemptState: 'IN_PROGRESS',
+          liveExam: {
+            examId: 'exam-2',
+            answered: 1,
+            scorePercent: 50,
+            total: 10,
+            startedAt: new Date('2026-03-04T10:00:00.000Z'),
+          },
           date: null,
           result: { scorePercent: null, scoreOnTen: null },
           retries: { used: 1, max: 2, remaining: 1 },
@@ -958,6 +997,7 @@ describe('FinalExamsService', () => {
         },
       },
     ]);
+    prisma.examQuestion.findMany.mockResolvedValue([]);
     prisma.exam.findMany.mockResolvedValue([
       {
         id: 'exam-1',

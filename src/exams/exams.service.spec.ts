@@ -7,6 +7,7 @@ import {
   Role,
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { ExamActivityBus } from './exam-activity.bus';
 import { UserStatsService } from '../users/user-stats.service';
 import { ExamsService } from './exams.service';
 
@@ -705,7 +706,7 @@ describe('ExamsService', () => {
   });
 
   describe('finish reason', () => {
-    it('closes a timed-out exam even with unanswered questions (graded as wrong)', async () => {
+    it('closes a timed-out exam even with unanswered questions (score 0 points)', async () => {
       const finishedAt = new Date('2026-05-02T10:00:00.000Z');
       jest.useFakeTimers().setSystemTime(finishedAt);
 
@@ -767,6 +768,240 @@ describe('ExamsService', () => {
           }),
         }),
       );
+    });
+  });
+
+  describe('live progress', () => {
+    const user = { id: 'user-1', role: Role.GENERAL };
+    let bus: ExamActivityBus;
+    let liveService: ExamsService;
+
+    beforeEach(() => {
+      bus = new ExamActivityBus();
+      liveService = new ExamsService(
+        prisma as unknown as PrismaService,
+        userStatsService as unknown as UserStatsService,
+        bus,
+      );
+    });
+
+    it('publishes answered count and only the changed answers', async () => {
+      const events: unknown[] = [];
+      bus.events$.subscribe((event) => events.push(event));
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.PENDING,
+        examType: ExamType.FINAL,
+        catalogKind: FinalExamCatalogKind.CATALOG,
+        finalExamCatalogId: 'catalog-1',
+        finalExamCatalog: { availableUntilDate: null },
+      });
+      prisma.examQuestion.findMany
+        .mockResolvedValueOnce([{ id: 'q1', options: [{ key: 'a' }] }])
+        .mockResolvedValueOnce([
+          {
+            id: 'q1',
+            categoryName: null,
+            submittedText: null,
+            responses: [{ key: 'a' }],
+            correctKeys: [{ key: 'a' }],
+          },
+          {
+            id: 'q2',
+            categoryName: null,
+            submittedText: null,
+            responses: [],
+            correctKeys: [{ key: 'a' }],
+          },
+        ]);
+
+      await liveService.answerBulk('exam-1', user, {
+        answers: [{ examQuestionId: 'q1', selectedKeys: ['a'] }],
+      });
+      await new Promise((resolve) => setImmediate(resolve));
+
+      expect(events).toEqual([
+        {
+          catalogId: 'catalog-1',
+          userId: 'user-1',
+          examId: 'exam-1',
+          kind: 'PROGRESS',
+          progress: {
+            answered: 1,
+            total: 2,
+            scorePercent: 50,
+            answers: [{ examQuestionId: 'q1', selectedKeys: ['a'] }],
+          },
+        },
+      ]);
+    });
+
+    it('does not publish for practice exams', async () => {
+      const events: unknown[] = [];
+      bus.events$.subscribe((event) => events.push(event));
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.PENDING,
+        examType: ExamType.PRACTICE,
+        catalogKind: FinalExamCatalogKind.CATALOG,
+        finalExamCatalogId: null,
+        finalExamCatalog: null,
+      });
+      prisma.examQuestion.findMany.mockResolvedValue([
+        { id: 'q1', options: [{ key: 'a' }] },
+      ]);
+
+      await liveService.answerBulk('exam-1', user, {
+        answers: [{ examQuestionId: 'q1', selectedKeys: ['a'] }],
+      });
+      await new Promise((resolve) => setImmediate(resolve));
+
+      expect(events).toEqual([]);
+    });
+
+    it('never fails the save when publishing breaks', async () => {
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        userId: 'user-1',
+        status: ExamStatus.PENDING,
+        examType: ExamType.FINAL,
+        catalogKind: FinalExamCatalogKind.CATALOG,
+        finalExamCatalogId: 'catalog-1',
+        finalExamCatalog: { availableUntilDate: null },
+      });
+      prisma.examQuestion.findMany
+        .mockResolvedValueOnce([{ id: 'q1', options: [{ key: 'a' }] }])
+        .mockRejectedValueOnce(new Error('db down'));
+
+      await expect(
+        liveService.answerBulk('exam-1', user, {
+          answers: [{ examQuestionId: 'q1', selectedKeys: ['a'] }],
+        }),
+      ).resolves.toMatchObject({ ok: true, saved: 1 });
+    });
+
+    it('partialScorePercent: right answers add 1, wrong ones subtract (min 0 per question), unanswered adds 0', () => {
+      const question = (correct: string[], selected: string[]) => ({
+        categoryName: null,
+        submittedText: null,
+        correctKeys: correct.map((key) => ({ key })),
+        responses: selected.map((key) => ({ key })),
+      });
+
+      expect(
+        liveService.partialScorePercent(FinalExamCatalogKind.CATALOG, [
+          question(['a'], ['a']), // acierta
+          question(['a'], ['b']), // erra: no suma
+          question(['a'], []), // sin responder: no suma
+          question(['a'], ['a']), // acierta
+        ]),
+      ).toBe(50);
+      expect(
+        liveService.partialScorePercent(FinalExamCatalogKind.CATALOG, []),
+      ).toBe(0);
+    });
+
+    it('partialScorePercent grades multi-answer questions per question, never below 0', () => {
+      const question = (correct: string[], selected: string[]) => ({
+        categoryName: null,
+        submittedText: null,
+        correctKeys: correct.map((key) => ({ key })),
+        responses: selected.map((key) => ({ key })),
+      });
+
+      // Total del examen = 2 + 1 + 2 + 1 = 6 respuestas correctas.
+      const score = liveService.partialScorePercent(
+        FinalExamCatalogKind.CATALOG,
+        [
+          question(['a', 'b'], ['a', 'b']), // 2 aciertos          -> +2
+          question(['a'], ['b', 'c']), // 2 errores            -> 0 (no resta)
+          question(['a', 'b'], ['a', 'c']), // 1 acierto - 1 error -> 0
+          question(['a'], []), // sin marcar            -> 0, sigue en el total
+        ],
+      );
+
+      expect(score).toBe(33.33); // 2 / 6
+    });
+
+    it('partialScorePercent matches the score used when the exam closes', () => {
+      const questions = [
+        {
+          categoryName: null,
+          submittedText: null,
+          correctKeys: [{ key: 'a' }, { key: 'b' }],
+          responses: [{ key: 'a' }, { key: 'c' }],
+        },
+        {
+          categoryName: null,
+          submittedText: null,
+          correctKeys: [{ key: 'a' }],
+          responses: [{ key: 'a' }],
+        },
+      ];
+
+      // 1 - 1 = 0 en la primera + 1 en la segunda, sobre un total de 3.
+      expect(
+        liveService.partialScorePercent(
+          FinalExamCatalogKind.CATALOG,
+          questions,
+        ),
+      ).toBe(33.33);
+    });
+
+    it('findLive returns the partial answers with the correct keys', async () => {
+      prisma.exam.findUnique.mockResolvedValue({
+        id: 'exam-1',
+        status: ExamStatus.PENDING,
+        catalogKind: FinalExamCatalogKind.CATALOG,
+        questionCount: 2,
+        isTimed: false,
+        totalTimeSeconds: null,
+        createdAt: new Date('2026-03-04T10:00:00.000Z'),
+        finishedAt: null,
+        scorePercent: null,
+        isPassed: null,
+        user: { id: 'user-1', firstName: 'A', lastName: 'B', email: 'a@b.c' },
+        questions: [
+          {
+            id: 'q1',
+            position: 1,
+            questionText: 'P1',
+            categoryName: null,
+            submittedText: null,
+            options: [
+              { key: 'a', text: 'A' },
+              { key: 'b', text: 'B' },
+            ],
+            correctKeys: [{ key: 'a' }],
+            responses: [{ key: 'b' }],
+          },
+          {
+            id: 'q2',
+            position: 2,
+            questionText: 'P2',
+            categoryName: null,
+            submittedText: null,
+            options: [{ key: 'a', text: 'A' }],
+            correctKeys: [{ key: 'a' }],
+            responses: [],
+          },
+        ],
+      });
+
+      const result = await service.findLive('exam-1');
+
+      expect(result.answeredCount).toBe(1);
+      expect(result.partialScorePercent).toBe(0);
+      expect(result.questions[0]).toMatchObject({
+        selectedKeys: ['b'],
+        options: [
+          { key: 'a', isCorrect: true },
+          { key: 'b', isCorrect: false },
+        ],
+      });
+      expect(result.questions[1].selectedKeys).toEqual([]);
     });
   });
 });
