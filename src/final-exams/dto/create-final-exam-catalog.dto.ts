@@ -98,6 +98,10 @@ export class CreateFinalExamCatalogDto {
   shuffleOptions?: boolean;
 
   @IsOptional()
+  @IsBoolean()
+  shuffleQuestions?: boolean;
+
+  @IsOptional()
   @IsEnum(Language)
   language?: Language;
 

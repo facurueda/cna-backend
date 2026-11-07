@@ -566,6 +566,7 @@ describe('FinalExamsService', () => {
         isTimed: true,
         totalTimeSeconds: 1200,
         shuffleOptions: true,
+        shuffleQuestions: false,
         finalExamCatalogId: 'catalog-1',
         attemptNumber: 2,
         language: Language.ES,

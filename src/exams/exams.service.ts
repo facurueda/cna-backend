@@ -41,6 +41,7 @@ type CreateGeneratedExamInput = {
   finalExamCatalogId?: string;
   attemptNumber?: number;
   shuffleOptions?: boolean;
+  shuffleQuestions?: boolean;
   language: Language;
   catalogKind?: FinalExamCatalogKind;
   phrases?: { text: string; answer: string }[];
@@ -213,6 +214,9 @@ export class ExamsService {
       selectedQuestions = fixedIds
         .map((id) => byId.get(id))
         .filter((q): q is NonNullable<typeof q> => q != null);
+      if (input.shuffleQuestions) {
+        selectedQuestions = this.shuffleArray(selectedQuestions);
+      }
     } else {
       const categoryIds = this.normalizeUniqueKeys(input.categoryIds);
       const categories = await this.prisma.category.findMany({
