@@ -408,6 +408,7 @@ model FinalExamCatalog {
   availableUntilDate   String?
   maxRetries           Int                    @default(0)
   shuffleOptions       Boolean                @default(true)
+  shuffleQuestions     Boolean                @default(false)
   passThresholdPercent Int                    @default(70)
   language             Language               @default(ES)
   kind                 FinalExamCatalogKind   @default(CATALOG)
