@@ -547,6 +547,8 @@ export class FinalExamsService {
         scorePercent: true,
         attemptNumber: true,
         questionCount: true,
+        isTimed: true,
+        totalTimeSeconds: true,
         createdAt: true,
         finishedAt: true,
       },
@@ -729,6 +731,10 @@ export class FinalExamsService {
               ...live,
               total: pendingAttempt.questionCount,
               startedAt: pendingAttempt.createdAt,
+              isTimed: pendingAttempt.isTimed,
+              totalTimeSeconds: pendingAttempt.isTimed
+                ? pendingAttempt.totalTimeSeconds
+                : null,
             }
           : null,
         date: lastFinished?.finishedAt ?? null,
